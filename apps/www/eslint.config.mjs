@@ -1,9 +1,11 @@
 import globals from 'globals';
 import vercel from '@vercel/style-guide/eslint/flat';
 import boundaries from 'eslint-plugin-boundaries';
+import turboConfig from 'eslint-config-turbo/flat';
 
 /** @type {import('eslint').Linter.Config[]} */
 const eslintConfig = [
+  ...turboConfig,
   ...vercel.configs.recommended,
   ...vercel.configs.typescript,
   ...vercel.configs.react,

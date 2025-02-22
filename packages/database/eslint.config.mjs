@@ -7,13 +7,10 @@ const eslintConfig = [
   ...turboConfig,
   ...vercel.configs.recommended,
   ...vercel.configs.typescript,
-  vercel.configs.jest,
-  vercel.configs['jest-typescript'],
   {
     languageOptions: {
       globals: {
         ...globals.node,
-        ...globals.jest,
       },
       ecmaVersion: 5,
       sourceType: 'module',

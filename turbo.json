@@ -8,7 +8,9 @@
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "cache": false,
+      "dependsOn": ["^lint"],
+      "env": ["PORT", "DATABASE_URL"]
     },
     "typecheck": {
       "dependsOn": ["^typecheck"]

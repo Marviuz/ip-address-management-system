@@ -38,6 +38,7 @@
     }
   },
   "dependencies": {
+    "@ip-address-management-system/database": "workspace:*",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/jwt": "^11.0.0",
@@ -58,6 +59,7 @@
     "@types/supertest": "^6.0.2",
     "@vercel/style-guide": "github:appano1/style-guide#canary",
     "eslint": "^9.20.1",
+    "eslint-config-turbo": "^2.4.2",
     "globals": "^16.0.0",
     "jest": "^29.7.0",
     "source-map-support": "^0.5.21",
