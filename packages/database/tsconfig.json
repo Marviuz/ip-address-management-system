@@ -14,12 +14,11 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "incremental": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs"],
-  "exclude": ["node_modules", "*.config.cjs", "*.config.mjs"]
+  "exclude": ["node_modules", "*.config.cjs", "*.config.mjs", "dist/"]
 }
