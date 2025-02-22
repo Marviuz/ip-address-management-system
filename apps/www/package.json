@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "next build",
-    "check-types": "tsc --noEmit",
     "dev": "next dev --turbopack",
     "lint": "next lint --max-warnings 0",
-    "start": "next start"
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.7",
