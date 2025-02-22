@@ -124,7 +124,6 @@ const eslintConfig = [
     files: ['**/*.tsx'],
     ignores: ['**/app/**/*'],
     rules: {
-      'unicorn/filename-case': ['error', { case: 'pascalCase' }],
       'react/function-component-definition': [
         'error',
         { namedComponents: 'arrow-function' },
