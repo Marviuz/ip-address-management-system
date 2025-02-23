@@ -20,7 +20,8 @@
       "persistent": true
     },
     "db:generate": {
-      "env": ["DATABASE_URL"]
+      "env": ["DATABASE_URL"],
+      "persistent": true
     },
     "db:migrate": {
       "env": ["DATABASE_URL"]
