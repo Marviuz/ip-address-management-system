@@ -1,6 +1,7 @@
 import globals from 'globals';
 import vercel from '@vercel/style-guide/eslint/flat';
 import turboConfig from 'eslint-config-turbo/flat';
+import drizzle from 'eslint-plugin-drizzle';
 
 /** @type {import('eslint').Linter.Config[]} */
 const eslintConfig = [
@@ -9,6 +10,12 @@ const eslintConfig = [
   ...vercel.configs.typescript,
   vercel.configs.jest,
   vercel.configs['jest-typescript'],
+  {
+    plugins: { drizzle },
+    rules: {
+      ...drizzle.configs.recommended.rules,
+    },
+  },
   {
     languageOptions: {
       globals: {

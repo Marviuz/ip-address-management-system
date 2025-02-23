@@ -3,7 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from 'src/modules/users/users.module';
 import { GoogleOauthController } from 'src/controllers/auth/google/google-oauth.controller';
 import { env } from 'src/env';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { DrizzleModule } from '../drizzle/drizzle.module';
 
 @Module({

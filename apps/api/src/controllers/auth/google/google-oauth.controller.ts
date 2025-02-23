@@ -2,12 +2,16 @@ import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
 import { GoogleOauthGuard } from 'src/guards/google-oauth/google-oauth.guard';
+import { AuthService } from 'src/services/auth/auth.service';
 
-const ACCESS_TOKEN_COOKIE_NAME = 'access_token';
+// const ACCESS_TOKEN_COOKIE_NAME = 'access_token';
 
 @Controller('auth/google')
 export class GoogleOauthController {
-  constructor(private jwtAuthService: JwtService) {}
+  constructor(
+    private jwtAuthService: JwtService,
+    private authService: AuthService,
+  ) {}
 
   @Get()
   @UseGuards(GoogleOauthGuard)
@@ -17,20 +21,15 @@ export class GoogleOauthController {
 
   @Get('callback')
   @UseGuards(GoogleOauthGuard)
-  googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    if (!req.user) {
-      throw new Error('User not found');
-    }
+  async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
+    // const accessToken = this.jwtAuthService.sign(req.user);
+    const user = await this.authService.validateGoogleUser(req.user);
 
-    const accessToken = this.jwtAuthService.sign(req.user);
+    // res.cookie(ACCESS_TOKEN_COOKIE_NAME, accessToken, {
+    //   httpOnly: true,
+    //   sameSite: 'lax',
+    // });
 
-    res.cookie(ACCESS_TOKEN_COOKIE_NAME, accessToken, {
-      httpOnly: true,
-      sameSite: 'lax',
-    });
-
-    return res.send({
-      accessToken,
-    });
+    return res.send({ ...user });
   }
 }

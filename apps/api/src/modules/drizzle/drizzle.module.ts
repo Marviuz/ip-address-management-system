@@ -3,15 +3,15 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { env } from 'src/env';
 import * as schema from './schema';
 
-const DRIZZLE_MODULE = Symbol('drizzle-connection');
+export const DRIZZLE = Symbol('drizzle-connection');
 
 @Module({
   providers: [
     {
-      provide: DRIZZLE_MODULE,
+      provide: DRIZZLE,
       useFactory: () => drizzle(env.DATABASE_URL, { schema }),
     },
   ],
-  exports: [DRIZZLE_MODULE],
+  exports: [DRIZZLE],
 })
 export class DrizzleModule {}

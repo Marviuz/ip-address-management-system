@@ -68,6 +68,9 @@ importers:
       drizzle-orm:
         specifier: ^0.39.3
         version: 0.39.3(@types/pg@8.11.11)(pg@8.13.3)
+      drizzle-zod:
+        specifier: ^0.7.0
+        version: 0.7.0(drizzle-orm@0.39.3(@types/pg@8.11.11)(pg@8.13.3))(zod@3.24.2)
       nanoid:
         specifier: ^5.1.2
         version: 5.1.2
@@ -141,6 +144,9 @@ importers:
       eslint-config-turbo:
         specifier: ^2.4.2
         version: 2.4.2(eslint@9.20.1(jiti@2.4.2))(turbo@2.4.2)
+      eslint-plugin-drizzle:
+        specifier: ^0.2.3
+        version: 0.2.3(eslint@9.20.1(jiti@2.4.2))
       globals:
         specifier: ^16.0.0
         version: 16.0.0
@@ -219,7 +225,7 @@ importers:
         version: 2.4.2(eslint@9.20.1(jiti@2.4.2))(turbo@2.4.2)
       eslint-plugin-boundaries:
         specifier: ^5.0.1
-        version: 5.0.1(eslint@9.20.1(jiti@2.4.2))
+        version: 5.0.1(@typescript-eslint/parser@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint@9.20.1(jiti@2.4.2))
       globals:
         specifier: ^16.0.0
         version: 16.0.0
@@ -2830,6 +2836,12 @@ packages:
       sqlite3:
         optional: true
 
+  drizzle-zod@0.7.0:
+    resolution: {integrity: sha512-xgCRYYVEzRkeXTS33GSMgoowe3vKsMNBjSI+cwG1oLQVEhAWWbqtb/AAMlm7tkmV4fG/uJjEmWzdzlEmTgWOoQ==}
+    peerDependencies:
+      drizzle-orm: '>=0.36.0'
+      zod: '>=3.0.0'
+
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
@@ -3015,6 +3027,11 @@ packages:
     engines: {node: '>=18.18'}
     peerDependencies:
       eslint: '>=6.0.0'
+
+  eslint-plugin-drizzle@0.2.3:
+    resolution: {integrity: sha512-BO+ymHo33IUNoJlC0rbd7HP9EwwpW4VIp49R/tWQF/d2E1K2kgTf0tCXT0v9MSiBr6gGR1LtPwMLapTKEWSg9A==}
+    peerDependencies:
+      eslint: '>=8.0.0'
 
   eslint-plugin-import@2.31.0:
     resolution: {integrity: sha512-ixmkI62Rbc2/w8Vfxyh1jQRTdRTF52VxwRVHl/ykPAmqG+Nb7/kNn+byLP0LxPgI7zWA16Jt82SybJInmMia3A==}
@@ -8392,6 +8409,11 @@ snapshots:
       '@types/pg': 8.11.11
       pg: 8.13.3
 
+  drizzle-zod@0.7.0(drizzle-orm@0.39.3(@types/pg@8.11.11)(pg@8.13.3))(zod@3.24.2):
+    dependencies:
+      drizzle-orm: 0.39.3(@types/pg@8.11.11)(pg@8.13.3)
+      zod: 3.24.2
+
   dunder-proto@1.0.1:
     dependencies:
       call-bind-apply-helpers: 1.0.1
@@ -8653,7 +8675,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-boundaries@5.0.1(eslint@9.20.1(jiti@2.4.2)):
+  eslint-plugin-boundaries@5.0.1(@typescript-eslint/parser@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint@9.20.1(jiti@2.4.2)):
     dependencies:
       chalk: 4.1.2
       eslint: 9.20.1(jiti@2.4.2)
@@ -8665,6 +8687,10 @@ snapshots:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
       - supports-color
+
+  eslint-plugin-drizzle@0.2.3(eslint@9.20.1(jiti@2.4.2)):
+    dependencies:
+      eslint: 9.20.1(jiti@2.4.2)
 
   eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint-import-resolver-typescript@3.8.2)(eslint@9.20.1(jiti@2.4.2)):
     dependencies:
