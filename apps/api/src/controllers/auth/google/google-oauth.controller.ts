@@ -1,7 +1,7 @@
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
-import { GoogleOauthGuard } from './google-oauth.guard';
+import { GoogleOauthGuard } from 'src/guards/google-oauth/google-oauth.guard';
 
 const ACCESS_TOKEN_COOKIE_NAME = 'access_token';
 
@@ -15,7 +15,7 @@ export class GoogleOauthController {
     // Guard redirects
   }
 
-  @Get('redirect')
+  @Get('callback')
   @UseGuards(GoogleOauthGuard)
   googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
     if (!req.user) {

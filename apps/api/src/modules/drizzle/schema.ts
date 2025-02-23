@@ -1,8 +1,14 @@
-import { integer, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
+import {
+  serial,
+  integer,
+  pgTable,
+  timestamp,
+  varchar,
+} from 'drizzle-orm/pg-core';
 import { nanoid } from 'nanoid';
 
 export const users = pgTable('user', {
-  id: integer().primaryKey(),
+  id: serial().primaryKey(),
   publicId: varchar()
     .notNull()
     .unique()
@@ -18,7 +24,7 @@ export const users = pgTable('user', {
 });
 
 export const accounts = pgTable('account', {
-  id: integer().primaryKey(),
+  id: serial().primaryKey(),
   publicId: varchar()
     .notNull()
     .unique()

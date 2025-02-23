@@ -6,7 +6,7 @@
     "db:generate": "dotenv turbo run db:generate",
     "db:migrate": "dotenv turbo run db:migrate",
     "db:push": "dotenv turbo run db:push",
-    "dev": "turbo run dev",
+    "dev": "dotenv turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "prepare": "husky",
@@ -29,6 +29,9 @@
   "packageManager": "pnpm@10.4.1",
   "pnpm": {
     "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@swc/core",
+      "esbuild",
       "sharp"
     ],
     "ignoredBuiltDependencies": [

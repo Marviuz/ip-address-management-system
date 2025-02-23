@@ -7,6 +7,9 @@
   "author": "",
   "scripts": {
     "build": "nest build",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
     "dev": "nest start --watch",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -38,17 +41,20 @@
     }
   },
   "dependencies": {
-    "@ip-address-management-system/database": "workspace:*",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/jwt": "^11.0.0",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.1",
     "cookie-parser": "^1.4.7",
+    "drizzle-orm": "^0.39.3",
+    "nanoid": "^5.1.2",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
+    "pg": "^8.13.3",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.0",
@@ -62,8 +68,10 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.4",
     "@types/passport-google-oauth20": "^2.0.16",
+    "@types/pg": "^8.11.11",
     "@types/supertest": "^6.0.2",
     "@vercel/style-guide": "github:appano1/style-guide#canary",
+    "drizzle-kit": "^0.30.4",
     "eslint": "^9.20.1",
     "eslint-config-turbo": "^2.4.2",
     "globals": "^16.0.0",

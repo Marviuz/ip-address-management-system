@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Profile } from 'passport-google-oauth20';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from 'src/services/users.service';
 
 @Injectable()
 export class AuthService {

@@ -17,6 +17,7 @@
     },
     "dev": {
       "cache": false,
+      "env": ["GOOGLE_*", "DATABASE_URL", "AUTH_SECRET"],
       "persistent": true
     },
     "db:generate": {
@@ -27,7 +28,8 @@
       "env": ["DATABASE_URL"]
     },
     "db:push": {
-      "env": ["DATABASE_URL"]
+      "env": ["DATABASE_URL"],
+      "persistent": true
     }
   }
 }
