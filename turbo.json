@@ -18,6 +18,15 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "db:generate": {
+      "env": ["DATABASE_URL"]
+    },
+    "db:migrate": {
+      "env": ["DATABASE_URL"]
+    },
+    "db:push": {
+      "env": ["DATABASE_URL"]
     }
   }
 }

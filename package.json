@@ -3,7 +3,9 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "check-types": "turbo run check-types",
+    "db:generate": "dotenv turbo run db:generate",
+    "db:migrate": "dotenv turbo run db:migrate",
+    "db:push": "dotenv turbo run db:push",
     "dev": "turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
@@ -15,6 +17,7 @@
     "@commitlint/config-conventional": "^19.7.1",
     "@manypkg/cli": "^0.23.0",
     "@vercel/style-guide": "github:appano1/style-guide#canary",
+    "dotenv-cli": "^8.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
     "prettier": "^3.5.2",
