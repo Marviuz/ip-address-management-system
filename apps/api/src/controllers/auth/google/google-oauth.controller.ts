@@ -1,29 +1,47 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
+import { env } from 'src/env';
 import { GoogleOauthGuard } from 'src/guards/google-oauth/google-oauth.guard';
 import { AuthService } from 'src/services/auth/auth.service';
 
-// const ACCESS_TOKEN_COOKIE_NAME = 'access_token';
-
-@Controller('auth/google')
+@Controller('auth')
 export class GoogleOauthController {
   constructor(
     private jwtAuthService: JwtService,
     private authService: AuthService,
   ) {}
 
-  @Get()
+  @Get('google')
   @UseGuards(GoogleOauthGuard)
   async googleAuth(@Req() _req: Request) {
     // Guard redirects
   }
 
-  @Get('callback')
+  @Get('google/callback')
   @UseGuards(GoogleOauthGuard)
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    const tokens = await this.authService.login(req.user.providerId);
+    const tokens = await this.authService.login(req.user.publicId);
 
-    return res.send(tokens);
+    const urlParams = new URLSearchParams({
+      access_token: tokens.accessToken,
+      refresh_token: tokens.refreshToken,
+    });
+
+    res.redirect(`${env.FRONTEND_URL}/auth/google?${urlParams.toString()}`);
+  }
+
+  @Post('logout')
+  async logout(@Req() req: Request, @Res() res: Response) {
+    await this.authService.logout(req.user.publicId);
+    res.sendStatus(HttpStatus.NO_CONTENT);
   }
 }

@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { hash } from 'argon2';
 import { UsersService } from 'src/services/users/users.service';
-import { OAuthUserSchema } from 'src/types/oauth-user';
+import { InsertUserSchema } from 'src/types/oauth-user';
 
 @Injectable()
 export class AuthService {
@@ -10,8 +11,8 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async generateTokens(userId: string) {
-    const payload = { sub: userId };
+  async generateTokens(userPublicId: string) {
+    const payload = { sub: userPublicId };
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload),
       this.jwtService.signAsync(payload, { expiresIn: '7d' }),
@@ -20,26 +21,34 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  async login(userId: string) {
-    const tokens = await this.generateTokens(userId);
-    return tokens;
+  async login(userPublicId: string) {
+    const { accessToken, refreshToken } =
+      await this.generateTokens(userPublicId);
+
+    const hashedRefreshToken = await hash(refreshToken);
+
+    const updatedUser = await this.userService.updateUser({
+      refreshToken: hashedRefreshToken,
+      publicId: userPublicId,
+    });
+
+    if (!updatedUser)
+      throw new Error('Failed to update User with refreshToken');
+
+    return { ...updatedUser, accessToken, refreshToken };
   }
 
-  async validateGoogleUser(oauthUser: OAuthUserSchema) {
-    const user = await this.userService.findOneByProviderId(
-      oauthUser.providerId,
-    );
+  async logout(userPublicId: string) {
+    return this.userService.updateUser({
+      publicId: userPublicId,
+      refreshToken: null,
+    });
+  }
 
-    if (!user) {
-      const insertedUser = await this.userService.createFromGoogle(oauthUser);
+  async validateGoogleUser(oauthUser: InsertUserSchema) {
+    const user = await this.userService.findOneOrCreate(oauthUser);
 
-      if (!insertedUser?.account?.providerAccountId)
-        throw new Error('Failed to create User');
-
-      return this.userService.findOneByProviderId(
-        insertedUser.account.providerAccountId,
-      );
-    }
+    if (!user) throw new Error('Failed to find or create User');
 
     return user;
   }

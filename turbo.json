@@ -1,7 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
-  "globalEnv": ["GOOGLE_*", "DATABASE_URL", "AUTH_SECRET"],
+  "globalEnv": ["GOOGLE_*", "*_URL", "AUTH_SECRET"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
