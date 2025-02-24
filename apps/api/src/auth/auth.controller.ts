@@ -7,28 +7,24 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
 import { env } from 'src/env';
-import { GoogleOauthGuard } from 'src/guards/google-oauth/google-oauth.guard';
-import { AuthService } from 'src/services/auth/auth.service';
+import { AuthService } from './auth.service';
+import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
 
 @Controller('auth')
-export class GoogleOauthController {
-  constructor(
-    private jwtAuthService: JwtService,
-    private authService: AuthService,
-  ) {}
+export class AuthController {
+  constructor(private readonly authService: AuthService) {}
 
   @Get('google')
-  @UseGuards(GoogleOauthGuard)
-  async googleAuth(@Req() _req: Request) {
-    // Guard redirects
+  @UseGuards(GoogleAuthGuard)
+  loginWithGoogle() {
+    // Guard redirect
   }
 
   @Get('google/callback')
-  @UseGuards(GoogleOauthGuard)
-  async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
+  @UseGuards(GoogleAuthGuard)
+  async googleRedirect(@Req() req: Request, @Res() res: Response) {
     const tokens = await this.authService.login(req.user.publicId);
 
     const urlParams = new URLSearchParams({

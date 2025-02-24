@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import { type SetRequired } from 'type-fest';
-import { DRIZZLE } from 'src/modules/drizzle/drizzle.module';
-import { users } from 'src/modules/drizzle/schema';
-import { DrizzleDatabase } from 'src/modules/drizzle/types/drizzle';
+import { DRIZZLE } from 'src/drizzle/drizzle.module';
+import { users } from 'src/drizzle/schema';
+import { DrizzleDatabase } from 'src/drizzle/types/drizzle';
 import { InsertUserSchema, UpdateUserSchema } from 'src/types/oauth-user';
 
 @Injectable()
