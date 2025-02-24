@@ -22,14 +22,8 @@ export class GoogleOauthController {
   @Get('callback')
   @UseGuards(GoogleOauthGuard)
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    // const accessToken = this.jwtAuthService.sign(req.user);
-    const user = await this.authService.validateGoogleUser(req.user);
+    const tokens = await this.authService.login(req.user.providerId);
 
-    // res.cookie(ACCESS_TOKEN_COOKIE_NAME, accessToken, {
-    //   httpOnly: true,
-    //   sameSite: 'lax',
-    // });
-
-    return res.send({ ...user });
+    return res.send(tokens);
   }
 }

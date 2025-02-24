@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { env } from 'src/env';
 import { AuthService } from 'src/services/auth/auth.service';
-import { OAuthUserSchema } from 'src/types/oauth-user';
+import { oauthUserSchema } from 'src/types/oauth-user';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -16,7 +16,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
   }
 
-  validate(
+  async validate(
     _accessToken: string,
     _refreshToken: string,
     profile: Profile,
@@ -24,18 +24,18 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   ) {
     const { id, name, emails, provider, username } = profile;
 
-    const user = {
-      username,
-      familyName: name?.familyName,
-      givenName: name?.givenName,
-      middleName: name?.middleName,
-      email: emails?.at(0)?.value,
-      provider,
-      providerId: id,
-    } satisfies Partial<OAuthUserSchema>;
+    const user = await this.userService.validateGoogleUser(
+      oauthUserSchema.parse({
+        username,
+        familyName: name?.familyName,
+        givenName: name?.givenName,
+        middleName: name?.middleName,
+        email: emails?.at(0)?.value,
+        provider,
+        providerId: id,
+      }),
+    );
 
     done(null, user);
-
-    return user;
   }
 }
