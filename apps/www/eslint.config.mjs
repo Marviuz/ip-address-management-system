@@ -40,7 +40,7 @@ const eslintConfig = [
             'src/server/**/*',
             'src/utils/**/*',
             'src/styles/**/*',
-            'src/env.mjs',
+            'src/env.ts',
           ],
         },
         {

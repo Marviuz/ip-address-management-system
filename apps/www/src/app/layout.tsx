@@ -1,14 +1,7 @@
 import '@/styles/globals.css';
-
 import { type Metadata } from 'next';
-import { Geist, Geist_Mono as GeistMono } from 'next/font/google';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-});
-const geistMono = GeistMono({
-  variable: '--font-geist-mono',
-});
+import { geistSans } from '@/lib/fonts';
+import { cn } from '@/utils/cn';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -22,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={cn(geistSans.variable, 'font-geist antialiased')}>
         {children}
       </body>
     </html>
