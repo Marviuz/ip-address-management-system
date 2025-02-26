@@ -17,6 +17,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "prelint": "pnpm build",
     "lint": "eslint --fix \"src/**/*.ts\" --fix"
   },
   "devDependencies": {
