@@ -7,18 +7,18 @@ import { UsersService } from 'src/users/users.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { RefreshStrategy } from './strategies/refresh.strategy';
 
 @Module({
   imports: [
     UsersModule,
     JwtModule.register({
-      global: true,
       secret: env.AUTH_SECRET,
       signOptions: { expiresIn: '60s' },
     }),
     DrizzleModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, UsersService, GoogleStrategy],
+  providers: [AuthService, UsersService, GoogleStrategy, RefreshStrategy],
 })
 export class AuthModule {}

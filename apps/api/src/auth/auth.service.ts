@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { hash } from 'argon2';
 import { InsertUserSchema } from 'src/types/oauth-user';
+import { TokenPayload } from 'src/types/user';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -12,7 +13,7 @@ export class AuthService {
   ) {}
 
   async generateTokens(userPublicId: string) {
-    const payload = { sub: userPublicId };
+    const payload: TokenPayload = { sub: userPublicId };
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload),
       this.jwtService.signAsync(payload, { expiresIn: '7d' }),
@@ -51,5 +52,11 @@ export class AuthService {
     if (!user) throw new Error('Failed to find or create User');
 
     return user;
+  }
+
+  async validateRefreshToken(userPublicId: string) {
+    const user = await this.userService.findOneByPublicId(userPublicId);
+    if (!user) throw new UnauthorizedException('User not found!');
+    return { id: user.id };
   }
 }

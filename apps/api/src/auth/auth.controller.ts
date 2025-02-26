@@ -11,6 +11,7 @@ import { Request, Response } from 'express';
 import { env } from 'src/env';
 import { AuthService } from './auth.service';
 import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
+import { RefreshGuard } from './guards/refresh/refresh.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -33,6 +34,13 @@ export class AuthController {
     });
 
     res.redirect(`${env.FRONTEND_URL}/auth/google?${urlParams.toString()}`);
+  }
+
+  @Post('refresh')
+  @UseGuards(RefreshGuard)
+  async refresh(@Req() req: Request) {
+    const tokens = await this.authService.generateTokens(req.user.publicId);
+    return tokens;
   }
 
   @Post('logout')

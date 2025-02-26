@@ -37,4 +37,12 @@ export class UsersService {
 
     return updatedUser;
   }
+
+  async findOneByPublicId(userPublicId: string) {
+    const user = await this.db.query.users.findFirst({
+      where: eq(users.publicId, userPublicId),
+    });
+
+    return user;
+  }
 }

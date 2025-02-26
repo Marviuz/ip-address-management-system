@@ -6,3 +6,7 @@ declare module 'express' {
     user: SelectUserSchema;
   }
 }
+
+export type TokenPayload = {
+  sub: string;
+};
