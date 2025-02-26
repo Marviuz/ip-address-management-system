@@ -41,6 +41,7 @@
     }
   },
   "dependencies": {
+    "@ip-address-management-system/shared": "workspace:*",
     "@nestjs/common": "^11.0.10",
     "@nestjs/core": "^11.0.10",
     "@nestjs/jwt": "^11.0.0",

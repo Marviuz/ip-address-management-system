@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { TOKEN_LABELS } from '@ip-address-management-system/shared';
 import { env } from 'src/env';
 import { AuthService } from './auth.service';
 import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
@@ -29,8 +30,8 @@ export class AuthController {
     const tokens = await this.authService.login(req.user.publicId);
 
     const urlParams = new URLSearchParams({
-      access_token: tokens.accessToken,
-      refresh_token: tokens.refreshToken,
+      [TOKEN_LABELS.ACCESS_TOKEN]: tokens.accessToken,
+      [TOKEN_LABELS.REFRESH_TOKEN]: tokens.refreshToken,
     });
 
     res.redirect(`${env.FRONTEND_URL}/auth/google?${urlParams.toString()}`);
