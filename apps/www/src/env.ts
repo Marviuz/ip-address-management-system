@@ -4,9 +4,11 @@ import { z } from 'zod';
 export const env = createEnv({
   shared: {
     BACKEND_URL: z.string(),
+    AUTH_SECRET: z.string(),
   },
   runtimeEnv: {
     BACKEND_URL: process.env.BACKEND_URL,
+    AUTH_SECRET: process.env.AUTH_SECRET,
   },
   skipValidation: process.env.CI === 'true',
 });
