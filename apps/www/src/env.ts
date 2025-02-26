@@ -8,4 +8,5 @@ export const env = createEnv({
   runtimeEnv: {
     BACKEND_URL: process.env.BACKEND_URL,
   },
+  skipValidation: process.env.CI === 'true',
 });
