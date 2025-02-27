@@ -1,7 +1,10 @@
+import { Reflector } from '@nestjs/core';
 import { AccessGuard } from './access.guard';
 
 describe('accessGuard', () => {
   it('should be defined', () => {
-    expect(new AccessGuard()).toBeDefined();
+    const reflector = new Reflector();
+
+    expect(new AccessGuard(reflector)).toBeDefined();
   });
 });
