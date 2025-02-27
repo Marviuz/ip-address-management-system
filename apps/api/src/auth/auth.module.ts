@@ -11,6 +11,7 @@ import { AccessGuard } from './guards/access/access.guard';
 import { AccessStrategy } from './strategies/access.strategy';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { RefreshStrategy } from './strategies/refresh.strategy';
+import { RolesGuard } from './guards/roles/roles.guard';
 
 @Module({
   imports: [
@@ -31,6 +32,10 @@ import { RefreshStrategy } from './strategies/refresh.strategy';
     {
       provide: APP_GUARD,
       useClass: AccessGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })

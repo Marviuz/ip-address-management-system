@@ -22,6 +22,20 @@
       "when": 1740401784723,
       "tag": "0002_tiny_morlun",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1740662268735,
+      "tag": "0003_remarkable_ultimates",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1740662780861,
+      "tag": "0004_jazzy_alex_power",
+      "breakpoints": true
     }
   ]
 }

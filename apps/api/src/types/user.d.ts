@@ -10,3 +10,5 @@ declare module 'express' {
 export type TokenPayload = {
   sub: string;
 };
+
+export type Role = Exclude<SelectUserSchema['role'], null>;
