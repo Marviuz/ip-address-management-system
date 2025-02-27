@@ -13,6 +13,7 @@ export const users = pgTable('user', {
   middleName: varchar('middle_name'),
   familyName: varchar('family_name'),
   email: varchar().unique(),
+  role: varchar({ enum: ['regular', 'super_admin'] }),
 
   provider: varchar({ enum: ['google'] })
     .notNull()
