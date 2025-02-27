@@ -13,17 +13,20 @@ import { env } from 'src/env';
 import { AuthService } from './auth.service';
 import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
 import { RefreshGuard } from './guards/refresh/refresh.guard';
+import { Public } from './decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Public()
   @Get('google')
   @UseGuards(GoogleAuthGuard)
   loginWithGoogle() {
     // Guard redirect
   }
 
+  @Public()
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
   async googleRedirect(@Req() req: Request, @Res() res: Response) {
@@ -37,6 +40,7 @@ export class AuthController {
     res.redirect(`${env.FRONTEND_URL}/auth/google?${urlParams.toString()}`);
   }
 
+  @Public()
   @Post('refresh')
   @UseGuards(RefreshGuard)
   async refresh(@Req() req: Request) {

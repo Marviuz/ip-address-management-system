@@ -54,6 +54,12 @@ export class AuthService {
     return user;
   }
 
+  async validateAccessToken(userPublicId: string) {
+    const user = await this.userService.findOneByPublicId(userPublicId);
+    if (!user) throw new UnauthorizedException('User not found!');
+    return user;
+  }
+
   async validateRefreshToken(userPublicId: string) {
     const user = await this.userService.findOneByPublicId(userPublicId);
     if (!user) throw new UnauthorizedException('User not found!');
