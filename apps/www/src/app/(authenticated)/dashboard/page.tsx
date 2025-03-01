@@ -1,8 +1,9 @@
 import { Button } from '@/components/common/button';
-import { getAuthSession, signOut } from '@/lib/auth';
+import { signOut } from '@/lib/auth';
+import { withAuth } from '@/lib/with-auth';
 
-export default async function DashboardPage() {
-  const { data: session } = await getAuthSession();
+export default withAuth(async function DashboardPage({ $auth }) {
+  const { data: session } = $auth;
   const meRes = await fetch('http://localhost:8000/users/me', {
     headers: {
       Authorization: `Bearer ${session?.accessToken}`,
@@ -33,4 +34,4 @@ export default async function DashboardPage() {
       <Button formAction={signOut}>Sign Out</Button>
     </form>
   );
-}
+});

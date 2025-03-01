@@ -9,7 +9,7 @@ type Tokens = {
   refreshToken: string;
 };
 
-type Session = {
+export type Session = {
   data: Tokens | null;
 };
 
