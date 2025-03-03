@@ -3,24 +3,23 @@ import { signOut } from '@/lib/auth';
 import { withAuth } from '@/lib/with-auth';
 
 export default withAuth(async function DashboardPage({ $auth }) {
-  const { data: session } = $auth;
   const meRes = await fetch('http://localhost:8000/users/me', {
     headers: {
-      Authorization: `Bearer ${session?.accessToken}`,
+      Authorization: `Bearer ${$auth.accessToken}`,
     },
   });
   const meData = await meRes.json();
 
   const saRes = await fetch('http://localhost:8000/users/me/super-admin', {
     headers: {
-      Authorization: `Bearer ${session?.accessToken}`,
+      Authorization: `Bearer ${$auth.accessToken}`,
     },
   });
   const saData = await saRes.json();
 
   const regRes = await fetch('http://localhost:8000/users/me/regular', {
     headers: {
-      Authorization: `Bearer ${session?.accessToken}`,
+      Authorization: `Bearer ${$auth.accessToken}`,
     },
   });
   const regData = await regRes.json();

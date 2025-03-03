@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { getIronSession } from 'iron-session';
 import { env } from '@/env';
 
-type Tokens = {
+export type Tokens = {
   accessToken: string;
   refreshToken: string;
 };

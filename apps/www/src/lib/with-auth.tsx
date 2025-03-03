@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation';
 import { type ComponentType } from 'react';
 import { getHomeLink } from '@/components/links/home-link';
-import { getAuthSession, type Session } from './auth';
+import { getAuthSession, type Tokens } from './auth';
 
 type ComponentParams = {
-  $auth: Session;
+  $auth: Tokens;
 };
 
 export function withAuth<T extends object>(
@@ -12,10 +12,11 @@ export function withAuth<T extends object>(
 ) {
   return async function AuthedComponent(props: T) {
     const auth = await getAuthSession();
+
     if (!auth.data) {
       return redirect(getHomeLink());
     }
 
-    return <Component {...props} $auth={auth} />;
+    return <Component {...props} $auth={auth.data} />;
   };
 }
