@@ -1,10 +1,12 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { type Request } from 'express';
+import { Injectable } from '@nestjs/common';
 import { env } from 'src/env';
 import { type TokenPayload } from 'src/types/user';
-import { type AuthService } from '../auth.service';
+import { AuthService } from '../auth.service';
 
+@Injectable()
 export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
   constructor(private authService: AuthService) {
     super({

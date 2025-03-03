@@ -44,8 +44,11 @@ export class AuthController {
   @Post('refresh')
   @UseGuards(RefreshGuard)
   async refresh(@Req() req: Request) {
-    const tokens = await this.authService.generateTokens(req.user.publicId);
-    return tokens;
+    const user = await this.authService.login(req.user.publicId);
+    return {
+      [TOKEN_LABELS.ACCESS_TOKEN]: user.accessToken,
+      [TOKEN_LABELS.REFRESH_TOKEN]: user.refreshToken,
+    };
   }
 
   @Post('logout')
