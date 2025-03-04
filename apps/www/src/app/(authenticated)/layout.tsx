@@ -1,17 +1,11 @@
-import { redirect } from 'next/navigation';
-import { getHomeLink } from '@/components/links/home-link';
-import { getAuthSession } from '@/lib/auth';
+import { TokenRefresher } from '@/components/token-refresher';
+import { type LayoutProps } from '@/utils/app-props';
 
-export default async function AuthenticatedLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const { data: session } = await getAuthSession();
-
-  if (!session) {
-    return redirect(getHomeLink());
-  }
-
-  return children;
+export default function AuthenticatedLayout({ children }: LayoutProps) {
+  return (
+    <>
+      {children}
+      <TokenRefresher />
+    </>
+  );
 }

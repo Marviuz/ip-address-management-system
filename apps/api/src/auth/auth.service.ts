@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { hash } from 'argon2';
+import { hash, verify } from 'argon2';
 import { InsertUserSchema } from 'src/types/oauth-user';
 import { TokenPayload } from 'src/types/user';
 import { UsersService } from 'src/users/users.service';
@@ -60,9 +60,27 @@ export class AuthService {
     return user;
   }
 
-  async validateRefreshToken(userPublicId: string) {
+  async validateRefreshToken(userPublicId: string, refreshToken: string) {
     const user = await this.userService.findOneByPublicId(userPublicId);
-    if (!user) throw new UnauthorizedException('User not found!');
-    return { id: user.id };
+    if (!user?.refreshToken) throw new UnauthorizedException('User not found!');
+
+    const isTokenValid = await verify(user.refreshToken, refreshToken);
+    if (!isTokenValid) throw new UnauthorizedException('Invalid token!');
+
+    return user;
+  }
+
+  extractBearerTokenFromAuthHeader(authorization?: string) {
+    if (!authorization)
+      throw new UnauthorizedException('No authorization header!');
+
+    const [type, token] = authorization.split(' ');
+    if (type !== 'Bearer')
+      throw new UnauthorizedException('Invalid authorization header!');
+
+    if (!token)
+      throw new UnauthorizedException('No token in authorization header!');
+
+    return token;
   }
 }
