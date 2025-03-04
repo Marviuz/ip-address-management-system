@@ -4,6 +4,8 @@ import { cookies } from 'next/headers';
 import { getIronSession } from 'iron-session';
 import { env } from '@/env';
 
+const SESSION_COOKIE_NAME = '__auth_session__';
+
 export type Tokens = {
   accessToken: string;
   refreshToken: string;
@@ -16,7 +18,7 @@ export type Session = {
 async function getSession() {
   const cookieStore = await cookies();
   const session = await getIronSession<Session>(cookieStore, {
-    cookieName: '_session',
+    cookieName: SESSION_COOKIE_NAME,
     password: env.AUTH_SECRET,
   });
   return session;
