@@ -1,3 +1,4 @@
+import { roles } from '@ip-address-management-system/shared';
 import { pgTable, serial, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { nanoid } from 'nanoid';
 
@@ -13,7 +14,7 @@ export const users = pgTable('user', {
   middleName: varchar('middle_name'),
   familyName: varchar('family_name'),
   email: varchar().unique(),
-  role: varchar({ enum: ['regular', 'super_admin'] }),
+  role: varchar({ enum: roles }),
 
   provider: varchar({ enum: ['google'] })
     .notNull()
