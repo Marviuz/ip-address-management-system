@@ -1,34 +1,22 @@
+import { z } from 'zod';
 import { Button } from '@/components/common/button';
+import { api } from '@/lib/api-client';
 import { signOut } from '@/lib/auth';
 import { withAuth } from '@/lib/with-auth';
 
-export default withAuth(async function DashboardPage({ $auth }) {
-  const meRes = await fetch('http://localhost:8000/users/me', {
-    headers: {
-      Authorization: `Bearer ${$auth.accessToken}`,
-    },
-  });
-  const meData = await meRes.json();
-
-  const saRes = await fetch('http://localhost:8000/users/me/super-admin', {
-    headers: {
-      Authorization: `Bearer ${$auth.accessToken}`,
-    },
-  });
-  const saData = await saRes.json();
-
-  const regRes = await fetch('http://localhost:8000/users/me/regular', {
-    headers: {
-      Authorization: `Bearer ${$auth.accessToken}`,
-    },
-  });
-  const regData = await regRes.json();
+export default withAuth(async function RegularDashboardPage() {
+  const [meData, regData] = await Promise.all([
+    api.private(
+      (client) => client.get('users/me').json(),
+      z.object({ id: z.number() }),
+    ),
+    api.private((client) => client.get('users/me/regular').json(), z.unknown()),
+  ]);
 
   return (
     <form>
       Dashboard
       <pre>{JSON.stringify(meData, null, 2)}</pre>
-      <pre>{JSON.stringify(saData, null, 2)}</pre>
       <pre>{JSON.stringify(regData, null, 2)}</pre>
       <Button formAction={signOut}>Sign Out</Button>
     </form>
