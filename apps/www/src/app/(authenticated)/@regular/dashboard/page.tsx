@@ -15,12 +15,14 @@ export default withAuth(async function RegularDashboardPage() {
   ]);
 
   return (
-    <form>
+    <div>
       Dashboard
       <pre>{JSON.stringify(meData, null, 2)}</pre>
       <pre>{JSON.stringify(regData, null, 2)}</pre>
       <IpDataTable />
-      <Button formAction={signOut}>Sign Out</Button>
-    </form>
+      <form>
+        <Button formAction={signOut}>Sign Out</Button>
+      </form>
+    </div>
   );
 });
