@@ -36,6 +36,20 @@
       "when": 1740662780861,
       "tag": "0004_jazzy_alex_power",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1741168395016,
+      "tag": "0005_flippant_randall_flagg",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1741168446510,
+      "tag": "0006_gray_nocturne",
+      "breakpoints": true
     }
   ]
 }

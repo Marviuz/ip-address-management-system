@@ -16,10 +16,8 @@ export const users = pgTable('user', {
   email: varchar().unique(),
   role: varchar({ enum: roles }),
 
-  provider: varchar({ enum: ['google'] })
-    .notNull()
-    .unique(),
-  providerId: varchar('provider_id').notNull(),
+  provider: varchar({ enum: ['google'] }).notNull(),
+  providerId: varchar('provider_id').notNull().unique(),
   refreshToken: varchar('refresh_token'),
 
   createdAt: timestamp('created_at', {
