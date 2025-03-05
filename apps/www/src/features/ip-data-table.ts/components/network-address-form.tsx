@@ -1,10 +1,9 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
 import { type ChangeEvent, type FC } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/common/button';
 import {
   Form,
   FormControl,
@@ -12,14 +11,18 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/common/form';
-import { Input } from '@/components/common/input';
+import { Button } from '@/components/common/button';
+import { Badge } from '@/components/common/badge';
 import { type AddIPFormSchema, addIpFormSchema } from '../lib/schema';
+import { getNetworkAddressType } from '../utils/get-network-address-type';
+import { NetworkAddressInputWrapper } from './network-address-input-wrapper';
 
 const NETWORK_ADDRESS_VALID_VALUES_REGEX = /^[0-9a-fA-F:. -]*$/;
 
 export const NetworkAddressForm: FC = () => {
   const form = useForm<AddIPFormSchema>({
     resolver: zodResolver(addIpFormSchema),
+    mode: 'onChange',
     reValidateMode: 'onChange',
     defaultValues: {
       networkAddress: '',
@@ -45,9 +48,19 @@ export const NetworkAddressForm: FC = () => {
           name="networkAddress"
           render={({ field }) => (
             <FormItem>
-              <FormControl>
-                <Input {...field} onChange={handleInputChange} />
-              </FormControl>
+              <NetworkAddressInputWrapper>
+                <FormControl>
+                  <input
+                    {...field}
+                    className="min-w-0 grow outline-none"
+                    onChange={handleInputChange}
+                  />
+                </FormControl>
+                {getNetworkAddressType(field.value) ? (
+                  <Badge>{getNetworkAddressType(field.value)}</Badge>
+                ) : null}
+              </NetworkAddressInputWrapper>
+
               <FormMessage />
             </FormItem>
           )}
