@@ -1,16 +1,16 @@
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/common/button';
-import { IpDataTable } from '@/features/ip-data-table.ts/components';
+import { NetworkAddressDataTable } from '@/features/network-address-data-table.ts/components';
 import { signOut } from '@/lib/auth';
 import { withAuth } from '@/lib/with-auth';
-import { AddNetworkAddressDialog } from '@/features/ip-data-table.ts/components/add-network-address-dialog';
+import { AddNetworkAddressDialog } from '@/features/network-address-data-table.ts/components/add-network-address-dialog';
 
 export default withAuth(function RegularDashboardPage() {
   return (
     <main className="py-8">
       <div className="container mx-auto px-4">
         <div className="grid gap-4">
-          <IpDataTable />
+          <NetworkAddressDataTable />
           <div>
             <AddNetworkAddressDialog>
               <Button className="ml-auto flex">

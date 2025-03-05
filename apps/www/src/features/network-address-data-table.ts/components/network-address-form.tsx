@@ -16,15 +16,18 @@ import {
 } from '@/components/common/form';
 import { Input } from '@/components/common/input';
 import { Textarea } from '@/components/common/textarea';
-import { type AddIPFormSchema, addIpFormSchema } from '../lib/schema';
 import { getNetworkAddressType } from '../utils/get-network-address-type';
+import {
+  type NetworkAddressFormSchema,
+  networkAddressFormSchema,
+} from '../lib/schema';
 import { NetworkAddressInputWrapper } from './network-address-input-wrapper';
 
 const NETWORK_ADDRESS_VALID_VALUES_REGEX = /^[0-9a-fA-F:. -]*$/;
 
 export const NetworkAddressForm: FC = () => {
-  const form = useForm<AddIPFormSchema>({
-    resolver: zodResolver(addIpFormSchema),
+  const form = useForm<NetworkAddressFormSchema>({
+    resolver: zodResolver(networkAddressFormSchema),
     mode: 'onChange',
     reValidateMode: 'onChange',
     defaultValues: {

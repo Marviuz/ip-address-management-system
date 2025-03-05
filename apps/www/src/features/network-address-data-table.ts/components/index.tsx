@@ -2,12 +2,12 @@
 
 import { type FC } from 'react';
 import { DataTable } from '@/components/common/data-table';
-import { ipTableColumns } from './columns';
+import { networkAddressTableColumns } from './columns';
 
-export const IpDataTable: FC = () => {
+export const NetworkAddressDataTable: FC = () => {
   return (
     <DataTable
-      columns={ipTableColumns}
+      columns={networkAddressTableColumns}
       data={[
         { address: 'something', label: 'label' },
         { address: 'something', label: 'label', comments: 'comments' },

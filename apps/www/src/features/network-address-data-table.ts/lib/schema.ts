@@ -2,7 +2,7 @@ import { z } from 'zod';
 import isIP from 'validator/es/lib/isIP';
 import isMACAddress from 'validator/es/lib/isMACAddress';
 
-export const addIpFormSchema = z.object({
+export const networkAddressFormSchema = z.object({
   networkAddress: z
     .string()
     .refine(
@@ -13,4 +13,4 @@ export const addIpFormSchema = z.object({
   comments: z.string(),
 });
 
-export type AddIPFormSchema = z.infer<typeof addIpFormSchema>;
+export type NetworkAddressFormSchema = z.infer<typeof networkAddressFormSchema>;
