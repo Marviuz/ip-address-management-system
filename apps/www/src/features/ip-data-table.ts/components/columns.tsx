@@ -1,4 +1,5 @@
 import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { Edit } from 'lucide-react';
 import { Button } from '@/components/common/button';
 
 type IpTableColumns = {
@@ -28,7 +29,11 @@ export const ipTableColumns: ColumnDef<IpTableColumns, keyof IpTableColumns>[] =
       header: 'Comments',
     }),
     columnHelper.display({
-      cell: () => <Button>Edit</Button>,
+      cell: () => (
+        <Button className="rounded-full" size="icon" variant="outline">
+          <Edit />
+        </Button>
+      ),
       header: 'Actions',
     }),
   ];
