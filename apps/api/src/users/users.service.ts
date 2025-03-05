@@ -13,7 +13,10 @@ export class UsersService {
   async findOneOrCreate(user: InsertUserSchema) {
     const [insertedUser] = await this.db
       .insert(users)
-      .values(user)
+      .values({
+        ...user,
+        role: 'regular',
+      })
       .onConflictDoNothing({
         where: eq(users.providerId, user.providerId),
       })
