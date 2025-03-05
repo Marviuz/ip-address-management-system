@@ -17,7 +17,7 @@ import { type AddIPFormSchema, addIpFormSchema } from '../lib/schema';
 
 const NETWORK_ADDRESS_VALID_VALUES_REGEX = /^[0-9a-fA-F:. -]*$/;
 
-export const AddIpForm: FC = () => {
+export const NetworkAddressForm: FC = () => {
   const form = useForm<AddIPFormSchema>({
     resolver: zodResolver(addIpFormSchema),
     reValidateMode: 'onChange',

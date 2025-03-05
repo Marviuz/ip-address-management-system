@@ -1,6 +1,7 @@
 import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { Edit } from 'lucide-react';
 import { Button } from '@/components/common/button';
+import { EditNetworkAddressSheet } from './edit-network-address-sheet';
 
 type IpTableColumns = {
   address: string;
@@ -30,9 +31,11 @@ export const ipTableColumns: ColumnDef<IpTableColumns, keyof IpTableColumns>[] =
     }),
     columnHelper.display({
       cell: () => (
-        <Button className="rounded-full" size="icon" variant="outline">
-          <Edit />
-        </Button>
+        <EditNetworkAddressSheet>
+          <Button className="rounded-full" size="icon" variant="outline">
+            <Edit />
+          </Button>
+        </EditNetworkAddressSheet>
       ),
       header: 'Actions',
     }),

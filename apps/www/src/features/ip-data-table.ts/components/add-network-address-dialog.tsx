@@ -7,9 +7,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/common/dialog';
-import { AddIpForm } from './add-ip-form';
+import { NetworkAddressForm } from './network-address-form';
 
-export const AddIpDialog: FC<PropsWithChildren> = ({ children }) => {
+export const AddNetworkAddressDialog: FC<PropsWithChildren> = ({
+  children,
+}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -20,7 +22,7 @@ export const AddIpDialog: FC<PropsWithChildren> = ({ children }) => {
             Enter the network address details.
           </DialogDescription>
         </DialogHeader>
-        <AddIpForm />
+        <NetworkAddressForm />
       </DialogContent>
     </Dialog>
   );
