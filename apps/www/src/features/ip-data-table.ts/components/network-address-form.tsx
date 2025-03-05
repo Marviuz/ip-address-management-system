@@ -4,15 +4,18 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
 import { type ChangeEvent, type FC } from 'react';
 import { useForm } from 'react-hook-form';
+import { Badge } from '@/components/common/badge';
+import { Button } from '@/components/common/button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '@/components/common/form';
-import { Button } from '@/components/common/button';
-import { Badge } from '@/components/common/badge';
+import { Input } from '@/components/common/input';
+import { Textarea } from '@/components/common/textarea';
 import { type AddIPFormSchema, addIpFormSchema } from '../lib/schema';
 import { getNetworkAddressType } from '../utils/get-network-address-type';
 import { NetworkAddressInputWrapper } from './network-address-input-wrapper';
@@ -26,6 +29,8 @@ export const NetworkAddressForm: FC = () => {
     reValidateMode: 'onChange',
     defaultValues: {
       networkAddress: '',
+      label: '',
+      comments: '',
     },
   });
 
@@ -48,6 +53,7 @@ export const NetworkAddressForm: FC = () => {
           name="networkAddress"
           render={({ field }) => (
             <FormItem>
+              <FormLabel>Network Address</FormLabel>
               <NetworkAddressInputWrapper>
                 <FormControl>
                   <input
@@ -65,6 +71,33 @@ export const NetworkAddressForm: FC = () => {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="label"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Label</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="comments"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Comments</FormLabel>
+              <FormControl>
+                <Textarea {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button className="ml-auto" type="submit">
           <Plus />
           Add

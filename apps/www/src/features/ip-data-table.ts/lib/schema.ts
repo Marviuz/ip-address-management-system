@@ -9,6 +9,8 @@ export const addIpFormSchema = z.object({
       (value) => isIP(value) || isMACAddress(value),
       'Invalid Network Address',
     ),
+  label: z.string().min(1, 'This field is required'),
+  comments: z.string(),
 });
 
 export type AddIPFormSchema = z.infer<typeof addIpFormSchema>;
