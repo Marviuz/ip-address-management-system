@@ -21,6 +21,7 @@ import {
   type NetworkAddressFormSchema,
   networkAddressFormSchema,
 } from '../lib/schema';
+import { addNetworkAddress } from '../lib/services/add-network-address';
 import { NetworkAddressInputWrapper } from './network-address-input-wrapper';
 
 const NETWORK_ADDRESS_VALID_VALUES_REGEX = /^[0-9a-fA-F:. -]*$/;
@@ -44,13 +45,15 @@ export const NetworkAddressForm: FC = () => {
     if (isValid) form.setValue('networkAddress', value);
   };
 
+  const handleSubmit = form.handleSubmit(async (data) => {
+    const response = await addNetworkAddress(data);
+    // eslint-disable-next-line no-console -- temporarily log values
+    console.log(response);
+  });
+
   return (
     <Form {...form}>
-      <form
-        className="flex flex-col gap-4"
-        // eslint-disable-next-line no-console -- temporarily log values
-        onSubmit={form.handleSubmit(console.log)}
-      >
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <FormField
           control={form.control}
           name="networkAddress"
