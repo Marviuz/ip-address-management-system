@@ -50,6 +50,13 @@
       "when": 1741168446510,
       "tag": "0006_gray_nocturne",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1741219430026,
+      "tag": "0007_moaning_gambit",
+      "breakpoints": true
     }
   ]
 }
