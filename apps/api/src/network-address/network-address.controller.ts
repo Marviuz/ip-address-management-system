@@ -1,7 +1,7 @@
 import {
   Body,
   Controller,
-  // Get,
+  Get,
   Post,
   // Patch,
   // Param,
@@ -28,11 +28,11 @@ export class NetworkAddressController {
     return data;
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.networkAddressService.findAll();
-  // }
-  //
+  @Get()
+  findAll() {
+    return this.networkAddressService.findAll();
+  }
+
   // @Get(':id')
   // findOne(@Param('id') id: string) {
   //   return this.networkAddressService.findOne(+id);

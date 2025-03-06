@@ -1,8 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { asc, eq } from 'drizzle-orm';
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
-import { networkAddresses } from 'src/drizzle/schema';
+import { networkAddresses, users } from 'src/drizzle/schema';
 import { DrizzleDatabase } from 'src/drizzle/types/drizzle';
 import { InsertNetworkAddressSchema } from 'src/types/network-address';
+import { networkAddressColumns, usersColumns } from 'src/utils/sensitive';
+import { withPagination } from 'src/utils/with-pagination';
 
 @Injectable()
 export class NetworkAddressService {
@@ -17,8 +20,23 @@ export class NetworkAddressService {
     return networkAddress;
   }
 
-  findAll() {
-    return `This action returns all networkAddress`;
+  async findAll(page = 1, pageSize = 10) {
+    const query = this.db
+      .select({ ...networkAddressColumns, addedBy: usersColumns })
+      .from(networkAddresses)
+      .leftJoin(users, eq(networkAddresses.addedBy, users.id));
+
+    const totalItems = await this.db.$count(networkAddresses);
+
+    const data = await withPagination(
+      query.$dynamic(),
+      asc(networkAddresses.id),
+      page,
+      pageSize,
+      totalItems,
+    );
+
+    return data;
   }
 
   findOne(id: number) {
