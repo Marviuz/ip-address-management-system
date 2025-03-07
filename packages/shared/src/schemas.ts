@@ -10,10 +10,10 @@ export type TokenSchema = z.infer<typeof tokenSchema>;
 
 export const userSchema = z.object({
   publicId: z.string(),
-  username: z.null(),
+  username: z.string().nullable(),
   givenName: z.string(),
-  middleName: z.null(),
-  familyName: z.string(),
+  middleName: z.string().nullable(),
+  familyName: z.string().nullable(),
   email: z.string(),
   role: z.string(),
   provider: z.string(),
