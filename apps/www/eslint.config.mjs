@@ -96,6 +96,11 @@ const eslintConfig = [
               allow: ['shared'],
             },
             {
+              from: ['shared'],
+              allow: ['feature'],
+              importKind: ['type', 'typeof'],
+            },
+            {
               from: ['feature'],
               allow: [
                 'shared',

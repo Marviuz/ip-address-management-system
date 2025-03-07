@@ -6,6 +6,7 @@ import { signOut } from '@/lib/auth';
 import { withAuth } from '@/lib/with-auth';
 import { AddNetworkAddressDialog } from '@/features/network-address-data-table/components/add-network-address-dialog';
 import { api } from '@/lib/api-client';
+import { NetworkAddressApiTableAdapter } from '@/lib/adapters/network-address-api-table-adapter';
 
 export default withAuth(async function RegularDashboardPage() {
   const data = await api.private(
@@ -17,8 +18,9 @@ export default withAuth(async function RegularDashboardPage() {
     <main className="py-8">
       <div className="container mx-auto px-4">
         <div className="grid gap-4">
-          <pre>{JSON.stringify(data, null, 2)}</pre>
-          <NetworkAddressDataTable />
+          <NetworkAddressDataTable
+            data={NetworkAddressApiTableAdapter(data.items)}
+          />
           <div>
             <AddNetworkAddressDialog>
               <Button className="ml-auto flex">

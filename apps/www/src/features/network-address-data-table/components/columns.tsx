@@ -1,9 +1,10 @@
 import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { Edit } from 'lucide-react';
 import { Button } from '@/components/common/button';
+import { getNetworkAddressType } from '../utils/get-network-address-type';
 import { EditNetworkAddressSheet } from './edit-network-address-sheet';
 
-type NetworkAddressTableColumns = {
+export type NetworkAddressTableColumns = {
   address: string;
   label: string;
   comments?: string;
@@ -20,7 +21,7 @@ export const networkAddressTableColumns: ColumnDef<
     header: 'Address',
   }),
   columnHelper.display({
-    cell: () => 'ip address | mac address',
+    cell: ({ row }) => getNetworkAddressType(row.original.address),
     header: 'Type',
   }),
   columnHelper.accessor('label', {

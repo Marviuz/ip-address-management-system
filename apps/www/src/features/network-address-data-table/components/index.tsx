@@ -2,16 +2,17 @@
 
 import { type FC } from 'react';
 import { DataTable } from '@/components/common/data-table';
-import { networkAddressTableColumns } from './columns';
+import {
+  type NetworkAddressTableColumns,
+  networkAddressTableColumns,
+} from './columns';
 
-export const NetworkAddressDataTable: FC = () => {
-  return (
-    <DataTable
-      columns={networkAddressTableColumns}
-      data={[
-        { address: 'something', label: 'label' },
-        { address: 'something', label: 'label', comments: 'comments' },
-      ]}
-    />
-  );
+type NetworkAddressDataTableProps = {
+  data: NetworkAddressTableColumns[];
+};
+
+export const NetworkAddressDataTable: FC<NetworkAddressDataTableProps> = ({
+  data,
+}) => {
+  return <DataTable columns={networkAddressTableColumns} data={data} />;
 };
