@@ -8,7 +8,7 @@ export async function withPagination<T extends PgSelect>(
   pageSize: number,
   totalItems: number,
 ) {
-  const data = await qb
+  const items = await qb
     .orderBy(orderByColumn)
     .limit(pageSize)
     .offset((page - 1) * pageSize);
@@ -20,7 +20,7 @@ export async function withPagination<T extends PgSelect>(
   const totalPages = Math.ceil(totalItems / pageSize);
 
   return {
-    data,
+    items,
     pagination: {
       currentPage: page,
       pageSize,

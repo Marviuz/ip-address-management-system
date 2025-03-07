@@ -1,10 +1,10 @@
 import { z, type ZodSchema, type ZodTypeDef } from 'zod';
 
-export function createPaginatedSchema<TOut, TDef extends ZodTypeDef, TIn>(
+export function createListSchema<TOut, TDef extends ZodTypeDef, TIn>(
   schema: ZodSchema<TOut, TDef, TIn>,
 ) {
   return z.object({
-    data: schema,
+    items: schema.array(),
     pagination: z.object({
       currentPage: z.number(),
       pageSize: z.number(),

@@ -1,3 +1,4 @@
+import { networkAddressListSchema } from '@ip-address-management-system/shared';
 import { Inject, Injectable } from '@nestjs/common';
 import { asc, eq } from 'drizzle-orm';
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
@@ -36,7 +37,7 @@ export class NetworkAddressService {
       totalItems,
     );
 
-    return data;
+    return networkAddressListSchema.parse(data);
   }
 
   findOne(id: number) {

@@ -1,16 +1,16 @@
 import { Plus } from 'lucide-react';
-import { z } from 'zod';
+import { networkAddressListSchema } from '@ip-address-management-system/shared';
 import { Button } from '@/components/common/button';
-import { NetworkAddressDataTable } from '@/features/network-address-data-table.ts/components';
+import { NetworkAddressDataTable } from '@/features/network-address-data-table/components';
 import { signOut } from '@/lib/auth';
 import { withAuth } from '@/lib/with-auth';
-import { AddNetworkAddressDialog } from '@/features/network-address-data-table.ts/components/add-network-address-dialog';
+import { AddNetworkAddressDialog } from '@/features/network-address-data-table/components/add-network-address-dialog';
 import { api } from '@/lib/api-client';
 
 export default withAuth(async function RegularDashboardPage() {
   const data = await api.private(
     (client) => client.get('network-address').json(),
-    z.unknown(),
+    networkAddressListSchema,
   );
 
   return (
