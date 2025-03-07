@@ -40,7 +40,11 @@ export class NetworkAddressService {
     return networkAddressListSchema.parse(data);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} networkAddress`;
+  findOne(publicId: string) {
+    const query = this.db.query.networkAddresses.findFirst({
+      where: eq(networkAddresses.publicId, publicId),
+    });
+
+    return query;
   }
 }

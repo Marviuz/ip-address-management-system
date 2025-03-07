@@ -4,9 +4,10 @@ import {
   Get,
   Post,
   // Patch,
-  // Param,
+  Param,
   // Delete,
   Req,
+  NotFoundException,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateNetworkAddressPayload } from '@ip-address-management-system/shared';
@@ -33,10 +34,12 @@ export class NetworkAddressController {
     return this.networkAddressService.findAll();
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.networkAddressService.findOne(+id);
-  // }
+  @Get(':publicId')
+  async findOne(@Param('publicId') publicId: string) {
+    const data = await this.networkAddressService.findOne(publicId);
+    if (!data) throw new NotFoundException('Network address not found');
+    return data;
+  }
   //
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateNetworkAddressDto: UpdateNetworkAddressDto) {

@@ -16,22 +16,28 @@ import {
 } from '@/components/common/form';
 import { Input } from '@/components/common/input';
 import { Textarea } from '@/components/common/textarea';
-import { getNetworkAddressType } from '../utils/get-network-address-type';
 import {
   type NetworkAddressFormSchema,
   networkAddressFormSchema,
 } from '../lib/schema';
 import { addNetworkAddress } from '../lib/services/add-network-address';
+import { getNetworkAddressType } from '../utils/get-network-address-type';
 import { NetworkAddressInputWrapper } from './network-address-input-wrapper';
 
 const NETWORK_ADDRESS_VALID_VALUES_REGEX = /^[0-9a-fA-F:. -]*$/;
 
-export const NetworkAddressForm: FC = () => {
+type NetworkAddressFormProps = {
+  initialValues?: NetworkAddressFormSchema;
+};
+
+export const NetworkAddressForm: FC<NetworkAddressFormProps> = ({
+  initialValues,
+}) => {
   const form = useForm<NetworkAddressFormSchema>({
     resolver: zodResolver(networkAddressFormSchema),
     mode: 'onChange',
     reValidateMode: 'onChange',
-    defaultValues: {
+    defaultValues: initialValues ?? {
       networkAddress: '',
       label: '',
       comments: '',

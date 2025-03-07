@@ -1,5 +1,3 @@
-'use client';
-
 import { type FC } from 'react';
 import { DataTable } from '@/components/common/data-table';
 import {

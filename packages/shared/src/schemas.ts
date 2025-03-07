@@ -27,11 +27,15 @@ export const networkAddressSchema = z.object({
   networkAddress: z.string(),
   label: z.string(),
   comments: z.string(),
-  addedBy: userSchema,
+  addedBy: z.number(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.string(),
 });
 export type NetworkAddressSchema = z.infer<typeof networkAddressSchema>;
 
-export const networkAddressListSchema = createListSchema(networkAddressSchema);
+export const networkAddressListSchema = createListSchema(
+  networkAddressSchema.extend({
+    addedBy: userSchema,
+  }),
+);
 export type NetworkAddressListSchema = z.infer<typeof networkAddressListSchema>;

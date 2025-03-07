@@ -1,13 +1,14 @@
+'use client';
+
 import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
-import { Edit } from 'lucide-react';
-import { Button } from '@/components/common/button';
 import { getNetworkAddressType } from '../utils/get-network-address-type';
-import { EditNetworkAddressSheet } from './edit-network-address-sheet';
+import { EditNetworkAddressSelector } from './edit-network-address-selector';
 
 export type NetworkAddressTableColumns = {
   address: string;
   label: string;
   comments?: string;
+  addressId: string;
 };
 
 const columnHelper = createColumnHelper<NetworkAddressTableColumns>();
@@ -33,12 +34,8 @@ export const networkAddressTableColumns: ColumnDef<
     header: 'Comments',
   }),
   columnHelper.display({
-    cell: () => (
-      <EditNetworkAddressSheet>
-        <Button className="rounded-full" size="icon" variant="outline">
-          <Edit />
-        </Button>
-      </EditNetworkAddressSheet>
+    cell: ({ row }) => (
+      <EditNetworkAddressSelector publicId={row.original.addressId} />
     ),
     header: 'Actions',
   }),

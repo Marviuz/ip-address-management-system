@@ -8,5 +8,6 @@ export function NetworkAddressApiTableAdapter(
     address: item.networkAddress,
     label: item.label,
     comments: item.comments,
+    addressId: item.publicId,
   }));
 }
