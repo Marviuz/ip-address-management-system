@@ -37,14 +37,31 @@ export class AuthController {
       [TOKEN_LABELS.REFRESH_TOKEN]: tokens.refreshToken,
     });
 
+    res.cookie(TOKEN_LABELS.REFRESH_TOKEN, tokens.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
     res.redirect(`${env.FRONTEND_URL}/auth/google?${urlParams.toString()}`);
   }
 
   @Public()
   @Post('refresh')
   @UseGuards(RefreshGuard)
-  async refresh(@Req() req: Request) {
+  async refresh(@Req() req: Request, @Res() res: Response) {
     const user = await this.authService.login(req.user.publicId);
+
+    res.cookie(TOKEN_LABELS.REFRESH_TOKEN, user.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
     return {
       [TOKEN_LABELS.ACCESS_TOKEN]: user.accessToken,
       [TOKEN_LABELS.REFRESH_TOKEN]: user.refreshToken,

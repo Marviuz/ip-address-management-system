@@ -62,4 +62,14 @@ export default [
       ],
     },
   },
+  {
+    files: ['**/*.tsx'],
+    ignores: ['**/routes/**/*'],
+    rules: {
+      'react/function-component-definition': [
+        'error',
+        { namedComponents: 'arrow-function' },
+      ],
+    },
+  },
 ];
