@@ -1,12 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
 import { type ChangeEvent, type FC } from 'react';
-import { useForm } from 'react-hook-form';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 import {
   type NetworkAddressFormSchema,
   networkAddressFormSchema,
 } from '../lib/schema';
-import { addNetworkAddress } from '../lib/services/add-network-address';
 import { getNetworkAddressType } from '../utils/get-network-address-type';
 import { NetworkAddressInputWrapper } from './network-address-input-wrapper';
 import { Badge } from '@/components/common/badge';
@@ -26,10 +25,12 @@ const NETWORK_ADDRESS_VALID_VALUES_REGEX = /^[0-9a-fA-F:. -]*$/;
 
 type NetworkAddressFormProps = {
   initialValues?: NetworkAddressFormSchema;
+  onSubmit: SubmitHandler<NetworkAddressFormSchema>;
 };
 
 export const NetworkAddressForm: FC<NetworkAddressFormProps> = ({
   initialValues,
+  onSubmit,
 }) => {
   const form = useForm<NetworkAddressFormSchema>({
     resolver: zodResolver(networkAddressFormSchema),
@@ -49,15 +50,12 @@ export const NetworkAddressForm: FC<NetworkAddressFormProps> = ({
     if (isValid) form.setValue('networkAddress', value);
   };
 
-  const handleSubmit = form.handleSubmit(async (data) => {
-    const response = await addNetworkAddress(data);
-    // eslint-disable-next-line no-console -- temporarily log values
-    console.log(response);
-  });
-
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col gap-4"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <FormField
           control={form.control}
           name="networkAddress"

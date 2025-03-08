@@ -1,4 +1,6 @@
-import { type FC, type ReactNode } from 'react';
+import { useRouter, useSearch } from '@tanstack/react-router';
+import { Suspense, type FC } from 'react';
+import { EditNetworkAddressForm } from './edit-network-address-form';
 import {
   Sheet,
   SheetContent,
@@ -7,21 +9,32 @@ import {
   SheetTitle,
 } from '@/components/common/sheet';
 
-type EditNetworkAddressSheetProps = {
-  children: ReactNode;
-};
+export const EditNetworkAddressSheet: FC = () => {
+  const search = useSearch({
+    from: '/_authenticated/dashboard/',
+  });
+  const router = useRouter();
 
-export const EditNetworkAddressSheet: FC<EditNetworkAddressSheetProps> = ({
-  children,
-}) => {
   return (
-    <Sheet>
+    <Sheet
+      open={!!search.edit}
+      onOpenChange={(open) =>
+        !open &&
+        router.navigate({ to: '/dashboard', search: { edit: undefined } })
+      }
+    >
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Modify Network Address</SheetTitle>
           <SheetDescription>Modify network address details.</SheetDescription>
         </SheetHeader>
-        <div className="px-4">{children}</div>
+        <div className="px-4">
+          {search.edit ? (
+            <Suspense fallback={<div>Loading...</div>}>
+              <EditNetworkAddressForm publicId={search.edit} />
+            </Suspense>
+          ) : null}
+        </div>
       </SheetContent>
     </Sheet>
   );
