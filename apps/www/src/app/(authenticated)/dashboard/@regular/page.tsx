@@ -9,10 +9,11 @@ import { SuspendedNetworkAddressForm } from '@/features/network-address-data-tab
 import { NetworkAddressApiTableAdapter } from '@/lib/adapters/network-address-api-table-adapter';
 import { api } from '@/lib/api-client';
 import { signOut } from '@/lib/auth';
-import { withAuth } from '@/lib/with-auth';
 import { type PageProps } from '@/utils/app-props';
+import { withRole } from '@/lib/with-role';
 
-export default withAuth<PageProps<unknown, { edit: string }>>(
+export default withRole<PageProps<unknown, { edit: string }>>(
+  'regular',
   async function RegularDashboardPage({ searchParams }) {
     const [{ edit }, data] = await Promise.all([
       searchParams,

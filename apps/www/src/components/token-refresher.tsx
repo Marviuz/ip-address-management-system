@@ -18,7 +18,9 @@ export const TokenRefresher: FC<PropsWithChildren> = ({ children }) => {
 
     void runRefresh();
 
-    const interval = setInterval(refreshToken, 50 * ONE_SECOND);
+    const interval = setInterval(async () => {
+      await refreshToken();
+    }, 50 * ONE_SECOND);
 
     return () => clearInterval(interval);
   }, []);

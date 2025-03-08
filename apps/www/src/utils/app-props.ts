@@ -5,10 +5,10 @@ export type PageProps<TParams = unknown, TSearchParams = unknown> = Readonly<{
   searchParams: Promise<TSearchParams>;
 }>;
 
-export type LayoutProps<TParams = unknown, TSearchParams = unknown> = PageProps<
-  TParams,
-  TSearchParams
-> &
-  Readonly<{
-    children: ReactNode;
-  }>;
+export type LayoutProps<
+  TParams = unknown,
+  TComponent extends string = 'children',
+> = Readonly<{
+  params: Promise<TParams>;
+}> &
+  Record<TComponent, ReactNode>;
