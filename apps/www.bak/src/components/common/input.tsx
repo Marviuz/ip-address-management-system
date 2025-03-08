@@ -1,7 +1,11 @@
 import type * as React from 'react';
 import { cn } from '@/utils/cn';
 
-const Input = ({ className, type, ...props }: React.ComponentProps<'input'>) => {
+const Input = ({
+  className,
+  type,
+  ...props
+}: React.ComponentProps<'input'>) => {
   return (
     <input
       className={cn(
@@ -15,6 +19,6 @@ const Input = ({ className, type, ...props }: React.ComponentProps<'input'>) => 
       {...props}
     />
   );
-}
+};
 
 export { Input };

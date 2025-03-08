@@ -18,6 +18,6 @@ const Label = ({
       {...props}
     />
   );
-}
+};
 
 export { Label };

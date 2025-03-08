@@ -40,6 +40,6 @@ const Badge = ({
       {...props}
     />
   );
-}
+};
 
 export { Badge, badgeVariants };

@@ -16,9 +16,12 @@ const Table = ({ className, ...props }: React.ComponentProps<'table'>) => {
       />
     </div>
   );
-}
+};
 
-const TableHeader = ({ className, ...props }: React.ComponentProps<'thead'>) => {
+const TableHeader = ({
+  className,
+  ...props
+}: React.ComponentProps<'thead'>) => {
   return (
     <thead
       className={cn('[&_tr]:border-b', className)}
@@ -26,7 +29,7 @@ const TableHeader = ({ className, ...props }: React.ComponentProps<'thead'>) => 
       {...props}
     />
   );
-}
+};
 
 const TableBody = ({ className, ...props }: React.ComponentProps<'tbody'>) => {
   return (
@@ -36,9 +39,12 @@ const TableBody = ({ className, ...props }: React.ComponentProps<'tbody'>) => {
       {...props}
     />
   );
-}
+};
 
-const TableFooter = ({ className, ...props }: React.ComponentProps<'tfoot'>) => {
+const TableFooter = ({
+  className,
+  ...props
+}: React.ComponentProps<'tfoot'>) => {
   return (
     <tfoot
       className={cn(
@@ -49,7 +55,7 @@ const TableFooter = ({ className, ...props }: React.ComponentProps<'tfoot'>) => 
       {...props}
     />
   );
-}
+};
 
 const TableRow = ({ className, ...props }: React.ComponentProps<'tr'>) => {
   return (
@@ -62,7 +68,7 @@ const TableRow = ({ className, ...props }: React.ComponentProps<'tr'>) => {
       {...props}
     />
   );
-}
+};
 
 const TableHead = ({ className, ...props }: React.ComponentProps<'th'>) => {
   return (
@@ -75,7 +81,7 @@ const TableHead = ({ className, ...props }: React.ComponentProps<'th'>) => {
       {...props}
     />
   );
-}
+};
 
 const TableCell = ({ className, ...props }: React.ComponentProps<'td'>) => {
   return (
@@ -88,7 +94,7 @@ const TableCell = ({ className, ...props }: React.ComponentProps<'td'>) => {
       {...props}
     />
   );
-}
+};
 
 const TableCaption = ({
   className,
@@ -101,7 +107,7 @@ const TableCaption = ({
       {...props}
     />
   );
-}
+};
 
 export {
   Table,

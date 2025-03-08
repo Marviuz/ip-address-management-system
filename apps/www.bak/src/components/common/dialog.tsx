@@ -9,25 +9,25 @@ const Dialog = ({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Root>) => {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
-}
+};
 
 const DialogTrigger = ({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Trigger>) => {
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />;
-}
+};
 
 const DialogPortal = ({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Portal>) => {
   return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />;
-}
+};
 
 const DialogClose = ({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Close>) => {
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
-}
+};
 
 const DialogOverlay = ({
   className,
@@ -43,7 +43,7 @@ const DialogOverlay = ({
       {...props}
     />
   );
-}
+};
 
 const DialogContent = ({
   className,
@@ -69,7 +69,7 @@ const DialogContent = ({
       </DialogPrimitive.Content>
     </DialogPortal>
   );
-}
+};
 
 const DialogHeader = ({ className, ...props }: React.ComponentProps<'div'>) => {
   return (
@@ -79,7 +79,7 @@ const DialogHeader = ({ className, ...props }: React.ComponentProps<'div'>) => {
       {...props}
     />
   );
-}
+};
 
 const DialogFooter = ({ className, ...props }: React.ComponentProps<'div'>) => {
   return (
@@ -92,7 +92,7 @@ const DialogFooter = ({ className, ...props }: React.ComponentProps<'div'>) => {
       {...props}
     />
   );
-}
+};
 
 const DialogTitle = ({
   className,
@@ -105,7 +105,7 @@ const DialogTitle = ({
       {...props}
     />
   );
-}
+};
 
 const DialogDescription = ({
   className,
@@ -118,7 +118,7 @@ const DialogDescription = ({
       {...props}
     />
   );
-}
+};
 
 export {
   Dialog,

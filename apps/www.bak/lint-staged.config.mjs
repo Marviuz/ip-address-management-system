@@ -1,9 +1,9 @@
 import path from 'node:path';
 
 const lint = (filenames) =>
-  `eslint --fix ${filenames
+  `next lint --fix --file ${filenames
     .map((f) => path.relative(import.meta.dirname, f))
-    .join(' ')}`;
+    .join(' --file ')}`;
 
 const format = 'prettier --write';
 
