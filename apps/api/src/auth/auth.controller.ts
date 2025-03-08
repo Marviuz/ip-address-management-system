@@ -39,7 +39,7 @@ export class AuthController {
 
     res.cookie(TOKEN_LABELS.REFRESH_TOKEN, tokens.refreshToken, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -56,16 +56,16 @@ export class AuthController {
 
     res.cookie(TOKEN_LABELS.REFRESH_TOKEN, user.refreshToken, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
-    return {
+    res.json({
       [TOKEN_LABELS.ACCESS_TOKEN]: user.accessToken,
       [TOKEN_LABELS.REFRESH_TOKEN]: user.refreshToken,
-    };
+    });
   }
 
   @Post('logout')

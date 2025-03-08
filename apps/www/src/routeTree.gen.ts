@@ -11,15 +11,15 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root';
-import { Route as DashboardImport } from './routes/dashboard';
+import { Route as AuthenticatedImport } from './routes/_authenticated';
 import { Route as IndexImport } from './routes/index';
 import { Route as AuthGoogleImport } from './routes/auth/google';
+import { Route as AuthenticatedDashboardIndexImport } from './routes/_authenticated/dashboard/index';
 
 // Create/Update Routes
 
-const DashboardRoute = DashboardImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const AuthenticatedRoute = AuthenticatedImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRoute,
 } as any);
 
@@ -35,6 +35,13 @@ const AuthGoogleRoute = AuthGoogleImport.update({
   getParentRoute: () => rootRoute,
 } as any);
 
+const AuthenticatedDashboardIndexRoute =
+  AuthenticatedDashboardIndexImport.update({
+    id: '/dashboard/',
+    path: '/dashboard/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any);
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -46,11 +53,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport;
       parentRoute: typeof rootRoute;
     };
-    '/dashboard': {
-      id: '/dashboard';
-      path: '/dashboard';
-      fullPath: '/dashboard';
-      preLoaderRoute: typeof DashboardImport;
+    '/_authenticated': {
+      id: '/_authenticated';
+      path: '';
+      fullPath: '';
+      preLoaderRoute: typeof AuthenticatedImport;
       parentRoute: typeof rootRoute;
     };
     '/auth/google': {
@@ -60,48 +67,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthGoogleImport;
       parentRoute: typeof rootRoute;
     };
+    '/_authenticated/dashboard/': {
+      id: '/_authenticated/dashboard/';
+      path: '/dashboard';
+      fullPath: '/dashboard';
+      preLoaderRoute: typeof AuthenticatedDashboardIndexImport;
+      parentRoute: typeof AuthenticatedImport;
+    };
   }
 }
 
 // Create and export the route tree
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute;
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+};
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+);
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute;
-  '/dashboard': typeof DashboardRoute;
+  '': typeof AuthenticatedRouteWithChildren;
   '/auth/google': typeof AuthGoogleRoute;
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute;
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute;
-  '/dashboard': typeof DashboardRoute;
+  '': typeof AuthenticatedRouteWithChildren;
   '/auth/google': typeof AuthGoogleRoute;
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute;
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute;
   '/': typeof IndexRoute;
-  '/dashboard': typeof DashboardRoute;
+  '/_authenticated': typeof AuthenticatedRouteWithChildren;
   '/auth/google': typeof AuthGoogleRoute;
+  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute;
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: '/' | '/dashboard' | '/auth/google';
+  fullPaths: '/' | '' | '/auth/google' | '/dashboard';
   fileRoutesByTo: FileRoutesByTo;
-  to: '/' | '/dashboard' | '/auth/google';
-  id: '__root__' | '/' | '/dashboard' | '/auth/google';
+  to: '/' | '' | '/auth/google' | '/dashboard';
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth/google'
+    | '/_authenticated/dashboard/';
   fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
-  DashboardRoute: typeof DashboardRoute;
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren;
   AuthGoogleRoute: typeof AuthGoogleRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DashboardRoute: DashboardRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AuthGoogleRoute: AuthGoogleRoute,
 };
 
@@ -116,18 +150,25 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/dashboard",
+        "/_authenticated",
         "/auth/google"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/dashboard": {
-      "filePath": "dashboard.tsx"
+    "/_authenticated": {
+      "filePath": "_authenticated.tsx",
+      "children": [
+        "/_authenticated/dashboard/"
+      ]
     },
     "/auth/google": {
       "filePath": "auth/google.tsx"
+    },
+    "/_authenticated/dashboard/": {
+      "filePath": "_authenticated/dashboard/index.tsx",
+      "parent": "/_authenticated"
     }
   }
 }

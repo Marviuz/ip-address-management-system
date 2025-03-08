@@ -5,6 +5,7 @@ import { DRIZZLE } from 'src/drizzle/drizzle.module';
 import { users } from 'src/drizzle/schema';
 import { DrizzleDatabase } from 'src/drizzle/types/drizzle';
 import { InsertUserSchema, UpdateUserSchema } from 'src/types/oauth-user';
+import { usersColumns } from 'src/utils/sensitive';
 
 @Injectable()
 export class UsersService {
@@ -45,6 +46,15 @@ export class UsersService {
     const user = await this.db.query.users.findFirst({
       where: eq(users.publicId, userPublicId),
     });
+
+    return user;
+  }
+
+  async findAuthedUser(userPublicId: string) {
+    const [user] = await this.db
+      .select(usersColumns)
+      .from(users)
+      .where(eq(users.publicId, userPublicId));
 
     return user;
   }

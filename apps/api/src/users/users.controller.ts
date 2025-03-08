@@ -1,4 +1,4 @@
-import { Controller, Get, Req } from '@nestjs/common';
+import { Controller, Get, Req, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { UsersService } from './users.service';
@@ -8,8 +8,10 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('me')
-  getAuthedUser(@Req() req: Request) {
-    return req.user;
+  async getAuthedUser(@Req() req: Request) {
+    const user = await this.usersService.findAuthedUser(req.user.publicId);
+    if (!user) throw new UnauthorizedException('User not found!');
+    return user;
   }
 
   @Roles('super_admin')
