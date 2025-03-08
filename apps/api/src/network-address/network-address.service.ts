@@ -4,7 +4,10 @@ import { asc, eq } from 'drizzle-orm';
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
 import { networkAddresses, users } from 'src/drizzle/schema';
 import { DrizzleDatabase } from 'src/drizzle/types/drizzle';
-import { InsertNetworkAddressSchema } from 'src/types/network-address';
+import {
+  InsertNetworkAddressSchema,
+  UpdateNetworkAddressSchema,
+} from 'src/types/network-address';
 import { networkAddressColumns, usersColumns } from 'src/utils/sensitive';
 import { withPagination } from 'src/utils/with-pagination';
 
@@ -46,5 +49,15 @@ export class NetworkAddressService {
     });
 
     return query;
+  }
+
+  async update(publicId: string, payload: UpdateNetworkAddressSchema) {
+    const [networkAddress] = await this.db
+      .update(networkAddresses)
+      .set(payload)
+      .where(eq(networkAddresses.publicId, publicId))
+      .returning();
+
+    return networkAddress;
   }
 }

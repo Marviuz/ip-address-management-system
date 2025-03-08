@@ -3,14 +3,14 @@ import {
   Controller,
   Get,
   Post,
-  // Patch,
   Param,
-  // Delete,
   Req,
   NotFoundException,
+  Put,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateNetworkAddressPayload } from '@ip-address-management-system/shared';
+import { UpdateNetworkAddressSchema } from 'src/types/network-address';
 import { NetworkAddressService } from './network-address.service';
 
 @Controller('network-address')
@@ -40,12 +40,17 @@ export class NetworkAddressController {
     if (!data) throw new NotFoundException('Network address not found');
     return data;
   }
-  //
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateNetworkAddressDto: UpdateNetworkAddressDto) {
-  //   return this.networkAddressService.update(+id, updateNetworkAddressDto);
-  // }
-  //
+
+  @Put(':publicId')
+  async update(
+    @Param('publicId') publicId: string,
+    @Body() body: UpdateNetworkAddressSchema,
+  ) {
+    const data = await this.networkAddressService.update(publicId, body);
+    if (!data) throw new Error('Failed to update network address');
+    return data;
+  }
+
   // @Delete(':id')
   // remove(@Param('id') id: string) {
   //   return this.networkAddressService.remove(+id);

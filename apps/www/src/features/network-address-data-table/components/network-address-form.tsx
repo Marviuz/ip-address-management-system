@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Plus } from 'lucide-react';
+import { Edit, Plus } from 'lucide-react';
 import { type ChangeEvent, type FC } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -107,8 +107,17 @@ export const NetworkAddressForm: FC<NetworkAddressFormProps> = ({
         />
 
         <Button className="ml-auto" type="submit">
-          <Plus />
-          Add
+          {initialValues ? (
+            <>
+              <Edit />
+              Edit
+            </>
+          ) : (
+            <>
+              <Plus />
+              Add
+            </>
+          )}
         </Button>
       </form>
     </Form>
