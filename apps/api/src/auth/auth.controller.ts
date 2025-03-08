@@ -71,6 +71,7 @@ export class AuthController {
   @Post('logout')
   async logout(@Req() req: Request, @Res() res: Response) {
     await this.authService.logout(req.user.publicId);
+    res.clearCookie(TOKEN_LABELS.REFRESH_TOKEN);
     res.sendStatus(HttpStatus.NO_CONTENT);
   }
 }
