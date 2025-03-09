@@ -1,7 +1,8 @@
 import { type FC } from 'react';
-import { useGetNetworkAddressByPublicIdQuery } from '../lib/services/get-one-network-address';
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useEditNetworkAddressMutation } from '../lib/services/edit-network-address';
 import { NetworkAddressForm } from './network-address-form';
+import { queries } from '@/lib/queries';
 
 type EditNetworkAddressFormProps = {
   publicId: string;
@@ -10,7 +11,10 @@ type EditNetworkAddressFormProps = {
 export const EditNetworkAddressForm: FC<EditNetworkAddressFormProps> = ({
   publicId,
 }) => {
-  const { data } = useGetNetworkAddressByPublicIdQuery({ publicId });
+  const queryClient = useQueryClient();
+  const { data } = useSuspenseQuery(
+    queries.networkAddress.byPublicId({ publicId }),
+  );
   const { mutate } = useEditNetworkAddressMutation();
 
   return (
@@ -20,13 +24,14 @@ export const EditNetworkAddressForm: FC<EditNetworkAddressFormProps> = ({
         label: data.label,
         networkAddress: data.networkAddress,
       }}
-      onSubmit={(values) => {
+      onSubmit={async (values) => {
         mutate({
           publicId,
           comments: values.comments,
           label: values.label,
           networkAddress: values.networkAddress,
         });
+        await queryClient.invalidateQueries(queries.networkAddress.all);
       }}
     />
   );
