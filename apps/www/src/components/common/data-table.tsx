@@ -1,9 +1,4 @@
-import {
-  type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
+import { flexRender, type Table as TanstackTable } from '@tanstack/react-table';
 import {
   Table,
   TableBody,
@@ -13,21 +8,11 @@ import {
   TableRow,
 } from './table';
 
-type DataTableProps<TData, TValue> = {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+type DataTableProps<TData> = {
+  table: TanstackTable<TData>;
 };
 
-export const DataTable = <TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) => {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
+export const DataTable = <TData,>({ table }: DataTableProps<TData>) => {
   return (
     <div className="rounded-md border">
       <Table>
@@ -65,7 +50,10 @@ export const DataTable = <TData, TValue>({
             ))
           ) : (
             <TableRow>
-              <TableCell className="h-24 text-center" colSpan={columns.length}>
+              <TableCell
+                className="h-24 text-center"
+                colSpan={table.getAllColumns().length}
+              >
                 No results.
               </TableCell>
             </TableRow>
