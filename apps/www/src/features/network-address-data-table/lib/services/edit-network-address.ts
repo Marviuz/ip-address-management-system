@@ -1,5 +1,4 @@
 import { type UpdateNetworkAddressPayload } from '@ip-address-management-system/shared';
-import { useMutation } from '@tanstack/react-query';
 import { api } from '@/lib/api-client';
 
 type EditNetworkAddressParams = UpdateNetworkAddressPayload & {
@@ -15,10 +14,4 @@ export async function editNetworkAddress({
     payload,
   );
   return data;
-}
-
-export function useEditNetworkAddressMutation() {
-  return useMutation({
-    mutationFn: editNetworkAddress,
-  });
 }

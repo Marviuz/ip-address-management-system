@@ -6,7 +6,10 @@ import { networkAddressApiTableAdapter } from '@/lib/adapters/network-address-ap
 import { queries } from '@/lib/queries';
 
 export const NetworkAddressDataTable: FC = () => {
-  const { data } = useSuspenseQuery(queries.networkAddress.all);
+  const { data } = useSuspenseQuery({
+    ...queries.networkAddress.all,
+    staleTime: 0,
+  });
 
   return (
     <DataTable

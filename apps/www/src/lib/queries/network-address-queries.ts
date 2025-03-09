@@ -11,7 +11,7 @@ export const networkAddressQueries = createQueryKeys('networkAddress', {
     queryFn: () => getNetworkAddress(),
   },
   byPublicId: (params: GetNetworkAddressByPublicIdParams) => ({
-    queryKey: [{ params }],
+    queryKey: [params],
     queryFn: () => getNetworkAddressByPublicId(params),
   }),
 });
