@@ -8,12 +8,17 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { TOKEN_LABELS } from '@ip-address-management-system/shared';
+import {
+  SESSION_COOKIE,
+  TOKEN_LABELS,
+} from '@ip-address-management-system/shared';
 import { env } from 'src/env';
 import { AuthService } from './auth.service';
 import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
 import { RefreshGuard } from './guards/refresh/refresh.guard';
 import { Public } from './decorators/public.decorator';
+
+const ONE_DAY = 24 * 60 * 60 * 1000;
 
 @Controller('auth')
 export class AuthController {
@@ -37,12 +42,12 @@ export class AuthController {
       [TOKEN_LABELS.REFRESH_TOKEN]: tokens.refreshToken,
     });
 
-    res.cookie(TOKEN_LABELS.REFRESH_TOKEN, tokens.refreshToken, {
+    res.cookie(SESSION_COOKIE, tokens.refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      path: '/',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      path: '/auth/refresh',
+      maxAge: 7 * ONE_DAY,
     });
 
     res.redirect(`${env.FRONTEND_URL}/auth/google?${urlParams.toString()}`);
@@ -54,12 +59,12 @@ export class AuthController {
   async refresh(@Req() req: Request, @Res() res: Response) {
     const user = await this.authService.login(req.user.publicId);
 
-    res.cookie(TOKEN_LABELS.REFRESH_TOKEN, user.refreshToken, {
+    res.cookie(SESSION_COOKIE, user.refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      path: '/',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      path: '/auth/refresh',
+      maxAge: 7 * ONE_DAY,
     });
 
     res.json({

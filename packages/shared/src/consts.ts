@@ -5,3 +5,5 @@ export const TOKEN_LABELS = {
 
 export const roles = ['super_admin', 'regular'] as const;
 export type Role = (typeof roles)[number];
+
+export const SESSION_COOKIE = '__x_auth_sess__';
