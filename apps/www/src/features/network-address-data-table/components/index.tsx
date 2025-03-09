@@ -1,6 +1,7 @@
-import { useState, type FC } from 'react';
+import { type FC } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { networkAddressTableColumns } from './columns';
+import { NetworksAddressDataTableToolbar } from './networks-address-data-table-toolbar';
 import { DataTable } from '@/components/common/data-table';
 import { networkAddressApiTableAdapter } from '@/lib/adapters/network-address-api-table-adapter';
 import { queries } from '@/lib/queries';
@@ -12,16 +13,23 @@ export const NetworkAddressDataTable: FC = () => {
     staleTime: 0,
   });
 
-  const [rowSelection, setRowSelection] = useState({});
-
   const table = useTable({
     data: networkAddressApiTableAdapter(data.items),
     columns: networkAddressTableColumns,
-    state: {
-      rowSelection,
-    },
-    onRowSelectionChange: setRowSelection,
   });
 
-  return <DataTable table={table} />;
+  const selectedIds = table
+    .getSelectedRowModel()
+    .rows.map((row) => row.original.addressId);
+
+  return (
+    <div className="grid gap-4">
+      <DataTable table={table} />
+      <NetworksAddressDataTableToolbar
+        disabled={!selectedIds.length}
+        publicIds={selectedIds}
+        onDelete={() => table.resetRowSelection()}
+      />
+    </div>
+  );
 };

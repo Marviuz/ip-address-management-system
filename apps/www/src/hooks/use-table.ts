@@ -9,6 +9,7 @@ export function useTable<TData>(
 ) {
   const table = useReactTable({
     manualPagination: true,
+    enableRowSelection: true,
     getCoreRowModel: getCoreRowModel(),
     debugTable: process.env.NODE_ENV === 'development',
     ...params,

@@ -41,28 +41,34 @@ export const networkAddressTableColumns: ColumnDef<
     ),
   }),
   columnHelper.accessor('address', {
-    cell: (address) => address.getValue(),
     header: 'Address',
+    cell: (address) => address.getValue(),
   }),
   columnHelper.display({
-    cell: ({ row }) => getNetworkAddressType(row.original.address),
     header: 'Type',
+    cell: ({ row }) => getNetworkAddressType(row.original.address),
   }),
   columnHelper.accessor('label', {
-    cell: (label) => label.getValue(),
     header: 'Label',
+    cell: (label) => label.getValue(),
   }),
   columnHelper.accessor('comments', {
-    cell: (comment) => comment.getValue(),
     header: 'Comments',
+    cell: (comment) => comment.getValue(),
   }),
   columnHelper.display({
-    cell: ({ row }) => (
+    id: 'actions',
+    header: 'Actions',
+    cell: ({ row, table }) => (
       <div className="flex gap-4">
         <EditNetworkAddressButton publicId={row.original.addressId} />
-        <DeleteNetworkAddressButton publicId={row.original.addressId} />
+        {!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected() ? (
+          <DeleteNetworkAddressButton
+            publicIds={[row.original.addressId]}
+            onDelete={() => table.resetRowSelection()}
+          />
+        ) : null}
       </div>
     ),
-    header: 'Actions',
   }),
 ];
