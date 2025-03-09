@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/common/card';
-import { GoogleSignInLink } from '@/components/links/google-sign-in-link';
+import { env } from '@/env';
 
 export const SignInCard: FC = () => {
   return (
@@ -17,10 +17,10 @@ export const SignInCard: FC = () => {
       </CardHeader>
       <CardContent>
         <Button asChild className="w-full">
-          <GoogleSignInLink>
+          <a href={`${env.VITE_BACKEND_URL}/auth/google`}>
             <SiGoogle />
             Sign in with Google
-          </GoogleSignInLink>
+          </a>
         </Button>
       </CardContent>
     </Card>

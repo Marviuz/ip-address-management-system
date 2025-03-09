@@ -1,0 +1,33 @@
+import { type FC } from 'react';
+import { useGetNetworkAddressByPublicIdQuery } from '../lib/services/get-one-network-address';
+import { useEditNetworkAddressMutation } from '../lib/services/edit-network-address';
+import { NetworkAddressForm } from './network-address-form';
+
+type EditNetworkAddressFormProps = {
+  publicId: string;
+};
+
+export const EditNetworkAddressForm: FC<EditNetworkAddressFormProps> = ({
+  publicId,
+}) => {
+  const { data } = useGetNetworkAddressByPublicIdQuery({ publicId });
+  const { mutate } = useEditNetworkAddressMutation();
+
+  return (
+    <NetworkAddressForm
+      initialValues={{
+        comments: data.comments,
+        label: data.label,
+        networkAddress: data.networkAddress,
+      }}
+      onSubmit={(values) => {
+        mutate({
+          publicId,
+          comments: values.comments,
+          label: values.label,
+          networkAddress: values.networkAddress,
+        });
+      }}
+    />
+  );
+};

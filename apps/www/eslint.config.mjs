@@ -1,64 +1,29 @@
 import globals from 'globals';
+import reactRefresh from 'eslint-plugin-react-refresh';
 import vercel from '@vercel/style-guide/eslint/flat';
-import boundaries from 'eslint-plugin-boundaries';
 import turboConfig from 'eslint-config-turbo/flat';
+import pluginRouter from '@tanstack/eslint-plugin-router';
 
 /** @type {import('eslint').Linter.Config[]} */
-const eslintConfig = [
+export default [
+  { ignores: ['dist', '*.config.*', '*/routeTree.gen.ts'] },
   ...turboConfig,
+  ...pluginRouter.configs['flat/recommended'],
   ...vercel.configs.recommended,
   ...vercel.configs.typescript,
   ...vercel.configs.react,
-  ...vercel.configs.next,
   {
-    plugins: {
-      boundaries,
-    },
     languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
+      ecmaVersion: 2020,
+      globals: globals.browser,
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
-    settings: {
-      'boundaries/include': ['src/**/*'],
-      'boundaries/elements': [
-        {
-          mode: 'full',
-          type: 'shared',
-          pattern: [
-            'src/assets/**/*',
-            'src/components/**/*',
-            'src/contexts/**/*',
-            'src/data/**/*',
-            'src/hooks/**/*',
-            'src/lib/**/*',
-            'src/server/**/*',
-            'src/utils/**/*',
-            'src/styles/**/*',
-            'src/env.ts',
-          ],
-        },
-        {
-          mode: 'full',
-          type: 'feature',
-          capture: ['featureName'],
-          pattern: ['src/features/*/**/*'],
-        },
-        {
-          mode: 'full',
-          type: 'app',
-          capture: ['_', 'fileName'],
-          pattern: ['src/app/**/*'],
-        },
-      ],
+    plugins: {
+      'react-refresh': reactRefresh,
     },
-  },
-  {
     rules: {
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       '@typescript-eslint/consistent-type-imports': [
@@ -84,40 +49,6 @@ const eslintConfig = [
           allowNumber: true,
         },
       ],
-      'boundaries/no-unknown': ['error'],
-      'boundaries/no-unknown-files': ['error'],
-      'boundaries/element-types': [
-        'error',
-        {
-          default: 'disallow',
-          rules: [
-            {
-              from: ['shared'],
-              allow: ['shared'],
-            },
-            {
-              from: ['shared'],
-              allow: ['feature'],
-              importKind: ['type', 'typeof'],
-            },
-            {
-              from: ['feature'],
-              allow: [
-                'shared',
-                ['feature', { featureName: '${from.featureName}' }],
-              ],
-            },
-            {
-              from: ['app', 'neverImport'],
-              allow: ['shared', 'feature'],
-            },
-            {
-              from: ['app'],
-              allow: [['app', { fileName: '*.css' }]],
-            },
-          ],
-        },
-      ],
       'no-implicit-coercion': ['error', { allow: ['!!'] }],
       'react/jsx-sort-props': [
         'error',
@@ -125,11 +56,15 @@ const eslintConfig = [
           callbacksLast: true,
         },
       ],
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
     },
   },
   {
     files: ['**/*.tsx'],
-    ignores: ['**/app/**/*'],
+    ignores: ['**/routes/**/*'],
     rules: {
       'react/function-component-definition': [
         'error',
@@ -137,15 +72,4 @@ const eslintConfig = [
       ],
     },
   },
-  {
-    files: ['src/app/**/*.tsx'],
-    rules: {
-      'import/no-default-export': 'off',
-    },
-  },
-  {
-    ignores: ['*.config.*'],
-  },
 ];
-
-export default eslintConfig;

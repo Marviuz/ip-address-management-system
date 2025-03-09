@@ -1,8 +1,6 @@
-'use client';
-
 import { Edit } from 'lucide-react';
 import { type FC } from 'react';
-import Link from 'next/link';
+import { Link } from '@tanstack/react-router';
 import { Button } from '@/components/common/button';
 
 type EditNetworkAddressSelectorProps = {
@@ -14,7 +12,7 @@ export const EditNetworkAddressSelector: FC<
 > = ({ publicId }) => {
   return (
     <Button asChild className="rounded-full" size="icon" variant="outline">
-      <Link href={{ query: { edit: publicId } }}>
+      <Link search={{ edit: publicId }} to="/dashboard">
         <Edit />
       </Link>
     </Button>

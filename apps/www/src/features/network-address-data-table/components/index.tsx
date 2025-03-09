@@ -1,16 +1,16 @@
 import { type FC } from 'react';
+import { useGetNetworkAddress } from '../lib/services/get-network-addresses';
+import { networkAddressTableColumns } from './columns';
 import { DataTable } from '@/components/common/data-table';
-import {
-  type NetworkAddressTableColumns,
-  networkAddressTableColumns,
-} from './columns';
+import { networkAddressApiTableAdapter } from '@/lib/adapters/network-address-api-table-adapter';
 
-type NetworkAddressDataTableProps = {
-  data: NetworkAddressTableColumns[];
-};
+export const NetworkAddressDataTable: FC = () => {
+  const { data } = useGetNetworkAddress();
 
-export const NetworkAddressDataTable: FC<NetworkAddressDataTableProps> = ({
-  data,
-}) => {
-  return <DataTable columns={networkAddressTableColumns} data={data} />;
+  return (
+    <DataTable
+      columns={networkAddressTableColumns}
+      data={networkAddressApiTableAdapter(data.items)}
+    />
+  );
 };

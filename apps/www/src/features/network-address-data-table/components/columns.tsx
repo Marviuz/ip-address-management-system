@@ -1,5 +1,3 @@
-'use client';
-
 import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { getNetworkAddressType } from '../utils/get-network-address-type';
 import { EditNetworkAddressSelector } from './edit-network-address-selector';
