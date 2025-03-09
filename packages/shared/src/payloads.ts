@@ -5,3 +5,7 @@ export type CreateNetworkAddressPayload = {
 };
 
 export type UpdateNetworkAddressPayload = Partial<CreateNetworkAddressPayload>;
+
+export type DeleteNetworkAddressPayload = {
+  ids: string[];
+};

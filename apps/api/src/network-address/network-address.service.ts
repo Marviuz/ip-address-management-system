@@ -1,13 +1,14 @@
-import { networkAddressListSchema } from '@ip-address-management-system/shared';
+import {
+  DeleteNetworkAddressPayload,
+  networkAddressListSchema,
+  UpdateNetworkAddressPayload,
+} from '@ip-address-management-system/shared';
 import { Inject, Injectable } from '@nestjs/common';
-import { asc, eq } from 'drizzle-orm';
+import { asc, eq, inArray } from 'drizzle-orm';
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
 import { networkAddresses, users } from 'src/drizzle/schema';
 import { DrizzleDatabase } from 'src/drizzle/types/drizzle';
-import {
-  InsertNetworkAddressSchema,
-  UpdateNetworkAddressSchema,
-} from 'src/types/network-address';
+import { InsertNetworkAddressSchema } from 'src/types/network-address';
 import { networkAddressColumns, usersColumns } from 'src/utils/sensitive';
 import { withPagination } from 'src/utils/with-pagination';
 
@@ -53,7 +54,7 @@ export class NetworkAddressService {
     return networkAddress;
   }
 
-  async update(publicId: string, payload: UpdateNetworkAddressSchema) {
+  async update(publicId: string, payload: UpdateNetworkAddressPayload) {
     const [networkAddress] = await this.db
       .update(networkAddresses)
       .set(payload)
@@ -61,5 +62,14 @@ export class NetworkAddressService {
       .returning();
 
     return networkAddress;
+  }
+
+  async batchRemove({ ids }: DeleteNetworkAddressPayload) {
+    const deleted = await this.db
+      .delete(networkAddresses)
+      .where(inArray(networkAddresses.publicId, ids))
+      .returning();
+
+    return deleted;
   }
 }

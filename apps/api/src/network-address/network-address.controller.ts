@@ -7,10 +7,17 @@ import {
   Req,
   NotFoundException,
   Put,
+  Delete,
+  HttpStatus,
+  HttpCode,
+  Query,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { CreateNetworkAddressPayload } from '@ip-address-management-system/shared';
-import { UpdateNetworkAddressSchema } from 'src/types/network-address';
+import {
+  CreateNetworkAddressPayload,
+  UpdateNetworkAddressPayload,
+} from '@ip-address-management-system/shared';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 import { NetworkAddressService } from './network-address.service';
 
 @Controller('network-address')
@@ -44,15 +51,17 @@ export class NetworkAddressController {
   @Put(':publicId')
   async update(
     @Param('publicId') publicId: string,
-    @Body() body: UpdateNetworkAddressSchema,
+    @Body() body: UpdateNetworkAddressPayload,
   ) {
     const data = await this.networkAddressService.update(publicId, body);
     if (!data) throw new Error('Failed to update network address');
     return data;
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.networkAddressService.remove(+id);
-  // }
+  @Delete()
+  @Roles('super_admin')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Query('ids') ids: string[]) {
+    await this.networkAddressService.batchRemove({ ids });
+  }
 }

@@ -1,6 +1,7 @@
 import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { getNetworkAddressType } from '../utils/get-network-address-type';
-import { EditNetworkAddressSelector } from './edit-network-address-selector';
+import { EditNetworkAddressButton } from './edit-network-address-button';
+import { DeleteNetworkAddressButton } from './delete-network-address-button';
 
 export type NetworkAddressTableColumns = {
   address: string;
@@ -33,7 +34,10 @@ export const networkAddressTableColumns: ColumnDef<
   }),
   columnHelper.display({
     cell: ({ row }) => (
-      <EditNetworkAddressSelector publicId={row.original.addressId} />
+      <div className="flex gap-4">
+        <EditNetworkAddressButton publicId={row.original.addressId} />
+        <DeleteNetworkAddressButton publicId={row.original.addressId} />
+      </div>
     ),
     header: 'Actions',
   }),
