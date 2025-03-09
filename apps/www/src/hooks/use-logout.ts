@@ -1,20 +1,24 @@
 import { useRouter } from '@tanstack/react-router';
+import { useMutation } from '@tanstack/react-query';
 import { useAuth } from '@/contexts/auth-context/use-auth';
-import { useLogoutMutation } from '@/lib/services/sign-out';
+import { logout } from '@/lib/services/sign-out';
 
 export function useLogout() {
   const auth = useAuth();
-  const { mutate } = useLogoutMutation();
+  const { mutate } = useMutation({
+    mutationFn: logout,
+  });
+
   const router = useRouter();
 
-  const logout = async () => {
-    auth?.setAccessToken(null);
+  const logoutMutation = async () => {
     mutate();
+    auth?.setAccessToken(null);
     await router.navigate({
       to: '/',
       replace: true,
     });
   };
 
-  return { logout };
+  return { logout: logoutMutation };
 }
