@@ -20,7 +20,10 @@ export const EditNetworkAddressSheet: FC = () => {
       open={!!search.edit}
       onOpenChange={(open) =>
         !open &&
-        router.navigate({ to: '/dashboard', search: { edit: undefined } })
+        router.navigate({
+          to: '/dashboard',
+          search: (prev) => ({ ...prev, edit: undefined }),
+        })
       }
     >
       <SheetContent>

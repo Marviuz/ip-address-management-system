@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { useState, type FC } from 'react';
 import { toast } from 'sonner';
+import { useSearch } from '@tanstack/react-router';
 import { addNetworkAddress } from '../lib/services/add-network-address';
 import { NetworkAddressForm } from './network-address-form';
 import {
@@ -17,11 +18,14 @@ import { queries } from '@/lib/queries';
 
 export const AddNetworkAddressDialog: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { page, pageSize } = useSearch({ from: '/_authenticated/dashboard/' });
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: addNetworkAddress,
     onSuccess: async () => {
-      await queryClient.refetchQueries(queries.networkAddress.all);
+      await queryClient.refetchQueries(
+        queries.networkAddress.all({ page, pageSize }),
+      );
       toast.success('Network address added successfully');
       setIsOpen(false);
     },

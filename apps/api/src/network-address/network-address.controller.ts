@@ -11,6 +11,7 @@ import {
   HttpStatus,
   HttpCode,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { Request } from 'express';
 import {
@@ -37,8 +38,11 @@ export class NetworkAddressController {
   }
 
   @Get()
-  findAll() {
-    return this.networkAddressService.findAll();
+  findAll(
+    @Query('page', ParseIntPipe) page: number,
+    @Query('pageSize', ParseIntPipe) pageSize: number,
+  ) {
+    return this.networkAddressService.findAll(page, pageSize);
   }
 
   @Get(':publicId')

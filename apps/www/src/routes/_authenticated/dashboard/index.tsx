@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, retainSearchParams } from '@tanstack/react-router';
 import { Suspense } from 'react';
 import { zodValidator } from '@tanstack/zod-adapter';
 import { z } from 'zod';
@@ -13,6 +13,9 @@ const dashboardSearchSchema = paginationSchema.extend({
 export const Route = createFileRoute('/_authenticated/dashboard/')({
   component: DashboardPage,
   validateSearch: zodValidator(dashboardSearchSchema),
+  search: {
+    middlewares: [retainSearchParams(['page', 'pageSize'])],
+  },
 });
 
 function DashboardPage() {
