@@ -5,6 +5,7 @@ import {
 } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
 import { type FC } from 'react';
+import { toast } from 'sonner';
 import { editNetworkAddress } from '../lib/services/edit-network-address';
 import { NetworkAddressForm } from './network-address-form';
 import { queries } from '@/lib/queries';
@@ -30,6 +31,7 @@ export const EditNetworkAddressForm: FC<EditNetworkAddressFormProps> = ({
       await queryClient.refetchQueries(
         queries.networkAddress.byPublicId({ publicId }),
       );
+      toast.success('Network address updated successfully');
     },
   });
 

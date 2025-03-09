@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { useState, type FC } from 'react';
+import { toast } from 'sonner';
 import { addNetworkAddress } from '../lib/services/add-network-address';
 import { NetworkAddressForm } from './network-address-form';
 import {
@@ -21,6 +22,7 @@ export const AddNetworkAddressDialog: FC = () => {
     mutationFn: addNetworkAddress,
     onSuccess: async () => {
       await queryClient.refetchQueries(queries.networkAddress.all);
+      toast.success('Network address added successfully');
       setIsOpen(false);
     },
   });

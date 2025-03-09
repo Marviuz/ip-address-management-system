@@ -5,6 +5,7 @@ import {
 } from '@tanstack/react-query';
 import { Trash } from 'lucide-react';
 import { type FC } from 'react';
+import { toast } from 'sonner';
 import { deleteNetworkAddresses } from '../lib/services/delete-network-addresses';
 import { queries } from '@/lib/queries';
 import { Button } from '@/components/common/button';
@@ -25,6 +26,9 @@ export const DeleteNetworkAddressButton: FC<
     mutationFn: deleteNetworkAddresses,
     onSuccess: async () => {
       await queryClient.refetchQueries(queries.networkAddress.all);
+      const isPlural = publicIds.length > 1;
+      const subject = isPlural ? 'network addresses' : 'network address';
+      toast.info(`Deleted ${publicIds.length} ${subject} successfully`);
       onDelete();
     },
   });
