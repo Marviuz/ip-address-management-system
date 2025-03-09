@@ -7,6 +7,7 @@ import {
   networkAddressFormSchema,
 } from '../lib/schema';
 import { getNetworkAddressType } from '../utils/get-network-address-type';
+import { type CreateFeatureFlags } from '../utils/create-feature-flags-type';
 import { NetworkAddressInputWrapper } from './network-address-input-wrapper';
 import { Badge } from '@/components/common/badge';
 import { Button } from '@/components/common/button';
@@ -23,12 +24,22 @@ import { Textarea } from '@/components/common/textarea';
 
 const NETWORK_ADDRESS_VALID_VALUES_REGEX = /^[0-9a-fA-F:. -]*$/;
 
-type NetworkAddressFormProps = {
+type NetworkAddressFormProps = Partial<
+  CreateFeatureFlags<'create' | 'edit', NetworkAddressFormSchema>
+> & {
+  mode?: 'create' | 'edit';
   initialValues?: NetworkAddressFormSchema;
   onSubmit: SubmitHandler<NetworkAddressFormSchema>;
 };
 
 export const NetworkAddressForm: FC<NetworkAddressFormProps> = ({
+  mode = 'create',
+  canEditLabel = true,
+  canCreateLabel = true,
+  canEditComments = true,
+  canCreateComments = true,
+  canEditNetworkAddress = true,
+  canCreateNetworkAddress = true,
   initialValues,
   onSubmit,
 }) => {
@@ -58,6 +69,10 @@ export const NetworkAddressForm: FC<NetworkAddressFormProps> = ({
       >
         <FormField
           control={form.control}
+          disabled={
+            !canEditNetworkAddress ||
+            (mode === 'create' && !canCreateNetworkAddress)
+          }
           name="networkAddress"
           render={({ field }) => (
             <FormItem>
@@ -81,6 +96,7 @@ export const NetworkAddressForm: FC<NetworkAddressFormProps> = ({
         />
         <FormField
           control={form.control}
+          disabled={!canEditLabel || (mode === 'create' && !canCreateLabel)}
           name="label"
           render={({ field }) => (
             <FormItem>
@@ -94,6 +110,9 @@ export const NetworkAddressForm: FC<NetworkAddressFormProps> = ({
         />
         <FormField
           control={form.control}
+          disabled={
+            !canEditComments || (mode === 'create' && !canCreateComments)
+          }
           name="comments"
           render={({ field }) => (
             <FormItem>

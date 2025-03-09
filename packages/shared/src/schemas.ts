@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { TOKEN_LABELS } from './consts';
+import { roles, TOKEN_LABELS } from './consts';
 import { createListSchema } from './utils';
 
 export const tokenSchema = z.object({
@@ -15,7 +15,7 @@ export const userSchema = z.object({
   middleName: z.string().nullable(),
   familyName: z.string().nullable(),
   email: z.string(),
-  role: z.string(),
+  role: z.enum(roles),
   provider: z.string(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
@@ -27,15 +27,11 @@ export const networkAddressSchema = z.object({
   networkAddress: z.string(),
   label: z.string(),
   comments: z.string(),
-  addedBy: z.number(),
+  addedBy: userSchema,
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.string(),
 });
 export type NetworkAddressSchema = z.infer<typeof networkAddressSchema>;
 
-export const networkAddressListSchema = createListSchema(
-  networkAddressSchema.extend({
-    addedBy: userSchema,
-  }),
-);
+export const networkAddressListSchema = createListSchema(networkAddressSchema);
 export type NetworkAddressListSchema = z.infer<typeof networkAddressListSchema>;

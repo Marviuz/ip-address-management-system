@@ -43,12 +43,14 @@ export class NetworkAddressService {
     return networkAddressListSchema.parse(data);
   }
 
-  findOne(publicId: string) {
-    const query = this.db.query.networkAddresses.findFirst({
-      where: eq(networkAddresses.publicId, publicId),
-    });
+  async findOne(publicId: string) {
+    const [networkAddress] = await this.db
+      .select({ ...networkAddressColumns, addedBy: usersColumns })
+      .from(networkAddresses)
+      .leftJoin(users, eq(networkAddresses.addedBy, users.id))
+      .where(eq(networkAddresses.publicId, publicId));
 
-    return query;
+    return networkAddress;
   }
 
   async update(publicId: string, payload: UpdateNetworkAddressSchema) {

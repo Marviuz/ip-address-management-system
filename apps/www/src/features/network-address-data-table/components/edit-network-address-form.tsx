@@ -18,7 +18,8 @@ export const EditNetworkAddressForm: FC<EditNetworkAddressFormProps> = ({
 }) => {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { data } = useSuspenseQuery({
+  const { data: userData } = useSuspenseQuery(queries.users.me);
+  const { data: networkAddressData } = useSuspenseQuery({
     ...queries.networkAddress.byPublicId({ publicId }),
     staleTime: 0,
   });
@@ -32,13 +33,21 @@ export const EditNetworkAddressForm: FC<EditNetworkAddressFormProps> = ({
     },
   });
 
+  const isSuperAdmin = userData.role === 'super_admin';
+  const isCreatorOfNetworkAddress =
+    userData.publicId === networkAddressData.addedBy.publicId;
+
+  const canEditNetworkAddress = isSuperAdmin || isCreatorOfNetworkAddress;
+
   return (
     <NetworkAddressForm
+      canEditNetworkAddress={canEditNetworkAddress}
       initialValues={{
-        comments: data.comments,
-        label: data.label,
-        networkAddress: data.networkAddress,
+        comments: networkAddressData.comments,
+        label: networkAddressData.label,
+        networkAddress: networkAddressData.networkAddress,
       }}
+      mode="edit"
       onSubmit={async (values) => {
         mutate({
           publicId,
