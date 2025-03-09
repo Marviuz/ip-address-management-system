@@ -8,6 +8,7 @@ import { queries } from '@/lib/queries';
 import { useTable } from '@/hooks/use-table';
 
 export const NetworkAddressDataTable: FC = () => {
+  const { data: userData } = useSuspenseQuery(queries.users.me);
   const { data } = useSuspenseQuery({
     ...queries.networkAddress.all,
     staleTime: 0,
@@ -16,6 +17,11 @@ export const NetworkAddressDataTable: FC = () => {
   const table = useTable({
     data: networkAddressApiTableAdapter(data.items),
     columns: networkAddressTableColumns,
+    state: {
+      columnVisibility: {
+        select: userData.role === 'super_admin',
+      },
+    },
   });
 
   const selectedIds = table

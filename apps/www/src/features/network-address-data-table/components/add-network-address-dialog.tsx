@@ -29,8 +29,8 @@ export const AddNetworkAddressDialog: FC = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild className="ml-auto flex">
-        <Button>
+      <DialogTrigger asChild>
+        <Button size="sm">
           <Plus />
           Add
         </Button>

@@ -35,7 +35,7 @@ export const DeleteNetworkAddressButton: FC<
 
   return user.role === 'super_admin' ? (
     <Button
-      className="rounded-full"
+      className={!labled ? 'rounded-full' : undefined}
       disabled={disabled}
       size={labled ? 'sm' : 'icon'}
       type="button"

@@ -5,7 +5,6 @@ import { z } from 'zod';
 import { NetworkAddressDataTable } from '@/features/network-address-data-table/components';
 import { paginationSchema } from '@/lib/schemas/pagination';
 import { EditNetworkAddressSheet } from '@/features/network-address-data-table/components/edit-network-address-sheet';
-import { AddNetworkAddressDialog } from '@/features/network-address-data-table/components/add-network-address-dialog';
 
 const dashboardSearchSchema = paginationSchema.extend({
   edit: z.string().optional(),
@@ -24,10 +23,6 @@ function DashboardPage() {
           <Suspense fallback={<div>Loading...</div>}>
             <NetworkAddressDataTable />
           </Suspense>
-
-          <div>
-            <AddNetworkAddressDialog />
-          </div>
         </div>
       </div>
       <EditNetworkAddressSheet />
