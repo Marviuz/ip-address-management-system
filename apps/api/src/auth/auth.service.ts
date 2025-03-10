@@ -22,24 +22,16 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  async login(
-    userPublicId: string,
-    ipAddress: string | null,
-    userAgent: string | null,
-  ) {
+  async login(userPublicId: string) {
     const { accessToken, refreshToken } =
       await this.generateTokens(userPublicId);
 
     const hashedRefreshToken = await hash(refreshToken);
 
-    const updatedUser = await this.userService.updateUser(
-      {
-        refreshToken: hashedRefreshToken,
-        publicId: userPublicId,
-      },
-      ipAddress,
-      userAgent,
-    );
+    const updatedUser = await this.userService.updateUser({
+      refreshToken: hashedRefreshToken,
+      publicId: userPublicId,
+    });
 
     if (!updatedUser)
       throw new Error('Failed to update User with refreshToken');
@@ -47,19 +39,11 @@ export class AuthService {
     return { ...updatedUser, accessToken, refreshToken };
   }
 
-  async logout(
-    userPublicId: string,
-    ipAddress: string | null,
-    userAgent: string | null,
-  ) {
-    return this.userService.updateUser(
-      {
-        publicId: userPublicId,
-        refreshToken: null,
-      },
-      ipAddress,
-      userAgent,
-    );
+  async logout(userPublicId: string) {
+    return this.userService.updateUser({
+      publicId: userPublicId,
+      refreshToken: null,
+    });
   }
 
   async validateGoogleUser(
