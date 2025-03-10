@@ -1,7 +1,6 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
-import { Button } from '@/components/common/button';
-import { useLogout } from '@/hooks/use-logout';
 import { refreshToken } from '@/lib/services/refresh-token';
+import { Header } from '@/features/header/components';
 
 export const Route = createFileRoute('/_authenticated')({
   beforeLoad: async ({ context }) => {
@@ -21,12 +20,10 @@ export const Route = createFileRoute('/_authenticated')({
 });
 
 export function AuthenticatedLayout() {
-  const { logout } = useLogout();
-
   return (
-    <div>
+    <>
+      <Header />
       <Outlet />
-      <Button onClick={() => logout()}>Logout</Button>
-    </div>
+    </>
   );
 }
