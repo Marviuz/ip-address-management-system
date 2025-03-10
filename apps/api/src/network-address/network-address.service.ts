@@ -31,7 +31,7 @@ export class NetworkAddressService {
         if (!networkAddress)
           throw new Error('Failed to create network address');
 
-        tx.insert(auditLogs).values({
+        await tx.insert(auditLogs).values({
           action: 'create',
           entity: 'network_address',
           entityId: networkAddress.id,
@@ -97,7 +97,7 @@ export class NetworkAddressService {
 
       if (!networkAddress) throw new Error('Failed to update network address');
 
-      tx.insert(auditLogs).values({
+      await tx.insert(auditLogs).values({
         action: 'update',
         entity: 'network_address',
         entityId: networkAddress.id,
@@ -138,7 +138,7 @@ export class NetworkAddressService {
         changes: {},
       }));
 
-      tx.insert(auditLogs).values(values);
+      await tx.insert(auditLogs).values(values);
 
       return deleted;
     });

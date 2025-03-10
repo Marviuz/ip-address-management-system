@@ -30,7 +30,7 @@ export class UsersService {
           .returning();
 
         if ($insertedUser) {
-          tx.insert(auditLogs).values({
+          await tx.insert(auditLogs).values({
             action: 'create',
             entity: 'user',
             entityId: $insertedUser.id,
