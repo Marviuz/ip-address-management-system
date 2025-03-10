@@ -1,8 +1,8 @@
-import { type FC } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { type FC } from 'react';
 import { HeaderUserDetails } from './header-user-details';
-import { queries } from '@/lib/queries';
 import { cn } from '@/utils/cn';
+import { queries } from '@/lib/queries';
 
 export const Header: FC = () => {
   const { data: user } = useSuspenseQuery(queries.users.me);
