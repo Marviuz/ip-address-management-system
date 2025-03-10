@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { zodValidator } from '@tanstack/zod-adapter';
 import { Suspense } from 'react';
-import { AdminAuditLogsTable } from '@/features/admin-audit-logs-table/common';
-import { AuditLogsTablePagination } from '@/features/admin-audit-logs-table/common/audit-logs-table-pagination';
+import { AdminAuditLogsTable } from '@/features/admin-audit-logs-table/components';
+import { AuditLogsTablePagination } from '@/features/admin-audit-logs-table/components/audit-logs-table-pagination';
 import { paginationSchema } from '@/lib/schemas/pagination';
 
 export const Route = createFileRoute('/_authenticated/activity-logs/')({

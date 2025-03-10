@@ -5,6 +5,7 @@ import { adminAuditLogsTableColumns } from './columns';
 import { useTable } from '@/hooks/use-table';
 import { DataTable } from '@/components/common/data-table';
 import { queries } from '@/lib/queries';
+import { auditLogsApiTableAdapter } from '@/lib/adapters/audit-logs-api-table-adapter';
 
 export const AdminAuditLogsTable: FC = () => {
   const { page, pageSize } = useSearch({
@@ -15,14 +16,7 @@ export const AdminAuditLogsTable: FC = () => {
   );
 
   const table = useTable({
-    data: logsData.items.map((logItem) => ({
-      action: logItem.action,
-      changes: 'change',
-      ipAddress: logItem.ipAddress,
-      metadata: 'meta',
-      user: logItem.user.givenName,
-      userAgent: logItem.userAgent,
-    })),
+    data: auditLogsApiTableAdapter(logsData.items),
     columns: adminAuditLogsTableColumns,
   });
 
