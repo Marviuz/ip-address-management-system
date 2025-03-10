@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "db:drop": "dotenv turbo run db:drop",
     "db:generate": "dotenv turbo run db:generate",
     "db:migrate": "dotenv turbo run db:migrate",
     "db:push": "dotenv turbo run db:push",

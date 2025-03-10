@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Ip,
   Post,
   Req,
   Res,
@@ -13,6 +14,7 @@ import {
   TOKEN_LABELS,
 } from '@ip-address-management-system/shared';
 import { env } from 'src/env';
+import { UserAgent } from 'src/audit-logs/decorators/user-agent.decorator';
 import { AuthService } from './auth.service';
 import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
 import { RefreshGuard } from './guards/refresh/refresh.guard';
@@ -34,8 +36,17 @@ export class AuthController {
   @Public()
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
-  async googleRedirect(@Req() req: Request, @Res() res: Response) {
-    const tokens = await this.authService.login(req.user.publicId);
+  async googleRedirect(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Ip() ip: string | null,
+    @UserAgent() userAgent: string | null,
+  ) {
+    const tokens = await this.authService.login(
+      req.user.publicId,
+      ip,
+      userAgent,
+    );
 
     const urlParams = new URLSearchParams({
       [TOKEN_LABELS.ACCESS_TOKEN]: tokens.accessToken,
@@ -56,8 +67,13 @@ export class AuthController {
   @Public()
   @Post('refresh')
   @UseGuards(RefreshGuard)
-  async refresh(@Req() req: Request, @Res() res: Response) {
-    const user = await this.authService.login(req.user.publicId);
+  async refresh(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Ip() ip: string | null,
+    @UserAgent() userAgent: string | null,
+  ) {
+    const user = await this.authService.login(req.user.publicId, ip, userAgent);
 
     res.cookie(SESSION_COOKIE, user.refreshToken, {
       httpOnly: true,
@@ -74,8 +90,13 @@ export class AuthController {
   }
 
   @Post('logout')
-  async logout(@Req() req: Request, @Res() res: Response) {
-    await this.authService.logout(req.user.publicId);
+  async logout(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Ip() ip: string | null,
+    @UserAgent() userAgent: string | null,
+  ) {
+    await this.authService.logout(req.user.publicId, ip, userAgent);
     res.clearCookie(TOKEN_LABELS.REFRESH_TOKEN);
     res.sendStatus(HttpStatus.NO_CONTENT);
   }

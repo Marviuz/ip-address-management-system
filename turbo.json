@@ -26,6 +26,10 @@
     "db:migrate": {},
     "db:push": {
       "persistent": true
+    },
+    "db:drop": {
+      "cache": false,
+      "persistent": true
     }
   }
 }

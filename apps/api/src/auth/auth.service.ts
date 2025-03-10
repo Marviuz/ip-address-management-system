@@ -22,16 +22,24 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  async login(userPublicId: string) {
+  async login(
+    userPublicId: string,
+    ipAddress: string | null,
+    userAgent: string | null,
+  ) {
     const { accessToken, refreshToken } =
       await this.generateTokens(userPublicId);
 
     const hashedRefreshToken = await hash(refreshToken);
 
-    const updatedUser = await this.userService.updateUser({
-      refreshToken: hashedRefreshToken,
-      publicId: userPublicId,
-    });
+    const updatedUser = await this.userService.updateUser(
+      {
+        refreshToken: hashedRefreshToken,
+        publicId: userPublicId,
+      },
+      ipAddress,
+      userAgent,
+    );
 
     if (!updatedUser)
       throw new Error('Failed to update User with refreshToken');
@@ -39,15 +47,31 @@ export class AuthService {
     return { ...updatedUser, accessToken, refreshToken };
   }
 
-  async logout(userPublicId: string) {
-    return this.userService.updateUser({
-      publicId: userPublicId,
-      refreshToken: null,
-    });
+  async logout(
+    userPublicId: string,
+    ipAddress: string | null,
+    userAgent: string | null,
+  ) {
+    return this.userService.updateUser(
+      {
+        publicId: userPublicId,
+        refreshToken: null,
+      },
+      ipAddress,
+      userAgent,
+    );
   }
 
-  async validateGoogleUser(oauthUser: InsertUserSchema) {
-    const user = await this.userService.findOneOrCreate(oauthUser);
+  async validateGoogleUser(
+    oauthUser: InsertUserSchema,
+    ipAddress: string | null,
+    userAgent: string | null,
+  ) {
+    const user = await this.userService.findOneOrCreate(
+      oauthUser,
+      ipAddress,
+      userAgent,
+    );
 
     if (!user) throw new Error('Failed to find or create User');
 

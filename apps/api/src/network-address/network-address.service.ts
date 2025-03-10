@@ -6,7 +6,7 @@ import {
 import { Inject, Injectable } from '@nestjs/common';
 import { asc, eq, inArray } from 'drizzle-orm';
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
-import { networkAddresses, users } from 'src/drizzle/schema';
+import { auditLogs, networkAddresses, users } from 'src/drizzle/schema';
 import { DrizzleDatabase } from 'src/drizzle/types/drizzle';
 import { InsertNetworkAddressSchema } from 'src/types/network-address';
 import { networkAddressColumns, usersColumns } from 'src/utils/sensitive';
@@ -16,13 +16,41 @@ import { withPagination } from 'src/utils/with-pagination';
 export class NetworkAddressService {
   constructor(@Inject(DRIZZLE) private db: DrizzleDatabase) {}
 
-  async create(payload: InsertNetworkAddressSchema) {
-    const [networkAddress] = await this.db
-      .insert(networkAddresses)
-      .values(payload)
-      .returning();
+  async create(
+    payload: InsertNetworkAddressSchema,
+    ipAddress: string | null,
+    userAgent: string | null,
+  ) {
+    const $networkAddress = await this.db.transaction(async (tx) => {
+      try {
+        const [networkAddress] = await tx
+          .insert(networkAddresses)
+          .values(payload)
+          .returning();
 
-    return networkAddress;
+        if (!networkAddress)
+          throw new Error('Failed to create network address');
+
+        tx.insert(auditLogs).values({
+          action: 'create',
+          entity: 'network_address',
+          entityId: networkAddress.id,
+          userId: networkAddress.addedBy,
+          metadata: {},
+          userAgent,
+          ipAddress,
+          changes: {},
+        });
+
+        return networkAddress;
+      } catch (e) {
+        // eslint-disable-next-line no-console -- log errors
+        console.log(e);
+        tx.rollback();
+      }
+    });
+
+    return $networkAddress;
   }
 
   async findAll(page = 1, pageSize = 10) {
@@ -54,22 +82,67 @@ export class NetworkAddressService {
     return networkAddress;
   }
 
-  async update(publicId: string, payload: UpdateNetworkAddressPayload) {
-    const [networkAddress] = await this.db
-      .update(networkAddresses)
-      .set(payload)
-      .where(eq(networkAddresses.publicId, publicId))
-      .returning();
+  async update(
+    publicId: string,
+    payload: UpdateNetworkAddressPayload,
+    ipAddress: string | null,
+    userAgent: string | null,
+  ) {
+    const $networkAddress = await this.db.transaction(async (tx) => {
+      const [networkAddress] = await this.db
+        .update(networkAddresses)
+        .set(payload)
+        .where(eq(networkAddresses.publicId, publicId))
+        .returning();
 
-    return networkAddress;
+      if (!networkAddress) throw new Error('Failed to update network address');
+
+      tx.insert(auditLogs).values({
+        action: 'update',
+        entity: 'network_address',
+        entityId: networkAddress.id,
+        userId: networkAddress.addedBy,
+        metadata: {},
+        userAgent,
+        ipAddress,
+        changes: {},
+      });
+
+      return networkAddress;
+    });
+
+    return $networkAddress;
   }
 
-  async batchRemove({ ids }: DeleteNetworkAddressPayload) {
-    const deleted = await this.db
-      .delete(networkAddresses)
-      .where(inArray(networkAddresses.publicId, ids))
-      .returning();
+  async batchRemove(
+    { ids }: DeleteNetworkAddressPayload,
+    ipAddress: string | null,
+    userAgent: string | null,
+  ) {
+    const $deleted = await this.db.transaction(async (tx) => {
+      const deleted = await tx
+        .delete(networkAddresses)
+        .where(inArray(networkAddresses.publicId, ids))
+        .returning();
 
-    return deleted;
+      if (!deleted.length) throw new Error('Failed to delete network address');
+
+      const values = deleted.map((del) => ({
+        action: 'delete' as const,
+        entity: 'network_address' as const,
+        entityId: del.id,
+        userId: del.addedBy,
+        metadata: {},
+        userAgent,
+        ipAddress,
+        changes: {},
+      }));
+
+      tx.insert(auditLogs).values(values);
+
+      return deleted;
+    });
+
+    return $deleted;
   }
 }
