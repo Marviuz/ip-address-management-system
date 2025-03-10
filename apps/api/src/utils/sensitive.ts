@@ -1,5 +1,5 @@
 import { getTableColumns } from 'drizzle-orm';
-import { networkAddresses, users } from 'src/drizzle/schema';
+import { auditLogs, networkAddresses, users } from 'src/drizzle/schema';
 
 export const {
   id: usersId,
@@ -10,3 +10,9 @@ export const {
 
 export const { id: networkAddressId, ...networkAddressColumns } =
   getTableColumns(networkAddresses);
+
+export const {
+  id: auditLogsId,
+  userId,
+  ...auditLogsColumns
+} = getTableColumns(auditLogs);

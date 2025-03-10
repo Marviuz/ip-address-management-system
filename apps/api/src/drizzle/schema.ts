@@ -1,4 +1,9 @@
-import { type Changes, roles } from '@ip-address-management-system/shared';
+import {
+  auditLogsActions,
+  auditLogsEntity,
+  type ChangeSchema,
+  roles,
+} from '@ip-address-management-system/shared';
 import {
   integer,
   jsonb,
@@ -69,10 +74,10 @@ export const auditLogs = pgTable('audit_log', {
     .notNull()
     .references(() => users.id),
 
-  entity: varchar({ enum: ['network_address', 'user'] }).notNull(),
+  entity: varchar({ enum: auditLogsEntity }).notNull(),
   entityId: integer('entity_id').notNull(),
-  action: varchar({ enum: ['create', 'update', 'delete'] }).notNull(),
-  changes: jsonb().$type<Changes>().notNull(),
+  action: varchar({ enum: auditLogsActions }).notNull(),
+  changes: jsonb().$type<ChangeSchema>().notNull(),
   ipAddress: varchar('ip_address'),
   userAgent: varchar('user_agent'),
   metadata: jsonb().$type<Record<string, unknown>>(),
