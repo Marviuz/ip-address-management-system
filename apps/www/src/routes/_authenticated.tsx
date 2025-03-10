@@ -1,6 +1,9 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { refreshToken } from '@/lib/services/refresh-token';
 import { Header } from '@/features/header/components';
+import { AdminSidebar } from '@/features/admin-sidebar/components';
+import { queries } from '@/lib/queries';
 
 export const Route = createFileRoute('/_authenticated')({
   beforeLoad: async ({ context }) => {
@@ -20,10 +23,17 @@ export const Route = createFileRoute('/_authenticated')({
 });
 
 export function AuthenticatedLayout() {
+  const { data: user } = useSuspenseQuery(queries.users.me);
+
+  const isSuperAdmin = user.role === 'super_admin';
+
   return (
-    <>
-      <Header />
-      <Outlet />
-    </>
+    <div className="flex">
+      {isSuperAdmin ? <AdminSidebar /> : null}
+      <div className="grow">
+        <Header />
+        <Outlet />
+      </div>
+    </div>
   );
 }
