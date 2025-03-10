@@ -15,6 +15,7 @@ import { Route as AuthenticatedImport } from './routes/_authenticated';
 import { Route as IndexImport } from './routes/index';
 import { Route as AuthGoogleImport } from './routes/auth/google';
 import { Route as AuthenticatedDashboardIndexImport } from './routes/_authenticated/dashboard/index';
+import { Route as AuthenticatedActivityLogsIndexImport } from './routes/_authenticated/activity-logs/index';
 
 // Create/Update Routes
 
@@ -39,6 +40,13 @@ const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexImport.update({
     id: '/dashboard/',
     path: '/dashboard/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any);
+
+const AuthenticatedActivityLogsIndexRoute =
+  AuthenticatedActivityLogsIndexImport.update({
+    id: '/activity-logs/',
+    path: '/activity-logs/',
     getParentRoute: () => AuthenticatedRoute,
   } as any);
 
@@ -67,6 +75,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthGoogleImport;
       parentRoute: typeof rootRoute;
     };
+    '/_authenticated/activity-logs/': {
+      id: '/_authenticated/activity-logs/';
+      path: '/activity-logs';
+      fullPath: '/activity-logs';
+      preLoaderRoute: typeof AuthenticatedActivityLogsIndexImport;
+      parentRoute: typeof AuthenticatedImport;
+    };
     '/_authenticated/dashboard/': {
       id: '/_authenticated/dashboard/';
       path: '/dashboard';
@@ -80,10 +95,12 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedActivityLogsIndexRoute: typeof AuthenticatedActivityLogsIndexRoute;
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute;
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedActivityLogsIndexRoute: AuthenticatedActivityLogsIndexRoute,
   AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
 };
 
@@ -95,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute;
   '': typeof AuthenticatedRouteWithChildren;
   '/auth/google': typeof AuthGoogleRoute;
+  '/activity-logs': typeof AuthenticatedActivityLogsIndexRoute;
   '/dashboard': typeof AuthenticatedDashboardIndexRoute;
 }
 
@@ -102,6 +120,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute;
   '': typeof AuthenticatedRouteWithChildren;
   '/auth/google': typeof AuthGoogleRoute;
+  '/activity-logs': typeof AuthenticatedActivityLogsIndexRoute;
   '/dashboard': typeof AuthenticatedDashboardIndexRoute;
 }
 
@@ -110,19 +129,21 @@ export interface FileRoutesById {
   '/': typeof IndexRoute;
   '/_authenticated': typeof AuthenticatedRouteWithChildren;
   '/auth/google': typeof AuthGoogleRoute;
+  '/_authenticated/activity-logs/': typeof AuthenticatedActivityLogsIndexRoute;
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute;
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: '/' | '' | '/auth/google' | '/dashboard';
+  fullPaths: '/' | '' | '/auth/google' | '/activity-logs' | '/dashboard';
   fileRoutesByTo: FileRoutesByTo;
-  to: '/' | '' | '/auth/google' | '/dashboard';
+  to: '/' | '' | '/auth/google' | '/activity-logs' | '/dashboard';
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth/google'
+    | '/_authenticated/activity-logs/'
     | '/_authenticated/dashboard/';
   fileRoutesById: FileRoutesById;
 }
@@ -160,11 +181,16 @@ export const routeTree = rootRoute
     "/_authenticated": {
       "filePath": "_authenticated.tsx",
       "children": [
+        "/_authenticated/activity-logs/",
         "/_authenticated/dashboard/"
       ]
     },
     "/auth/google": {
       "filePath": "auth/google.tsx"
+    },
+    "/_authenticated/activity-logs/": {
+      "filePath": "_authenticated/activity-logs/index.tsx",
+      "parent": "/_authenticated"
     },
     "/_authenticated/dashboard/": {
       "filePath": "_authenticated/dashboard/index.tsx",

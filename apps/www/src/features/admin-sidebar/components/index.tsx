@@ -1,4 +1,8 @@
+import { Link } from '@tanstack/react-router';
 import { type FC } from 'react';
+import { Button } from '@/components/common/button';
+import { Route as activityLogsRoute } from '@/routes/_authenticated/activity-logs';
+import { Route as networkAddressRoute } from '@/routes/_authenticated/dashboard';
 
 export const AdminSidebar: FC = () => {
   return (
@@ -9,7 +13,24 @@ export const AdminSidebar: FC = () => {
         </h1>
       </div>
 
-      <div className="p-4">{/* TODO: Content */}</div>
+      <div className="p-4">
+        <div className="grid">
+          <Button
+            asChild
+            className="justify-start data-[status=active]:border"
+            variant="ghost"
+          >
+            <Link to={networkAddressRoute.to}>Network Addresses</Link>
+          </Button>
+          <Button
+            asChild
+            className="justify-start data-[status=active]:border"
+            variant="ghost"
+          >
+            <Link to={activityLogsRoute.to}>Activity Logs</Link>
+          </Button>
+        </div>
+      </div>
     </aside>
   );
 };
