@@ -89,26 +89,33 @@ export class NetworkAddressService {
     userAgent: string | null,
   ) {
     const $networkAddress = await this.db.transaction(async (tx) => {
-      const [networkAddress] = await this.db
-        .update(networkAddresses)
-        .set(payload)
-        .where(eq(networkAddresses.publicId, publicId))
-        .returning();
+      try {
+        const [networkAddress] = await this.db
+          .update(networkAddresses)
+          .set(payload)
+          .where(eq(networkAddresses.publicId, publicId))
+          .returning();
 
-      if (!networkAddress) throw new Error('Failed to update network address');
+        if (!networkAddress)
+          throw new Error('Failed to update network address');
 
-      await tx.insert(auditLogs).values({
-        action: 'update',
-        entity: 'network_address',
-        entityId: networkAddress.id,
-        userId: networkAddress.addedBy,
-        metadata: {},
-        userAgent,
-        ipAddress,
-        changes: {},
-      });
+        await tx.insert(auditLogs).values({
+          action: 'update',
+          entity: 'network_address',
+          entityId: networkAddress.id,
+          userId: networkAddress.addedBy,
+          metadata: {},
+          userAgent,
+          ipAddress,
+          changes: {},
+        });
 
-      return networkAddress;
+        return networkAddress;
+      } catch (e) {
+        // eslint-disable-next-line no-console -- log errors
+        console.log(e);
+        tx.rollback();
+      }
     });
 
     return $networkAddress;
@@ -120,27 +127,34 @@ export class NetworkAddressService {
     userAgent: string | null,
   ) {
     const $deleted = await this.db.transaction(async (tx) => {
-      const deleted = await tx
-        .delete(networkAddresses)
-        .where(inArray(networkAddresses.publicId, ids))
-        .returning();
+      try {
+        const deleted = await tx
+          .delete(networkAddresses)
+          .where(inArray(networkAddresses.publicId, ids))
+          .returning();
 
-      if (!deleted.length) throw new Error('Failed to delete network address');
+        if (!deleted.length)
+          throw new Error('Failed to delete network address');
 
-      const values = deleted.map((del) => ({
-        action: 'delete' as const,
-        entity: 'network_address' as const,
-        entityId: del.id,
-        userId: del.addedBy,
-        metadata: {},
-        userAgent,
-        ipAddress,
-        changes: {},
-      }));
+        const values = deleted.map((del) => ({
+          action: 'delete' as const,
+          entity: 'network_address' as const,
+          entityId: del.id,
+          userId: del.addedBy,
+          metadata: {},
+          userAgent,
+          ipAddress,
+          changes: {},
+        }));
 
-      await tx.insert(auditLogs).values(values);
+        await tx.insert(auditLogs).values(values);
 
-      return deleted;
+        return deleted;
+      } catch (e) {
+        // eslint-disable-next-line no-console -- log errors
+        console.log(e);
+        tx.rollback();
+      }
     });
 
     return $deleted;
