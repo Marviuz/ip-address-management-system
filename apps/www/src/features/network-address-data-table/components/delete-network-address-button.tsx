@@ -8,6 +8,7 @@ import { type FC } from 'react';
 import { toast } from 'sonner';
 import { useSearch } from '@tanstack/react-router';
 import { deleteNetworkAddresses } from '../lib/services/delete-network-addresses';
+import { DeleteNetworkAddressAlertDialog } from './delete-network-address-alert-dialog';
 import { queries } from '@/lib/queries';
 import { Button } from '@/components/common/button';
 
@@ -24,13 +25,15 @@ export const DeleteNetworkAddressButton: FC<
   const queryClient = useQueryClient();
   const { data: user } = useSuspenseQuery(queries.users.me);
   const { page, pageSize } = useSearch({ from: '/_authenticated/dashboard/' });
+
+  const isPlural = publicIds.length > 1;
+
   const { mutate } = useMutation({
     mutationFn: deleteNetworkAddresses,
     onSuccess: async () => {
       await queryClient.refetchQueries(
         queries.networkAddress.all({ page, pageSize }),
       );
-      const isPlural = publicIds.length > 1;
       const subject = isPlural ? 'network addresses' : 'network address';
       toast.info(`Deleted ${publicIds.length} ${subject} successfully`);
       onDelete();
@@ -38,16 +41,20 @@ export const DeleteNetworkAddressButton: FC<
   });
 
   return user.role === 'super_admin' ? (
-    <Button
-      className={!labled ? 'rounded-full' : undefined}
-      disabled={disabled}
-      size={labled ? 'sm' : 'icon'}
-      type="button"
-      variant="destructive"
-      onClick={() => mutate({ ids: publicIds })}
+    <DeleteNetworkAddressAlertDialog
+      isPlural={isPlural}
+      onContinue={() => mutate({ ids: publicIds })}
     >
-      <Trash />
-      {labled ? 'Delete Selected' : null}
-    </Button>
+      <Button
+        className={!labled ? 'rounded-full' : undefined}
+        disabled={disabled}
+        size={labled ? 'sm' : 'icon'}
+        type="button"
+        variant="destructive"
+      >
+        <Trash />
+        {labled ? 'Delete Selected' : null}
+      </Button>
+    </DeleteNetworkAddressAlertDialog>
   ) : null;
 };
