@@ -1,4 +1,7 @@
-import { type ChangeSchema } from '@ip-address-management-system/shared';
+import {
+  type PrimitiveSchema,
+  type ChangeSchema,
+} from '@ip-address-management-system/shared';
 import { diff as deepDiff } from 'deep-diff';
 
 function $diff<TOld, TNew>(...params: Parameters<typeof deepDiff<TOld, TNew>>) {
@@ -28,4 +31,18 @@ export function diff<TOld, TNew>(
     };
     return acc;
   }, {});
+}
+
+export function diffDeleted(
+  data: Record<string, PrimitiveSchema>,
+): ChangeSchema {
+  return Object.fromEntries(
+    Object.entries(data).map(([key, value]) => [
+      key,
+      {
+        old: value,
+        new: null,
+      },
+    ]),
+  );
 }

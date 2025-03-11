@@ -28,8 +28,11 @@ export const adminAuditLogsTableColumns = [
   }),
   columnHelper.accessor('action', {
     header: 'Action',
-    cell: ({ cell, row }) =>
-      row.original.action === 'update' ? (
+    cell: ({ cell, row }) => {
+      const action = row.original.action;
+      const showDiff = action !== 'create';
+
+      return showDiff ? (
         <Link
           className="capitalize underline underline-offset-4"
           from={activityLogsRoute.to}
@@ -39,6 +42,7 @@ export const adminAuditLogsTableColumns = [
         </Link>
       ) : (
         <span className="capitalize">{cell.getValue()}</span>
-      ),
+      );
+    },
   }),
 ];
