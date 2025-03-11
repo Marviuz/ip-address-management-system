@@ -4,6 +4,7 @@ import { type FC } from 'react';
 import { Input } from '@/components/common/input';
 import { RouteBasedPagination } from '@/components/common/route-based-pagination';
 import { queries } from '@/lib/queries';
+import { Label } from '@/components/common/label';
 
 export const AuditLogsTablePagination: FC = () => {
   const router = useRouter();
@@ -15,22 +16,25 @@ export const AuditLogsTablePagination: FC = () => {
   );
 
   return (
-    <div className="flex gap-4">
-      <Input
-        className="w-9 shrink-0 px-0 text-center"
-        defaultValue={search.pageSize}
-        type="text"
-        onKeyDown={async (e) => {
-          if (e.key === 'Enter') {
-            const pageSize = parseInt(e.currentTarget.value);
-            e.preventDefault();
-            await router.navigate({
-              to: '/activity-logs',
-              search: (prev) => ({ ...prev, pageSize }),
-            });
-          }
-        }}
-      />
+    <div className="flex items-center gap-4">
+      <Label className="flex shrink-0 items-center gap-4">
+        Items per page:
+        <Input
+          className="w-9 shrink-0 px-0 text-center"
+          defaultValue={search.pageSize}
+          type="text"
+          onKeyDown={async (e) => {
+            if (e.key === 'Enter') {
+              const pageSize = parseInt(e.currentTarget.value);
+              e.preventDefault();
+              await router.navigate({
+                to: '/activity-logs',
+                search: (prev) => ({ ...prev, pageSize }),
+              });
+            }
+          }}
+        />
+      </Label>
       <RouteBasedPagination
         currentPage={search.page}
         to="/activity-logs"

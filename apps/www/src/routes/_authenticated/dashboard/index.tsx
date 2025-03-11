@@ -23,6 +23,7 @@ function DashboardPage() {
     <main className="py-8">
       <div className="container mx-auto px-4">
         <div className="grid gap-8">
+          <h1 className="text-2xl font-bold">IP Addresses</h1>
           <Suspense fallback={<div>Loading...</div>}>
             <NetworkAddressDataTable />
           </Suspense>

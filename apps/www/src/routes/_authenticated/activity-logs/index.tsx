@@ -29,15 +29,18 @@ function ActivityLogsPage() {
   return (
     <main className="py-8">
       <div className="container mx-auto px-4">
-        <div className="grid gap-4">
-          <Suspense fallback={<div>Loading...</div>}>
-            <AdminAuditLogsTable />
-          </Suspense>
-          <AuditLogDetailsSheet />
-          <div className="flex justify-end">
+        <div className="grid gap-8">
+          <h1 className="text-2xl font-bold">Activity Logs</h1>
+          <div className="grid gap-4">
             <Suspense fallback={<div>Loading...</div>}>
-              <AuditLogsTablePagination />
+              <AdminAuditLogsTable />
             </Suspense>
+            <AuditLogDetailsSheet />
+            <div className="flex justify-end">
+              <Suspense fallback={<div>Loading...</div>}>
+                <AuditLogsTablePagination />
+              </Suspense>
+            </div>
           </div>
         </div>
       </div>
