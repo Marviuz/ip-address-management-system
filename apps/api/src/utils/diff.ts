@@ -33,15 +33,16 @@ export function diff<TOld, TNew>(
   }, {});
 }
 
-export function diffDeleted(
+export function oneSidedDiff(
   data: Record<string, PrimitiveSchema>,
+  type: 'old' | 'new',
 ): ChangeSchema {
   return Object.fromEntries(
     Object.entries(data).map(([key, value]) => [
       key,
       {
-        old: value,
-        new: null,
+        old: type === 'old' ? value : null,
+        new: type === 'new' ? value : null,
       },
     ]),
   );

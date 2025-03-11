@@ -9,7 +9,7 @@ import { DRIZZLE } from 'src/drizzle/drizzle.module';
 import { auditLogs, networkAddresses, users } from 'src/drizzle/schema';
 import { DrizzleDatabase } from 'src/drizzle/types/drizzle';
 import { InsertNetworkAddressSchema } from 'src/types/network-address';
-import { diff, diffDeleted } from 'src/utils/diff';
+import { diff, oneSidedDiff } from 'src/utils/diff';
 import { networkAddressColumns, usersColumns } from 'src/utils/sensitive';
 import { withPagination } from 'src/utils/with-pagination';
 
@@ -40,7 +40,7 @@ export class NetworkAddressService {
           metadata: {},
           userAgent,
           ipAddress,
-          changes: {},
+          changes: oneSidedDiff(networkAddress, 'new'),
         });
 
         return networkAddress;
@@ -152,7 +152,7 @@ export class NetworkAddressService {
           metadata: {},
           userAgent,
           ipAddress,
-          changes: diffDeleted(del),
+          changes: oneSidedDiff(del, 'old'),
         }));
 
         await tx.insert(auditLogs).values(values);
