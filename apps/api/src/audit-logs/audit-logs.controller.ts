@@ -15,8 +15,8 @@ export class AuditLogsController {
     return this.auditLogsService.findAll(page, pageSize);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.auditLogsService.findOne(Number(id));
+  @Get(':publicId')
+  findOne(@Param('publicId') publicId: string) {
+    return this.auditLogsService.findOne(publicId);
   }
 }

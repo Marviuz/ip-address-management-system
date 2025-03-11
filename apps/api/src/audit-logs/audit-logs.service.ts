@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { asc, eq } from 'drizzle-orm';
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
 import { auditLogs, users } from 'src/drizzle/schema';
@@ -27,7 +27,18 @@ export class AuditLogsService {
     return data;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auditLog`;
+  async findOne(publicId: string) {
+    const [data] = await this.db
+      .select({ ...auditLogsColumns, user: usersColumns })
+      .from(auditLogs)
+      .where(eq(auditLogs.publicId, publicId))
+      .leftJoin(users, eq(auditLogs.userId, users.id));
+
+    if (!data)
+      throw new NotFoundException(
+        `Audit log with id ${publicId} does not exist`,
+      );
+
+    return data;
   }
 }
