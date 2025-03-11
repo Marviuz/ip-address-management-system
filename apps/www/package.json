@@ -7,7 +7,8 @@
     "build": "tsc -b && vite build",
     "dev": "vite",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.5",
@@ -51,6 +52,10 @@
     "@tanstack/react-query-devtools": "^5.67.2",
     "@tanstack/react-router-devtools": "^1.114.13",
     "@tanstack/router-plugin": "^1.114.13",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.1",
     "@total-typescript/ts-reset": "^0.6.1",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^22.13.10",
@@ -63,7 +68,9 @@
     "eslint-config-turbo": "^2.4.4",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "jsdom": "^26.0.0",
     "typescript": "~5.7.3",
-    "vite": "^6.2.1"
+    "vite": "^6.2.1",
+    "vitest": "^3.0.8"
   }
 }
