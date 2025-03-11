@@ -9,6 +9,7 @@ import { DRIZZLE } from 'src/drizzle/drizzle.module';
 import { auditLogs, networkAddresses, users } from 'src/drizzle/schema';
 import { DrizzleDatabase } from 'src/drizzle/types/drizzle';
 import { InsertNetworkAddressSchema } from 'src/types/network-address';
+import { diff } from 'src/utils/diff';
 import { networkAddressColumns, usersColumns } from 'src/utils/sensitive';
 import { withPagination } from 'src/utils/with-pagination';
 
@@ -90,6 +91,13 @@ export class NetworkAddressService {
   ) {
     const $networkAddress = await this.db.transaction(async (tx) => {
       try {
+        const initialData = await tx.query.networkAddresses.findFirst({
+          where: eq(networkAddresses.publicId, publicId),
+        });
+
+        if (!initialData)
+          throw new Error("Unable to update network address that doesn' exist");
+
         const [networkAddress] = await this.db
           .update(networkAddresses)
           .set(payload)
@@ -107,7 +115,7 @@ export class NetworkAddressService {
           metadata: {},
           userAgent,
           ipAddress,
-          changes: {},
+          changes: diff(initialData, networkAddress),
         });
 
         return networkAddress;

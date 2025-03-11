@@ -41,14 +41,16 @@ export type NetworkAddressSchema = z.infer<typeof networkAddressSchema>;
 export const networkAddressListSchema = createListSchema(networkAddressSchema);
 export type NetworkAddressListSchema = z.infer<typeof networkAddressListSchema>;
 
-const primitiveSchema = z.union([
+export const primitiveSchema = z.union([
   z.string(),
   z.number(),
   z.boolean(),
   z.null(),
   z.symbol(),
   z.bigint(),
+  z.date(),
 ]);
+export type PrimitiveSchema = z.infer<typeof primitiveSchema>;
 export const changeSchema = z.record(
   z.object({ old: primitiveSchema, new: primitiveSchema }),
 );
