@@ -46,8 +46,16 @@ export class AuthService {
     });
   }
 
-  async validateGoogleUser(oauthUser: InsertUserSchema) {
-    const user = await this.userService.findOneOrCreate(oauthUser);
+  async validateGoogleUser(
+    oauthUser: InsertUserSchema,
+    ipAddress: string | null,
+    userAgent: string | null,
+  ) {
+    const user = await this.userService.findOneOrCreate(
+      oauthUser,
+      ipAddress,
+      userAgent,
+    );
 
     if (!user) throw new Error('Failed to find or create User');
 

@@ -39,7 +39,7 @@ export const RouteBasedPagination: FC<RouteBasedPaginationProps> = ({
             {page > 0 ? (
               <PaginationLink
                 isActive={page === currentPage}
-                search={{ page }}
+                search={(prevParams) => ({ ...prevParams, page })}
                 to={to}
               >
                 {page}

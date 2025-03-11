@@ -19,6 +19,7 @@ export const NetworkAddressDataTable: FC = () => {
   const table = useTable({
     data: networkAddressApiTableAdapter(networkAddressesData.items),
     columns: networkAddressTableColumns,
+    getRowId: (row) => row.addressId,
     state: {
       columnVisibility: {
         select: userData.role === 'super_admin',
@@ -26,9 +27,7 @@ export const NetworkAddressDataTable: FC = () => {
     },
   });
 
-  const selectedIds = table
-    .getSelectedRowModel()
-    .rows.map((row) => row.original.addressId);
+  const selectedIds = Object.keys(table.getState().rowSelection);
 
   return (
     <div className="grid gap-4">

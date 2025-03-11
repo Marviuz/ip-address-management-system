@@ -13,3 +13,7 @@ export function createListSchema<TOut, TDef extends ZodTypeDef, TIn>(
     }),
   });
 }
+
+export function snakeToNoCase(str: string) {
+  return str.replace('_', ' ').trim();
+}

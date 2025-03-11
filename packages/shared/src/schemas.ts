@@ -1,5 +1,10 @@
 import { z } from 'zod';
-import { roles, TOKEN_LABELS } from './consts';
+import {
+  auditLogsActions,
+  auditLogsEntity,
+  roles,
+  TOKEN_LABELS,
+} from './consts';
 import { createListSchema } from './utils';
 
 export const tokenSchema = z.object({
@@ -35,3 +40,36 @@ export type NetworkAddressSchema = z.infer<typeof networkAddressSchema>;
 
 export const networkAddressListSchema = createListSchema(networkAddressSchema);
 export type NetworkAddressListSchema = z.infer<typeof networkAddressListSchema>;
+
+export const primitiveSchema = z.union([
+  z.string(),
+  z.number(),
+  z.boolean(),
+  z.null(),
+  z.symbol(),
+  z.bigint(),
+  z.date(),
+]);
+export type PrimitiveSchema = z.infer<typeof primitiveSchema>;
+export const changeSchema = z.record(
+  z.object({ old: primitiveSchema, new: primitiveSchema }),
+);
+export type ChangeSchema = z.infer<typeof changeSchema>;
+
+export const auditLogsSchema = z.object({
+  publicId: z.string(),
+  entity: z.enum(auditLogsEntity),
+  entityId: z.number(),
+  action: z.enum(auditLogsActions),
+  changes: changeSchema,
+  ipAddress: z.string(),
+  userAgent: z.string(),
+  metadata: z.record(z.any()),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  user: userSchema,
+});
+export type AuditLogsSchema = z.infer<typeof auditLogsSchema>;
+
+export const auditLogsListSchema = createListSchema(auditLogsSchema);
+export type AuditLogsListSchema = z.infer<typeof auditLogsListSchema>;
