@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { zodValidator } from '@tanstack/zod-adapter';
 import { Suspense } from 'react';
 import { z } from 'zod';
@@ -6,6 +6,7 @@ import { AdminAuditLogsTable } from '@/features/admin-audit-logs-table/component
 import { AuditLogsTablePagination } from '@/features/admin-audit-logs-table/components/audit-logs-table-pagination';
 import { paginationSchema } from '@/lib/schemas/pagination';
 import { AuditLogDetailsSheet } from '@/features/admin-audit-logs-table/components/audit-log-details-sheet';
+import { queries } from '@/lib/queries';
 
 const routeSchema = paginationSchema.extend({
   preview: z.string().optional(),
@@ -14,6 +15,14 @@ const routeSchema = paginationSchema.extend({
 export const Route = createFileRoute('/_authenticated/activity-logs/')({
   component: ActivityLogsPage,
   validateSearch: zodValidator(routeSchema),
+  beforeLoad: async ({ context }) => {
+    const { role } = await context.queryClient.fetchQuery(queries.users.me);
+    if (role !== 'super_admin') {
+      return redirect({
+        to: '/dashboard',
+      });
+    }
+  },
 });
 
 function ActivityLogsPage() {
