@@ -2,9 +2,12 @@ import {
   type AuditLogsAction,
   type ChangeSchema,
 } from '@ip-address-management-system/shared';
+import { Link } from '@tanstack/react-router';
 import { createColumnHelper } from '@tanstack/react-table';
+import { Route as activityLogsRoute } from '@/routes/_authenticated/activity-logs';
 
 export type AdminAuditLogsColumn = {
+  logId: string;
   displayName: string;
   action: AuditLogsAction;
   changes: ChangeSchema;
@@ -25,6 +28,17 @@ export const adminAuditLogsTableColumns = [
   }),
   columnHelper.accessor('action', {
     header: 'Action',
-    cell: ({ cell }) => cell.getValue(),
+    cell: ({ cell, row }) =>
+      row.original.action === 'update' ? (
+        <Link
+          className="capitalize underline underline-offset-4"
+          from={activityLogsRoute.to}
+          search={(prev) => ({ ...prev, preview: row.original.logId })}
+        >
+          {cell.getValue()}
+        </Link>
+      ) : (
+        <span className="capitalize">{cell.getValue()}</span>
+      ),
   }),
 ];

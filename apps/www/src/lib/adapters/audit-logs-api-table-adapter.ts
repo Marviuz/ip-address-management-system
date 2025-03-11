@@ -5,6 +5,7 @@ export function auditLogsApiTableAdapter(
   items: AuditLogsListSchema['items'],
 ): AdminAuditLogsColumn[] {
   return items.map((item) => ({
+    logId: item.publicId,
     action: item.action,
     changes: item.changes,
     ipAddress: item.ipAddress,
