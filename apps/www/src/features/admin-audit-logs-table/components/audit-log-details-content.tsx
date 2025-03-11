@@ -53,32 +53,34 @@ export const AuditLogDetailsContent: FC<AuditLogDetailsContentProps> = ({
             <h2 className="text-lg font-bold">Initiator</h2>
           </CardHeader>
           <Table>
-            <TableRow>
-              <TableCell>Username:</TableCell>
-              <TableCell>{data.user.username}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Email:</TableCell>
-              <TableCell>{data.user.email}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Role:</TableCell>
-              <TableCell className="capitalize">
-                {snakeToNoCase(data.user.role)}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>IP Address:</TableCell>
-              <TableCell>{data.ipAddress}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>User Agent:</TableCell>
-              <TableCell>{data.userAgent}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Action:</TableCell>
-              <TableCell className="capitalize">{data.action}</TableCell>
-            </TableRow>
+            <TableBody>
+              <TableRow>
+                <TableCell>Username:</TableCell>
+                <TableCell>{data.user.username}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Email:</TableCell>
+                <TableCell>{data.user.email}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Role:</TableCell>
+                <TableCell className="capitalize">
+                  {snakeToNoCase(data.user.role)}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>IP Address:</TableCell>
+                <TableCell>{data.ipAddress}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>User Agent:</TableCell>
+                <TableCell>{data.userAgent}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Action:</TableCell>
+                <TableCell className="capitalize">{data.action}</TableCell>
+              </TableRow>
+            </TableBody>
           </Table>
         </Card>
       </div>
