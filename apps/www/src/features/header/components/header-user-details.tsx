@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { type FC } from 'react';
-import { LogOut } from 'lucide-react';
+import { ChevronDown, LogOut } from 'lucide-react';
 import { snakeToNoCase } from '@ip-address-management-system/shared';
 import { Button } from '@/components/common/button';
 import {
@@ -18,9 +18,10 @@ export const HeaderUserDetails: FC = () => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost">
+        <Button className="group" variant="ghost">
           {userData.username ??
             `${userData.givenName} ${userData.familyName ?? ''} `}
+          <ChevronDown className="transition group-data-[state=open]:rotate-180" />
         </Button>
       </PopoverTrigger>
       <PopoverContent>
