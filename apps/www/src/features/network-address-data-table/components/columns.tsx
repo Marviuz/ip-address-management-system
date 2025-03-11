@@ -1,7 +1,8 @@
-import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper } from '@tanstack/react-table';
 import { getNetworkAddressType } from '../utils/get-network-address-type';
-import { EditNetworkAddressButton } from './edit-network-address-button';
 import { DeleteNetworkAddressButton } from './delete-network-address-button';
+import { EditNetworkAddressButton } from './edit-network-address-button';
+import { DateTimeDetailsHoverCard } from '@/components/datetime-details-hover-card';
 import { Checkbox } from '@/components/common/checkbox';
 
 export type NetworkAddressTableColumns = {
@@ -9,14 +10,13 @@ export type NetworkAddressTableColumns = {
   label: string;
   comments?: string;
   addressId: string;
+  addedAt: Date;
+  modifiedAt: Date;
 };
 
 const columnHelper = createColumnHelper<NetworkAddressTableColumns>();
 
-export const networkAddressTableColumns: ColumnDef<
-  NetworkAddressTableColumns,
-  keyof NetworkAddressTableColumns
->[] = [
+export const networkAddressTableColumns = [
   columnHelper.display({
     id: 'select',
     header: ({ table }) => (
@@ -42,7 +42,7 @@ export const networkAddressTableColumns: ColumnDef<
   }),
   columnHelper.accessor('address', {
     header: 'Address',
-    cell: (address) => address.getValue(),
+    cell: ({ cell }) => cell.getValue(),
   }),
   columnHelper.display({
     header: 'Type',
@@ -55,6 +55,15 @@ export const networkAddressTableColumns: ColumnDef<
   columnHelper.accessor('comments', {
     header: 'Comments',
     cell: (comment) => comment.getValue(),
+  }),
+  columnHelper.accessor('addedAt', {
+    header: 'Date Added',
+    cell: ({ cell, row }) => (
+      <DateTimeDetailsHoverCard
+        createdAt={cell.getValue()}
+        updatedAt={row.original.modifiedAt}
+      />
+    ),
   }),
   columnHelper.display({
     id: 'actions',

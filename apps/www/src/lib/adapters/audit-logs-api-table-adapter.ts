@@ -14,5 +14,6 @@ export function auditLogsApiTableAdapter(
       item.user.username ??
       `${item.user.givenName} ${item.user.familyName ?? ''}`,
     userAgent: item.userAgent,
+    recordedAt: item.createdAt,
   }));
 }

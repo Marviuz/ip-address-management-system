@@ -34,7 +34,7 @@ export const networkAddressSchema = z.object({
   comments: z.string(),
   addedBy: userSchema,
   createdAt: z.coerce.date(),
-  updatedAt: z.coerce.string(),
+  updatedAt: z.coerce.date(),
 });
 export type NetworkAddressSchema = z.infer<typeof networkAddressSchema>;
 
@@ -65,8 +65,8 @@ export const auditLogsSchema = z.object({
   ipAddress: z.string(),
   userAgent: z.string(),
   metadata: z.record(z.any()),
-  createdAt: z.string(),
-  updatedAt: z.string(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
   user: userSchema,
 });
 export type AuditLogsSchema = z.infer<typeof auditLogsSchema>;

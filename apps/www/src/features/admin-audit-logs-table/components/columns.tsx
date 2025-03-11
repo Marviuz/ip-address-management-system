@@ -5,6 +5,7 @@ import {
 import { Link } from '@tanstack/react-router';
 import { createColumnHelper } from '@tanstack/react-table';
 import { Route as activityLogsRoute } from '@/routes/_authenticated/activity-logs';
+import { DateTimeDetailsHoverCard } from '@/components/datetime-details-hover-card';
 
 export type AdminAuditLogsColumn = {
   logId: string;
@@ -14,6 +15,7 @@ export type AdminAuditLogsColumn = {
   ipAddress: string;
   userAgent: string;
   metadata: Record<string, unknown>;
+  recordedAt: Date;
 };
 
 const columnHelper = createColumnHelper<AdminAuditLogsColumn>();
@@ -36,6 +38,15 @@ export const adminAuditLogsTableColumns = [
       >
         {cell.getValue()}
       </Link>
+    ),
+  }),
+  columnHelper.accessor('recordedAt', {
+    header: 'Recorded At',
+    cell: ({ cell }) => (
+      <DateTimeDetailsHoverCard
+        createdAt={cell.getValue()}
+        createdLabel="Date recorded"
+      />
     ),
   }),
 ];

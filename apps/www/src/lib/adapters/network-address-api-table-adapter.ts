@@ -9,5 +9,7 @@ export function networkAddressApiTableAdapter(
     label: item.label,
     comments: item.comments,
     addressId: item.publicId,
+    addedAt: item.createdAt,
+    modifiedAt: item.updatedAt,
   }));
 }
