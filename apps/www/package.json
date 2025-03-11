@@ -21,7 +21,6 @@
     "@radix-ui/react-popover": "^1.1.6",
     "@radix-ui/react-slot": "^1.1.2",
     "@tailwindcss/vite": "^4.0.12",
-    "@tanstack/eslint-plugin-router": "^1.114.12",
     "@tanstack/react-query": "^5.67.2",
     "@tanstack/react-router": "^1.114.13",
     "@tanstack/react-table": "^8.21.2",
@@ -43,8 +42,9 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-router": "^1.114.12",
     "@tanstack/react-query-devtools": "^5.67.2",
-    "@tanstack/router-devtools": "^1.114.13",
+    "@tanstack/react-router-devtools": "^1.114.13",
     "@tanstack/router-plugin": "^1.114.13",
     "@total-typescript/ts-reset": "^0.6.1",
     "@types/js-cookie": "^3.0.6",
