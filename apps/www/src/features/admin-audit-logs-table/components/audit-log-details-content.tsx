@@ -55,6 +55,14 @@ export const AuditLogDetailsContent: FC<AuditLogDetailsContentProps> = ({
           <Table>
             <TableBody>
               <TableRow>
+                <TableCell>Given Name:</TableCell>
+                <TableCell>{data.user.givenName}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Family Name:</TableCell>
+                <TableCell>{data.user.familyName}</TableCell>
+              </TableRow>
+              <TableRow>
                 <TableCell>Username:</TableCell>
                 <TableCell>{data.user.username}</TableCell>
               </TableRow>
