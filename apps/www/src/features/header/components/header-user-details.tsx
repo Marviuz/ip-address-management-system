@@ -1,6 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { type FC } from 'react';
 import { LogOut } from 'lucide-react';
+import { snakeToNoCase } from '@ip-address-management-system/shared';
 import { Button } from '@/components/common/button';
 import {
   Popover,
@@ -27,7 +28,7 @@ export const HeaderUserDetails: FC = () => {
           <div className="font-bold">{`${userData.givenName} ${userData.familyName ?? ''}`}</div>
           {userData.username ? <div>{userData.username}</div> : null}
           <div className="text-muted-foreground text-xs capitalize">
-            {userData.role}
+            {snakeToNoCase(userData.role)}
           </div>
           <div className="text-muted-foreground text-sm">{userData.email}</div>
           <Button

@@ -25,7 +25,7 @@ export const AuditLogDetailsSheet: FC = () => {
         navigate({ search: (prev) => ({ ...prev, preview: undefined }) })
       }
     >
-      <SheetContent className="w-[calc(theme(width.full)-theme(width.20))] sm:max-w-7xl">
+      <SheetContent className="w-[calc(theme(width.full)-theme(width.20))] sm:max-w-3xl">
         <SheetHeader>
           <SheetTitle>Audit Log Details</SheetTitle>
           <SheetDescription>View details of the audit log</SheetDescription>
