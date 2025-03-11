@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'nprogress/nprogress.css';
 @import '@fontsource-variable/geist';
 
 @plugin 'tailwindcss-animate';
@@ -88,5 +89,16 @@
   }
   body {
     @apply bg-background text-foreground font-geist;
+  }
+}
+
+#nprogress {
+  .bar {
+    @apply bg-foreground;
+  }
+  .peg {
+    box-shadow:
+      0 0 10px var(--foreground),
+      0 0 5px var(--foreground);
   }
 }
