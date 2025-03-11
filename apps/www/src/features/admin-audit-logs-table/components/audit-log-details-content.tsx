@@ -1,16 +1,15 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { type FC } from 'react';
 import { snakeToNoCase } from '@ip-address-management-system/shared';
+import { AuditLogDiffTable } from './audit-log-diff-table';
 import { queries } from '@/lib/queries';
 import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from '@/components/common/table';
-import { Card, CardHeader } from '@/components/common/card';
+import { Card, CardHeader, CardTitle } from '@/components/common/card';
 
 type AuditLogDetailsContentProps = {
   publicId: string;
@@ -21,36 +20,51 @@ export const AuditLogDetailsContent: FC<AuditLogDetailsContentProps> = ({
 }) => {
   const { data } = useSuspenseQuery(queries.auditLogs.byPublicId({ publicId }));
 
-  const isUpdateAction = data.action === 'update';
+  const shouldShowChanges =
+    data.action === 'update' ||
+    data.action === 'delete' ||
+    data.action === 'create';
+
   const changes = Object.entries(data.changes);
 
   return (
-    <div className="grid gap-8">
-      <Table>
-        {isUpdateAction ? (
-          <TableHeader>
-            <TableRow>
-              <TableHead />
-              <TableHead>Old</TableHead>
-              <TableHead>New</TableHead>
-            </TableRow>
-          </TableHeader>
-        ) : null}
-        <TableBody>
-          {changes.map(([key, value]) => (
-            <TableRow key={key}>
-              <TableCell>{key}</TableCell>
-              <TableCell>{value.old?.toString()}</TableCell>
-              <TableCell>{value.new?.toString()}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <div className="px-4">
+      <div className="grid gap-8">
+        <Card className="py-4">
+          <CardHeader className="px-2">
+            <CardTitle className="capitalize">{data.action}</CardTitle>
+          </CardHeader>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell>IP Address:</TableCell>
+                <TableCell>{data.ipAddress}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>User Agent:</TableCell>
+                <TableCell>{data.userAgent}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Action:</TableCell>
+                <TableCell className="capitalize">{data.action}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Card>
 
-      <div className="px-4">
-        <Card>
-          <CardHeader>
-            <h2 className="text-lg font-bold">Initiator</h2>
+        {shouldShowChanges ? (
+          <Card className="overflow-clip p-0">
+            <AuditLogDiffTable
+              changes={changes}
+              showNew={data.action === 'update' || data.action === 'create'}
+              showOld={data.action === 'update' || data.action === 'delete'}
+            />
+          </Card>
+        ) : null}
+
+        <Card className="py-4">
+          <CardHeader className="px-2">
+            <CardTitle>Initiator</CardTitle>
           </CardHeader>
           <Table>
             <TableBody>
@@ -75,18 +89,6 @@ export const AuditLogDetailsContent: FC<AuditLogDetailsContentProps> = ({
                 <TableCell className="capitalize">
                   {snakeToNoCase(data.user.role)}
                 </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>IP Address:</TableCell>
-                <TableCell>{data.ipAddress}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>User Agent:</TableCell>
-                <TableCell>{data.userAgent}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Action:</TableCell>
-                <TableCell className="capitalize">{data.action}</TableCell>
               </TableRow>
             </TableBody>
           </Table>

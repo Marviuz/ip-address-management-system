@@ -28,21 +28,14 @@ export const adminAuditLogsTableColumns = [
   }),
   columnHelper.accessor('action', {
     header: 'Action',
-    cell: ({ cell, row }) => {
-      const action = row.original.action;
-      const showDiff = action !== 'create';
-
-      return showDiff ? (
-        <Link
-          className="capitalize underline underline-offset-4"
-          from={activityLogsRoute.to}
-          search={(prev) => ({ ...prev, preview: row.original.logId })}
-        >
-          {cell.getValue()}
-        </Link>
-      ) : (
-        <span className="capitalize">{cell.getValue()}</span>
-      );
-    },
+    cell: ({ cell, row }) => (
+      <Link
+        className="capitalize underline underline-offset-4"
+        from={activityLogsRoute.to}
+        search={(prev) => ({ ...prev, preview: row.original.logId })}
+      >
+        {cell.getValue()}
+      </Link>
+    ),
   }),
 ];
