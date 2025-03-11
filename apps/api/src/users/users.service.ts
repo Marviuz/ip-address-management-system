@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import { type SetRequired } from 'type-fest';
+import { AuditLogsAction } from '@ip-address-management-system/shared';
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
 import { auditLogs, users } from 'src/drizzle/schema';
 import { DrizzleDatabase } from 'src/drizzle/types/drizzle';
@@ -58,12 +59,42 @@ export class UsersService {
     return foundUser;
   }
 
-  async updateUser(user: SetRequired<UpdateUserSchema, 'publicId'>) {
-    const [updatedUser] = await this.db
-      .update(users)
-      .set(user)
-      .where(eq(users.publicId, user.publicId))
-      .returning();
+  async updateUser(
+    user: SetRequired<UpdateUserSchema, 'publicId'>,
+    ...params: [AuditLogsAction, string | null, string | null] | []
+  ) {
+    const updatedUser = await this.db.transaction(async (tx) => {
+      try {
+        const [$updatedUser] = await tx
+          .update(users)
+          .set(user)
+          .where(eq(users.publicId, user.publicId))
+          .returning();
+
+        if (!$updatedUser) throw new Error('Failed to update user');
+
+        if (params.length === 3) {
+          const [action, ipAddress, userAgent] = params;
+
+          await tx.insert(auditLogs).values({
+            action,
+            entity: 'user',
+            entityId: $updatedUser.id,
+            userId: $updatedUser.id,
+            metadata: {},
+            userAgent,
+            ipAddress,
+            changes: {},
+          });
+        }
+
+        return $updatedUser;
+      } catch (e) {
+        // eslint-disable-next-line no-console -- log errors
+        console.log(e);
+        tx.rollback();
+      }
+    });
 
     return updatedUser;
   }

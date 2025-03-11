@@ -1,3 +1,4 @@
+import { AuditLogsAction } from '@ip-address-management-system/shared';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { hash, verify } from 'argon2';
@@ -22,16 +23,22 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  async login(userPublicId: string) {
+  async login(
+    userPublicId: string,
+    ...params: [AuditLogsAction, string | null, string | null] | []
+  ) {
     const { accessToken, refreshToken } =
       await this.generateTokens(userPublicId);
 
     const hashedRefreshToken = await hash(refreshToken);
 
-    const updatedUser = await this.userService.updateUser({
-      refreshToken: hashedRefreshToken,
-      publicId: userPublicId,
-    });
+    const updatedUser = await this.userService.updateUser(
+      {
+        refreshToken: hashedRefreshToken,
+        publicId: userPublicId,
+      },
+      ...params,
+    );
 
     if (!updatedUser)
       throw new Error('Failed to update User with refreshToken');
@@ -39,11 +46,20 @@ export class AuthService {
     return { ...updatedUser, accessToken, refreshToken };
   }
 
-  async logout(userPublicId: string) {
-    return this.userService.updateUser({
-      publicId: userPublicId,
-      refreshToken: null,
-    });
+  async logout(
+    userPublicId: string,
+    ipAddress: string | null,
+    userAgent: string | null,
+  ) {
+    return this.userService.updateUser(
+      {
+        publicId: userPublicId,
+        refreshToken: null,
+      },
+      'logout',
+      ipAddress,
+      userAgent,
+    );
   }
 
   async validateGoogleUser(

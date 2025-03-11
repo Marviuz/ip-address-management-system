@@ -11,5 +11,11 @@ export const SESSION_COOKIE = '__x_auth_sess__';
 export const auditLogsEntity = ['network_address', 'user'] as const;
 export type AuditLogsEntity = (typeof auditLogsEntity)[number];
 
-export const auditLogsActions = ['create', 'update', 'delete'] as const;
+export const auditLogsActions = [
+  'create',
+  'update',
+  'delete',
+  'login',
+  'logout',
+] as const;
 export type AuditLogsAction = (typeof auditLogsActions)[number];
