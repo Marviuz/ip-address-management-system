@@ -1,14 +1,12 @@
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter, useSearch } from '@tanstack/react-router';
 import { type FC } from 'react';
 import { toast } from 'sonner';
 import { editNetworkAddress } from '../lib/services/edit-network-address';
 import { NetworkAddressForm } from './network-address-form';
 import { queries } from '@/lib/queries';
+import { useSuspenseAuthedUser } from '@/hooks/use-user-queries';
+import { useNetworkAddressByPublicId } from '@/hooks/use-network-address-queries';
 
 type EditNetworkAddressFormProps = {
   publicId: string;
@@ -20,10 +18,9 @@ export const EditNetworkAddressForm: FC<EditNetworkAddressFormProps> = ({
   const queryClient = useQueryClient();
   const router = useRouter();
   const { page, pageSize } = useSearch({ from: '/_authenticated/dashboard/' });
-  const { data: userData } = useSuspenseQuery(queries.users.me);
-  const { data: networkAddressData } = useSuspenseQuery({
-    ...queries.networkAddress.byPublicId({ publicId }),
-    staleTime: 0,
+  const { data: userData } = useSuspenseAuthedUser();
+  const { data: networkAddressData } = useNetworkAddressByPublicId({
+    publicId,
   });
   const { mutate } = useMutation({
     mutationFn: editNetworkAddress,

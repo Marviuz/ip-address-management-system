@@ -1,8 +1,6 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { type FC } from 'react';
 import { snakeToNoCase } from '@ip-address-management-system/shared';
 import { AuditLogDiffTable } from './audit-log-diff-table';
-import { queries } from '@/lib/queries';
 import {
   Table,
   TableBody,
@@ -10,6 +8,7 @@ import {
   TableRow,
 } from '@/components/common/table';
 import { Card, CardHeader, CardTitle } from '@/components/common/card';
+import { useAuditLogByPublicId } from '@/hooks/use-audit-log-queries';
 
 type AuditLogDetailsContentProps = {
   publicId: string;
@@ -18,7 +17,7 @@ type AuditLogDetailsContentProps = {
 export const AuditLogDetailsContent: FC<AuditLogDetailsContentProps> = ({
   publicId,
 }) => {
-  const { data } = useSuspenseQuery(queries.auditLogs.byPublicId({ publicId }));
+  const { data } = useAuditLogByPublicId({ publicId });
 
   const shouldShowChanges =
     data.action === 'update' ||

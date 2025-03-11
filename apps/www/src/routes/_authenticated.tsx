@@ -1,9 +1,8 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
-import { useQuery } from '@tanstack/react-query';
 import { refreshToken } from '@/lib/services/refresh-token';
 import { Header } from '@/features/header/components';
 import { AdminSidebar } from '@/features/admin-sidebar/components';
-import { queries } from '@/lib/queries';
+import { useAuthedUser } from '@/hooks/use-user-queries';
 
 export const Route = createFileRoute('/_authenticated')({
   beforeLoad: async ({ context }) => {
@@ -23,7 +22,7 @@ export const Route = createFileRoute('/_authenticated')({
 });
 
 export function AuthenticatedLayout() {
-  const { data: user } = useQuery(queries.users.me);
+  const { data: user } = useAuthedUser();
 
   const isSuperAdmin = user?.role === 'super_admin';
 

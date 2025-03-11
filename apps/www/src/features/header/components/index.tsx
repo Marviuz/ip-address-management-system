@@ -1,11 +1,10 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { type FC } from 'react';
 import { HeaderUserDetails } from './header-user-details';
 import { cn } from '@/utils/cn';
-import { queries } from '@/lib/queries';
+import { useSuspenseAuthedUser } from '@/hooks/use-user-queries';
 
 export const Header: FC = () => {
-  const { data: user } = useSuspenseQuery(queries.users.me);
+  const { data: user } = useSuspenseAuthedUser();
 
   const isRegular = user.role === 'regular';
 

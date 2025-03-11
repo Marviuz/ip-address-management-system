@@ -1,19 +1,19 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { useRouter, useSearch } from '@tanstack/react-router';
 import { type FC } from 'react';
 import { Input } from '@/components/common/input';
 import { RouteBasedPagination } from '@/components/common/route-based-pagination';
-import { queries } from '@/lib/queries';
 import { Label } from '@/components/common/label';
+import { useAllAuditLogs } from '@/hooks/use-audit-log-queries';
 
 export const AuditLogsTablePagination: FC = () => {
   const router = useRouter();
   const search = useSearch({
     from: '/_authenticated/activity-logs/',
   });
-  const { data: logsData } = useSuspenseQuery(
-    queries.auditLogs.all({ page: search.page, pageSize: search.pageSize }),
-  );
+  const { data: logsData } = useAllAuditLogs({
+    page: search.page,
+    pageSize: search.pageSize,
+  });
 
   return (
     <div className="flex items-center gap-4">
