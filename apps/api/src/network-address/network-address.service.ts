@@ -4,7 +4,7 @@ import {
   UpdateNetworkAddressPayload,
 } from '@ip-address-management-system/shared';
 import { Inject, Injectable } from '@nestjs/common';
-import { asc, eq, inArray } from 'drizzle-orm';
+import { desc, eq, inArray } from 'drizzle-orm';
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
 import { auditLogs, networkAddresses, users } from 'src/drizzle/schema';
 import { DrizzleDatabase } from 'src/drizzle/types/drizzle';
@@ -64,7 +64,7 @@ export class NetworkAddressService {
 
     const data = await withPagination(
       query.$dynamic(),
-      asc(networkAddresses.id),
+      desc(networkAddresses.id),
       page,
       pageSize,
       totalItems,

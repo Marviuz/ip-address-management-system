@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { asc, eq } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
 import { auditLogs, users } from 'src/drizzle/schema';
 import { DrizzleDatabase } from 'src/drizzle/types/drizzle';
@@ -19,7 +19,7 @@ export class AuditLogsService {
     const totalItems = await this.db.$count(auditLogs);
     const data = await withPagination(
       query.$dynamic(),
-      asc(auditLogs.id),
+      desc(auditLogs.id),
       page,
       pageSize,
       totalItems,
