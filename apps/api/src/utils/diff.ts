@@ -8,8 +8,8 @@ function $diff<TOld, TNew>(...params: Parameters<typeof deepDiff<TOld, TNew>>) {
     ?.filter((item) => item.kind === 'E')
     .map((item) => ({
       ...item,
-      new: item.lhs,
-      old: item.rhs,
+      new: item.rhs,
+      old: item.lhs,
     }));
 }
 
