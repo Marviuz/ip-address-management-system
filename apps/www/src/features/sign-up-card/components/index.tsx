@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { Link } from '@tanstack/react-router';
 import { type SignUpSchema, signUpSchema } from '../lib/schemas/sign-up-schema';
 import { createAccount } from '../lib/services/create-account';
 import { Input } from '@/components/common/input';
@@ -16,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/common/form';
+import { Route as signInRoute } from '@/routes/_unauthenticated';
 
 export const SignUpCard: FC = () => {
   const { mutate } = useMutation({
@@ -96,7 +98,7 @@ export const SignUpCard: FC = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} type="password" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -110,7 +112,7 @@ export const SignUpCard: FC = () => {
             <FormItem>
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} type="password" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -148,6 +150,9 @@ export const SignUpCard: FC = () => {
           )}
         />
         <Button type="submit">Register</Button>
+        <Button asChild variant="link">
+          <Link to={signInRoute.to}>Login</Link>
+        </Button>
       </form>
     </Form>
   );

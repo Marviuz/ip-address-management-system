@@ -1,10 +1,25 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { ContinueWithOAuthCard } from '@/features/continue-with-oauth-card/components';
+import { SignInCard } from '@/features/sign-in-card/components';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/common/card';
 
 export const Route = createFileRoute('/_unauthenticated/')({
   component: Index,
 });
 
 function Index() {
-  return <ContinueWithOAuthCard />;
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Login</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <SignInCard />
+      </CardContent>
+    </Card>
+  );
 }

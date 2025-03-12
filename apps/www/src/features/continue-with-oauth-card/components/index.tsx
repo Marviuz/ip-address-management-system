@@ -13,7 +13,7 @@ export const ContinueWithOAuthCard: FC = () => {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Sign in</CardTitle>
+        <CardTitle>Or continue as regular with...</CardTitle>
       </CardHeader>
       <CardContent>
         <Button asChild className="w-full">

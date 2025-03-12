@@ -56,7 +56,7 @@ export class AuthService {
         'Email is linked to a different login method.',
       );
 
-    const isPasswordValid = await verify(password, user.password);
+    const isPasswordValid = await verify(user.password, password);
     if (!isPasswordValid)
       throw new UnauthorizedException('Invalid email or password');
 
