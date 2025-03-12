@@ -1,5 +1,9 @@
-import { AuditLogsAction } from '@ip-address-management-system/shared';
 import {
+  AuditLogsAction,
+  PASSWORD_REGEX,
+} from '@ip-address-management-system/shared';
+import {
+  BadRequestException,
   ConflictException,
   Injectable,
   UnauthorizedException,
@@ -22,6 +26,12 @@ export class AuthService {
     ipAddress: string | null,
     userAgent: string | null,
   ) {
+    if (user.password && !PASSWORD_REGEX.test(user.password)) {
+      throw new BadRequestException(
+        'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.',
+      );
+    }
+
     const foundUser = await this.userService.findOneByEmail(user.email);
     if (foundUser) throw new ConflictException('Email already exists!');
 
