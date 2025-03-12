@@ -11,6 +11,9 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "prepare": "husky",
+    "test": "dotenv -- turbo run test --continue",
+    "test:api": "dotenv -- turbo run test --filter=*/api",
+    "test:www": "dotenv -- turbo run test --filter=*/www",
     "typecheck": "turbo run typecheck"
   },
   "devDependencies": {

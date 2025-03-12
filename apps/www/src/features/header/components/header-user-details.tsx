@@ -1,4 +1,3 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { type FC } from 'react';
 import { ChevronDown, LogOut } from 'lucide-react';
 import { snakeToNoCase } from '@ip-address-management-system/shared';
@@ -9,11 +8,11 @@ import {
   PopoverTrigger,
 } from '@/components/common/popover';
 import { useLogout } from '@/hooks/use-logout';
-import { queries } from '@/lib/queries';
+import { useSuspenseAuthedUser } from '@/hooks/use-user-queries';
 
 export const HeaderUserDetails: FC = () => {
   const { logout } = useLogout();
-  const { data: userData } = useSuspenseQuery(queries.users.me);
+  const { data: userData } = useSuspenseAuthedUser();
 
   return (
     <Popover>

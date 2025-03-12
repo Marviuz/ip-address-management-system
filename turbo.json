@@ -30,6 +30,10 @@
     "db:drop": {
       "cache": false,
       "persistent": true
+    },
+    "test": {
+      "cache": false,
+      "dependsOn": ["^test"]
     }
   }
 }

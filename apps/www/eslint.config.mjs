@@ -12,6 +12,8 @@ export default [
   ...vercel.configs.recommended,
   ...vercel.configs.typescript,
   ...vercel.configs.react,
+  vercel.configs.vitest,
+  vercel.configs['testing-library'],
   {
     languageOptions: {
       ecmaVersion: 2020,

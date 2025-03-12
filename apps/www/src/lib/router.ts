@@ -12,7 +12,7 @@ export const router = createRouter({
 });
 
 nProgress.configure({ showSpinner: false });
-router.subscribe('onBeforeLoad', () => nProgress.start());
+router.subscribe('onBeforeLoad', (e) => e.pathChanged && nProgress.start());
 router.subscribe('onResolved', () => nProgress.done());
 
 declare module '@tanstack/react-router' {
