@@ -32,7 +32,8 @@
       "persistent": true
     },
     "test": {
-      "cache": false
+      "cache": false,
+      "dependsOn": ["^test"]
     }
   }
 }
