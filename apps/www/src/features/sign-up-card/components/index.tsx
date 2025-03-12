@@ -22,17 +22,13 @@ import { loginUser } from '@/features/sign-in-card/lib/services/login-user';
 
 export const SignUpCard: FC = () => {
   const router = useRouter();
-  const { mutate: loginMutation } = useMutation({
+  const { mutateAsync: loginMutation } = useMutation({
     mutationFn: loginUser,
   });
 
-  const { mutate: registerMutation } = useMutation({
+  const { mutateAsync: registerMutation } = useMutation({
     mutationFn: createAccount,
-    onSuccess: async (data, { email, password }) => {
-      toast.success(data.message);
-      loginMutation({ email, password });
-      await router.invalidate();
-    },
+    onSuccess: (data) => toast.success(data.message),
     onError: ({ message }, { email }) =>
       toast.error(
         message.includes('409') ? `Email ${email} already exists` : message,
@@ -51,8 +47,10 @@ export const SignUpCard: FC = () => {
     },
   });
 
-  const handleSubmit = form.handleSubmit((values) => {
-    registerMutation(values);
+  const handleSubmit = form.handleSubmit(async (values) => {
+    await registerMutation(values);
+    await loginMutation({ email: values.email, password: values.password });
+    await router.invalidate();
   });
 
   return (
