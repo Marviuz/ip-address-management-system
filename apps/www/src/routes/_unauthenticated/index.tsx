@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { SignInCard } from '@/features/sign-in-card/components';
 import {
   Card,
@@ -19,6 +19,15 @@ function Index() {
       </CardHeader>
       <CardContent>
         <SignInCard />
+        <p className="text-muted-foreground mt-8 text-center text-sm">
+          Don&apos;t have an account yet?{' '}
+          <Link
+            className="text-foreground font-semibold underline"
+            to="/register"
+          >
+            Register
+          </Link>
+        </p>
       </CardContent>
     </Card>
   );

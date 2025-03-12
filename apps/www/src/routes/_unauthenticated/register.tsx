@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import {
   Card,
   CardContent,
@@ -19,6 +19,12 @@ function RegisterRoute() {
       </CardHeader>
       <CardContent>
         <SignUpCard />
+        <p className="text-muted-foreground mt-8 text-center text-sm">
+          Already have an account?{' '}
+          <Link className="text-foreground font-semibold underline" to="/">
+            Login
+          </Link>
+        </p>
       </CardContent>
     </Card>
   );

@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { type FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { Link, useRouter } from '@tanstack/react-router';
+import { useRouter } from '@tanstack/react-router';
 import { type SignInSchema, signInSchema } from '../lib/schemas/sign-in-schema';
 import { loginUser } from '../lib/services/login-user';
 import { Input } from '@/components/common/input';
@@ -16,7 +16,6 @@ import {
   FormMessage,
 } from '@/components/common/form';
 import { Button } from '@/components/common/button';
-import { Route as registerRoute } from '@/routes/_unauthenticated/register';
 
 export const SignInCard: FC = () => {
   const router = useRouter();
@@ -72,9 +71,6 @@ export const SignInCard: FC = () => {
         />
 
         <Button type="submit">Login</Button>
-        <Button asChild variant="link">
-          <Link to={registerRoute.to}>Register</Link>
-        </Button>
       </form>
     </Form>
   );
