@@ -13,10 +13,10 @@ import { Request, Response } from 'express';
 import {
   SESSION_COOKIE,
   TOKEN_LABELS,
-} from '@ip-address-management-system/shared';
+ CreateUserPayload } from '@ip-address-management-system/shared';
+import { nanoid } from 'nanoid';
 import { env } from 'src/env';
 import { UserAgent } from 'src/audit-logs/decorators/user-agent.decorator';
-import { InsertUserSchema } from 'src/types/oauth-user';
 import { AuthService } from './auth.service';
 import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
 import { RefreshGuard } from './guards/refresh/refresh.guard';
@@ -39,11 +39,19 @@ export class AuthController {
   @Public()
   @Post('register')
   async register(
-    @Body() user: InsertUserSchema,
+    @Body() user: CreateUserPayload,
     @Ip() ip: string | null,
     @UserAgent() userAgent: string | null,
   ) {
-    return await this.authService.register(user, ip, userAgent);
+    return await this.authService.register(
+      {
+        ...user,
+        provider: 'local',
+        providerId: nanoid(),
+      },
+      ip,
+      userAgent,
+    );
   }
 
   @Public()

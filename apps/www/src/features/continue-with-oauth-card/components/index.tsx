@@ -9,9 +9,9 @@ import {
 } from '@/components/common/card';
 import { env } from '@/env';
 
-export const SignInCard: FC = () => {
+export const ContinueWithOAuthCard: FC = () => {
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Sign in</CardTitle>
       </CardHeader>

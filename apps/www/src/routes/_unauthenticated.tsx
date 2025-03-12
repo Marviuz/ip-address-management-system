@@ -1,9 +1,8 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
-import { SignInCard } from '@/features/sign-in-card/components';
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 import { refreshToken } from '@/lib/services/refresh-token';
+import { ContinueWithOAuthCard } from '@/features/continue-with-oauth-card/components';
 
-export const Route = createFileRoute('/')({
-  component: Index,
+export const Route = createFileRoute('/_unauthenticated')({
   beforeLoad: async ({ context }) => {
     if (!context.auth?.accessToken) {
       const newTokens = await refreshToken();
@@ -15,12 +14,18 @@ export const Route = createFileRoute('/')({
       }
     }
   },
+  component: UnauthenticatedRoute,
 });
 
-function Index() {
+function UnauthenticatedRoute() {
   return (
     <main className="grid min-h-svh place-items-center">
-      <SignInCard />
+      <div className="w-full max-w-md">
+        <div className="grid gap-8">
+          <Outlet />
+          <ContinueWithOAuthCard />
+        </div>
+      </div>
     </main>
   );
 }
