@@ -19,3 +19,9 @@ export const auditLogsActions = [
   'logout',
 ] as const;
 export type AuditLogsAction = (typeof auditLogsActions)[number];
+
+export const providers = ['google', 'local'] as const;
+export type Provider = (typeof providers)[number];
+
+export const PASSWORD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;

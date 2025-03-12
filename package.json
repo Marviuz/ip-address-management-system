@@ -33,6 +33,7 @@
       "@nestjs/core",
       "@swc/core",
       "esbuild",
+      "msw",
       "sharp"
     ],
     "ignoredBuiltDependencies": [

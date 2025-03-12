@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpStatus,
@@ -12,13 +13,15 @@ import { Request, Response } from 'express';
 import {
   SESSION_COOKIE,
   TOKEN_LABELS,
-} from '@ip-address-management-system/shared';
+ CreateUserPayload } from '@ip-address-management-system/shared';
+import { nanoid } from 'nanoid';
 import { env } from 'src/env';
 import { UserAgent } from 'src/audit-logs/decorators/user-agent.decorator';
 import { AuthService } from './auth.service';
 import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
 import { RefreshGuard } from './guards/refresh/refresh.guard';
 import { Public } from './decorators/public.decorator';
+import { LocalAuthGuard } from './guards/local-auth/local-auth.guard';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 
@@ -34,6 +37,54 @@ export class AuthController {
   }
 
   @Public()
+  @Post('register')
+  async register(
+    @Body() user: CreateUserPayload,
+    @Ip() ip: string | null,
+    @UserAgent() userAgent: string | null,
+  ) {
+    return await this.authService.register(
+      {
+        ...user,
+        provider: 'local',
+        providerId: nanoid(),
+      },
+      ip,
+      userAgent,
+    );
+  }
+
+  @Public()
+  @Post('login')
+  @UseGuards(LocalAuthGuard)
+  async login(
+    @Req() req: Request,
+    @Ip() ip: string | null,
+    @UserAgent() userAgent: string | null,
+    @Res() res: Response,
+  ) {
+    const tokens = await this.authService.loginByUserPublicId(
+      req.user.publicId,
+      'login',
+      ip,
+      userAgent,
+    );
+
+    res.cookie(SESSION_COOKIE, tokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/auth/refresh',
+      maxAge: 7 * ONE_DAY,
+    });
+
+    res.json({
+      [TOKEN_LABELS.ACCESS_TOKEN]: tokens.accessToken,
+      [TOKEN_LABELS.REFRESH_TOKEN]: tokens.refreshToken,
+    });
+  }
+
+  @Public()
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
   async googleRedirect(
@@ -42,7 +93,7 @@ export class AuthController {
     @Ip() ip: string | null,
     @UserAgent() userAgent: string | null,
   ) {
-    const tokens = await this.authService.login(
+    const tokens = await this.authService.loginByUserPublicId(
       req.user.publicId,
       'login',
       ip,
@@ -69,7 +120,7 @@ export class AuthController {
   @Post('refresh')
   @UseGuards(RefreshGuard)
   async refresh(@Req() req: Request, @Res() res: Response) {
-    const user = await this.authService.login(req.user.publicId);
+    const user = await this.authService.loginByUserPublicId(req.user.publicId);
 
     res.cookie(SESSION_COOKIE, user.refreshToken, {
       httpOnly: true,

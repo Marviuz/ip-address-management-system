@@ -1,5 +1,13 @@
-import { AuditLogsAction } from '@ip-address-management-system/shared';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  AuditLogsAction,
+  PASSWORD_REGEX,
+} from '@ip-address-management-system/shared';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { hash, verify } from 'argon2';
 import { InsertUserSchema } from 'src/types/oauth-user';
@@ -13,6 +21,33 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  async register(
+    user: InsertUserSchema,
+    ipAddress: string | null,
+    userAgent: string | null,
+  ) {
+    if (user.password && !PASSWORD_REGEX.test(user.password)) {
+      throw new BadRequestException(
+        'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.',
+      );
+    }
+
+    const foundUser = await this.userService.findOneByEmail(user.email);
+    if (foundUser) throw new ConflictException('Email already exists!');
+
+    const createUser = await this.userService.createUser(
+      user,
+      ipAddress,
+      userAgent,
+    );
+    if (!createUser) throw new Error('Failed to create user');
+    return { message: 'Successfully registered!' };
+  }
+
+  async findOneByEmail(email: string) {
+    return this.userService.findOneByEmail(email);
+  }
+
   async generateTokens(userPublicId: string) {
     const payload: TokenPayload = { sub: userPublicId };
     const [accessToken, refreshToken] = await Promise.all([
@@ -23,7 +58,22 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  async login(
+  async validateLocalUser(email: string, password: string) {
+    const user = await this.userService.findOneByEmail(email);
+    if (!user) throw new UnauthorizedException('Invalid email or password');
+    if (!user.password)
+      throw new ConflictException(
+        'Email is linked to a different login method.',
+      );
+
+    const isPasswordValid = await verify(user.password, password);
+    if (!isPasswordValid)
+      throw new UnauthorizedException('Invalid email or password');
+
+    return user;
+  }
+
+  async loginByUserPublicId(
     userPublicId: string,
     ...params: [AuditLogsAction, string | null, string | null] | []
   ) {

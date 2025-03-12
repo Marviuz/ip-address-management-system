@@ -1,28 +1,77 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { type FC } from 'react';
-import { SiGoogle } from '@icons-pack/react-simple-icons';
-import { Button } from '@/components/common/button';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { useRouter } from '@tanstack/react-router';
+import { type SignInSchema, signInSchema } from '../lib/schemas/sign-in-schema';
+import { loginUser } from '../lib/services/login-user';
+import { Input } from '@/components/common/input';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/common/card';
-import { env } from '@/env';
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/common/form';
+import { Button } from '@/components/common/button';
 
 export const SignInCard: FC = () => {
+  const router = useRouter();
+  const { mutate } = useMutation({
+    mutationFn: loginUser,
+    onSuccess: () => router.invalidate(),
+    onError: ({ message }, { email }) =>
+      toast.error(
+        message.includes('409') ? `Email ${email} already exists` : message,
+      ),
+  });
+  const form = useForm<SignInSchema>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const handleSubmit = form.handleSubmit((values) => {
+    mutate(values);
+  });
+
   return (
-    <Card className="w-full max-w-sm">
-      <CardHeader>
-        <CardTitle>Sign in</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Button asChild className="w-full">
-          <a href={`${env.VITE_BACKEND_URL}/auth/google`}>
-            <SiGoogle />
-            Sign in with Google
-          </a>
-        </Button>
-      </CardContent>
-    </Card>
+    <Form {...form}>
+      <form className="grid gap-4" onSubmit={handleSubmit}>
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input {...field} type="password" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit">Login</Button>
+      </form>
+    </Form>
   );
 };

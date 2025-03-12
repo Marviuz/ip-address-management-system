@@ -2,11 +2,13 @@ import { Inject, Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import { type SetRequired } from 'type-fest';
 import { AuditLogsAction } from '@ip-address-management-system/shared';
+import { hash } from 'argon2';
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
 import { auditLogs, users } from 'src/drizzle/schema';
 import { DrizzleDatabase } from 'src/drizzle/types/drizzle';
 import { InsertUserSchema, UpdateUserSchema } from 'src/types/oauth-user';
 import { usersColumns } from 'src/utils/sensitive';
+import { oneSidedDiff } from 'src/utils/diff';
 
 @Injectable()
 export class UsersService {
@@ -114,5 +116,57 @@ export class UsersService {
       .where(eq(users.publicId, userPublicId));
 
     return user;
+  }
+
+  async findOneByEmail(email: string) {
+    const user = await this.db.query.users.findFirst({
+      where: eq(users.email, email),
+    });
+
+    return user;
+  }
+
+  async createUser(
+    user: InsertUserSchema,
+    ipAddress: string | null,
+    userAgent: string | null,
+  ) {
+    const createdUser = await this.db.transaction(async (tx) => {
+      try {
+        if (!user.password) throw new Error('Password is required');
+        const hashedPassword = await hash(user.password);
+        const [$createdUser] = await tx
+          .insert(users)
+          .values({ ...user, password: hashedPassword })
+          .returning();
+
+        if (!$createdUser) throw new Error('Failed to create user');
+
+        const {
+          password: _pass,
+          refreshToken: _rt,
+          ...filteredUser
+        } = $createdUser;
+
+        await tx.insert(auditLogs).values({
+          action: 'create',
+          entity: 'user',
+          entityId: $createdUser.id,
+          userId: $createdUser.id,
+          metadata: {},
+          userAgent,
+          ipAddress,
+          changes: oneSidedDiff(filteredUser, 'new'),
+        });
+
+        return $createdUser;
+      } catch (e) {
+        // eslint-disable-next-line no-console -- log errors
+        console.log(e);
+        tx.rollback();
+      }
+    });
+
+    return createdUser;
   }
 }

@@ -64,6 +64,13 @@
       "when": 1741584519422,
       "tag": "0008_woozy_mathemanic",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1741746651422,
+      "tag": "0009_thin_santa_claus",
+      "breakpoints": true
     }
   ]
 }
