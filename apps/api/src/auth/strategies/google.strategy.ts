@@ -30,13 +30,16 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     const ipAddress = proxyIp ?? req.ip;
     const userAgent = req.headers['user-agent'];
 
+    const email = emails?.at(0)?.value;
+    if (!email) throw new Error('Email not found in Google profile');
+
     const user = await this.userService.validateGoogleUser(
       {
         username,
         familyName: name?.familyName,
         givenName: name?.givenName,
         middleName: name?.middleName,
-        email: emails?.at(0)?.value,
+        email,
         provider,
         providerId: id,
       },

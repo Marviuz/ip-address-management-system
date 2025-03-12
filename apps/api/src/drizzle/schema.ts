@@ -25,11 +25,12 @@ export const users = pgTable('user', {
   givenName: varchar('given_name'),
   middleName: varchar('middle_name'),
   familyName: varchar('family_name'),
-  email: varchar().unique(),
+  email: varchar().unique().notNull(),
   role: varchar({ enum: roles }),
 
-  provider: varchar({ enum: ['google'] }).notNull(),
+  provider: varchar({ enum: ['google', 'local'] }).notNull(),
   providerId: varchar('provider_id').notNull().unique(),
+  password: varchar(),
   refreshToken: varchar('refresh_token'),
 
   createdAt: timestamp('created_at', {
