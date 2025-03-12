@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { Link } from '@tanstack/react-router';
+import { Link, useRouter } from '@tanstack/react-router';
 import { type SignUpSchema, signUpSchema } from '../lib/schemas/sign-up-schema';
 import { createAccount } from '../lib/services/create-account';
 import { Input } from '@/components/common/input';
@@ -18,16 +18,27 @@ import {
   FormMessage,
 } from '@/components/common/form';
 import { Route as signInRoute } from '@/routes/_unauthenticated';
+import { loginUser } from '@/features/sign-in-card/lib/services/login-user';
 
 export const SignUpCard: FC = () => {
-  const { mutate } = useMutation({
+  const router = useRouter();
+  const { mutate: loginMutation } = useMutation({
+    mutationFn: loginUser,
+  });
+
+  const { mutate: registerMutation } = useMutation({
     mutationFn: createAccount,
-    onSuccess: (data) => toast.success(data.message),
+    onSuccess: async (data, { email, password }) => {
+      toast.success(data.message);
+      loginMutation({ email, password });
+      await router.invalidate();
+    },
     onError: ({ message }, { email }) =>
       toast.error(
         message.includes('409') ? `Email ${email} already exists` : message,
       ),
   });
+
   const form = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -41,7 +52,7 @@ export const SignUpCard: FC = () => {
   });
 
   const handleSubmit = form.handleSubmit((values) => {
-    mutate(values);
+    registerMutation(values);
   });
 
   return (
