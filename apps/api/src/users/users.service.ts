@@ -139,7 +139,14 @@ export class UsersService {
           .insert(users)
           .values({ ...user, password: hashedPassword })
           .returning();
+
         if (!$createdUser) throw new Error('Failed to create user');
+
+        const {
+          password: _pass,
+          refreshToken: _rt,
+          ...filteredUser
+        } = $createdUser;
 
         await tx.insert(auditLogs).values({
           action: 'create',
@@ -149,7 +156,7 @@ export class UsersService {
           metadata: {},
           userAgent,
           ipAddress,
-          changes: oneSidedDiff($createdUser, 'new'),
+          changes: oneSidedDiff(filteredUser, 'new'),
         });
 
         return $createdUser;
