@@ -8,6 +8,7 @@ export default mergeConfig(
     test: {
       environment: 'jsdom',
       globals: true,
+      setupFiles: ['./mocks/server.ts'],
     },
   }),
 );
