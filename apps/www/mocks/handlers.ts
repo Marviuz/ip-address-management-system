@@ -19,9 +19,9 @@ export const handlers = [
     return Response.json(generateMock(networkAddressSchema));
   }),
   http.get('*/audit-logs', () => {
-    return Response.json(generateMock(auditLogsListSchema));
+    return Response.json(generateMock(auditLogsListSchema, { seed: 1 }));
   }),
   http.get('*/audit-logs/:publicId', () => {
-    return Response.json(generateMock(auditLogsSchema));
+    return Response.json(generateMock(auditLogsSchema, { seed: 1 }));
   }),
 ];
