@@ -1,0 +1,57 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: db
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: ipmngmt
+      POSTGRES_HOST: db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d ipmngmt']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api:
+    container_name: api
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+        AUTH_SECRET: ${AUTH_SECRET}
+        GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+        GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+        GOOGLE_CALLBACK_URL: ${GOOGLE_CALLBACK_URL}
+        FRONTEND_URL: ${FRONTEND_URL}
+    ports:
+      - '8000:8000'
+    depends_on:
+      db:
+        condition: service_healthy
+        required: true
+        restart: true
+
+  www:
+    container_name: www
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/www/Dockerfile
+      args:
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+    ports:
+      - '3000:3000'
+    depends_on:
+      - api
+
+volumes:
+  postgres-data:
