@@ -95,3 +95,29 @@ Open [http://localhost:3000](http://localhost:3000) to view the application in t
 - Run `pnpm test` to run tests on both frontend and backend.
 - Run `pnpm test:www` to run on front-end only.
 - Run `pnpm test:api` to run on front-backend only _(Not properly implemented)_.
+
+## Usage
+1. After opening the app, you will be greeted with a login screen.
+  - Continuing with Google, will automatically create a Regular user and login the user
+  - If account doesn't exist, it will automatically create it.
+![image](https://github.com/user-attachments/assets/5aec6d66-fa83-4aab-91a9-183bb8a25e06)
+2. Clicking Register, will route you to the registration page which you'll be able to create either a Super Admin or Regular user accout.
+![image](https://github.com/user-attachments/assets/3b2e1503-2ff6-4cfa-9218-f07e41b56c3a)
+3. Depending on the role of the user, you can be greeted with a different login screen as shown below
+  - Regular ![image](https://github.com/user-attachments/assets/7c837274-5679-4ea9-92a6-7a23321b0d94)
+  - Super Admin ![image](https://github.com/user-attachments/assets/15e51575-5528-4dad-82f0-659e4e69f405)
+4. Clicking the Add button will appear a dialog, that will let you input IP Address data/content ![image](https://github.com/user-attachments/assets/23ed2f90-829c-42af-88e7-b81dab6e2471)
+5. After adding, the table will automatically be populated with the data added
+![image](https://github.com/user-attachments/assets/ca123916-2e55-4736-aef9-00fbd1a8713f)
+6. Clicking the edit button of the table row will open a sheet at the side which allow the user to edit, the content
+![image](https://github.com/user-attachments/assets/e14922d9-3649-4ae6-87e9-af1841685529)
+7. Clicking the delete button of the table row will open a alert dialog which is a confirmation before deleting the data.
+8. If the currently logged in user is an Admin, they'll have access to a activity logs page which is the audit logs of actions made by the user to the app.
+![image](https://github.com/user-attachments/assets/38ac1969-00ab-488a-8f52-373f8a32f191)
+9. Clicking the type of action made will expand a sheet of data changed for that action
+![image](https://github.com/user-attachments/assets/8dd4340d-e521-4002-a178-67c1ecb5d5a4)
+10. Both tables have dates columns that shows when the data is added and/or modified
+![image](https://github.com/user-attachments/assets/15da0e98-ff21-4878-8759-b94559367e8f)
+11. Both users can click their profile display at the upper right corner of the app and logout
+![image](https://github.com/user-attachments/assets/6300f5e6-7d4e-4729-918d-0e1254774233)
+
