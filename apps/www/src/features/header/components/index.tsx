@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 import { HeaderUserDetails } from './header-user-details';
-import { cn } from '@/utils/cn';
 import { useSuspenseAuthedUser } from '@/hooks/use-user-queries';
+import { cn } from '@/utils/cn';
 
 export const Header: FC = () => {
   const { data: user } = useSuspenseAuthedUser();

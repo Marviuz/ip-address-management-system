@@ -20,8 +20,9 @@ export const DataTableSkeleton = <TData,>({
     <Table>
       <TableHeader>
         <TableRow>
-          {columns.map((col) => (
-            <TableHead key={col.id}>
+          {columns.map((col, colIndex) => (
+            // eslint-disable-next-line react/no-array-index-key -- static row
+            <TableHead key={`${col.id}-${colIndex}`}>
               <Skeleton className="my-2 h-4" />
             </TableHead>
           ))}
@@ -31,8 +32,9 @@ export const DataTableSkeleton = <TData,>({
         {Array.from({ length: 10 }).map((_row, rowIndex) => (
           // eslint-disable-next-line react/no-array-index-key -- static row
           <TableRow key={rowIndex}>
-            {columns.map((col) => (
-              <TableCell key={col.id}>
+            {columns.map((col, colIndex) => (
+              // eslint-disable-next-line react/no-array-index-key -- static row
+              <TableCell key={`${col.id}-${colIndex}`}>
                 <Skeleton className="my-2 h-4" />
               </TableCell>
             ))}

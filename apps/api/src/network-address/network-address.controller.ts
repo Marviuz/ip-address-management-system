@@ -17,6 +17,7 @@ import {
 import { Request } from 'express';
 import {
   CreateNetworkAddressPayload,
+  GetNetworkAddressesListPayload,
   getNetworkAddressType,
   UpdateNetworkAddressPayload,
 } from '@ip-address-management-system/shared';
@@ -52,10 +53,12 @@ export class NetworkAddressController {
 
   @Get()
   findAll(
-    @Query('page', ParseIntPipe) page: number,
-    @Query('pageSize', ParseIntPipe) pageSize: number,
+    @Query('page', ParseIntPipe) page: GetNetworkAddressesListPayload['page'],
+    @Query('pageSize', ParseIntPipe)
+    pageSize: GetNetworkAddressesListPayload['pageSize'],
+    @Query('q') q: GetNetworkAddressesListPayload['q'],
   ) {
-    return this.networkAddressService.findAll(page, pageSize);
+    return this.networkAddressService.findAll({ page, pageSize, q });
   }
 
   @Get(':publicId')

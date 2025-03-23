@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { createWrapper } from './test-utils';
 import {
   useNetworkAddressByPublicId,
-  useNetworkAddresses,
+  useSuspenseNetworkAddresses,
 } from './use-network-address-queries';
 
 describe('useNetworkAddresses', () => {
@@ -12,7 +12,7 @@ describe('useNetworkAddresses', () => {
     const pageSize = 10;
 
     const { result } = renderHook(
-      () => useNetworkAddresses({ page, pageSize }),
+      () => useSuspenseNetworkAddresses({ page, pageSize }),
       {
         wrapper: createWrapper(),
       },

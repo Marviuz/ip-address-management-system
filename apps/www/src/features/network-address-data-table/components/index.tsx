@@ -6,14 +6,17 @@ import { DataTable } from '@/components/common/data-table';
 import { networkAddressApiTableAdapter } from '@/lib/adapters/network-address-api-table-adapter';
 import { useTable } from '@/hooks/use-table';
 import { useSuspenseAuthedUser } from '@/hooks/use-user-queries';
-import { useNetworkAddresses } from '@/hooks/use-network-address-queries';
+import { useSuspenseNetworkAddresses } from '@/hooks/use-network-address-queries';
 
 export const NetworkAddressDataTable: FC = () => {
-  const { page, pageSize } = useSearch({ from: '/_authenticated/dashboard/' });
+  const { page, pageSize, q } = useSearch({
+    from: '/_authenticated/dashboard/',
+  });
   const { data: userData } = useSuspenseAuthedUser();
-  const { data: networkAddressesData } = useNetworkAddresses({
+  const { data: networkAddressesData } = useSuspenseNetworkAddresses({
     page,
     pageSize,
+    q,
   });
 
   const table = useTable({
