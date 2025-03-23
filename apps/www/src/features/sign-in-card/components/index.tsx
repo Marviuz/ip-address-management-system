@@ -22,9 +22,9 @@ export const SignInCard: FC = () => {
   const { mutate } = useMutation({
     mutationFn: loginUser,
     onSuccess: () => router.invalidate(),
-    onError: ({ message }, { email }) =>
+    onError: ({ message }) =>
       toast.error(
-        message.includes('409') ? `Email ${email} already exists` : message,
+        message.includes('401') ? `Wrong email or password` : message,
       ),
   });
   const form = useForm<SignInSchema>({
