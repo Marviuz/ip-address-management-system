@@ -7,7 +7,7 @@ export function useLogout() {
   const auth = useAuth();
   const router = useRouter();
 
-  const { mutate } = useMutation({
+  const { mutate, isPending: isLoggingOut } = useMutation({
     mutationFn: logout,
     onSuccess: async () => {
       auth?.setAccessToken(null);
@@ -18,5 +18,5 @@ export function useLogout() {
     },
   });
 
-  return { logout: mutate };
+  return { logout: mutate, isLoggingOut };
 }

@@ -4,6 +4,7 @@ import { type FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useRouter } from '@tanstack/react-router';
+import { Loader2 } from 'lucide-react';
 import { type SignInSchema, signInSchema } from '../lib/schemas/sign-in-schema';
 import { loginUser } from '../lib/services/login-user';
 import { Input } from '@/components/common/input';
@@ -19,7 +20,7 @@ import { Button } from '@/components/common/button';
 
 export const SignInCard: FC = () => {
   const router = useRouter();
-  const { mutate } = useMutation({
+  const { mutate, isPending: isLoggingIn } = useMutation({
     mutationFn: loginUser,
     onSuccess: () => router.invalidate(),
     onError: ({ message }) =>
@@ -70,7 +71,10 @@ export const SignInCard: FC = () => {
           )}
         />
 
-        <Button type="submit">Login</Button>
+        <Button disabled={isLoggingIn} type="submit">
+          {isLoggingIn ? 'Logging in' : 'Login'}
+          {isLoggingIn ? <Loader2 className="animate-spin" /> : null}
+        </Button>
       </form>
     </Form>
   );

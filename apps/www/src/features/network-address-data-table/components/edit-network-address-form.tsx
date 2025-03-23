@@ -22,7 +22,7 @@ export const EditNetworkAddressForm: FC<EditNetworkAddressFormProps> = ({
   const { data: networkAddressData } = useNetworkAddressByPublicId({
     publicId,
   });
-  const { mutate } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: editNetworkAddress,
     onSuccess: async () => {
       await queryClient.refetchQueries(
@@ -51,7 +51,7 @@ export const EditNetworkAddressForm: FC<EditNetworkAddressFormProps> = ({
       }}
       mode="edit"
       onSubmit={async (values) => {
-        mutate({
+        await mutateAsync({
           publicId,
           comments: values.comments,
           label: values.label,

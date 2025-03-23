@@ -7,6 +7,8 @@ import { AuditLogsTablePagination } from '@/features/admin-audit-logs-table/comp
 import { paginationSchema } from '@/lib/schemas/pagination';
 import { AuditLogDetailsSheet } from '@/features/admin-audit-logs-table/components/audit-log-details-sheet';
 import { queries } from '@/lib/queries';
+import { DataTableSkeleton } from '@/components/common/data-table-skeleton';
+import { adminAuditLogsTableColumns } from '@/features/admin-audit-logs-table/components/columns';
 
 const routeSchema = paginationSchema.extend({
   preview: z.string().optional(),
@@ -32,7 +34,11 @@ function ActivityLogsPage() {
         <div className="grid gap-8">
           <h1 className="text-2xl font-bold">Activity Logs</h1>
           <div className="grid gap-4">
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense
+              fallback={
+                <DataTableSkeleton columns={adminAuditLogsTableColumns} />
+              }
+            >
               <AdminAuditLogsTable />
             </Suspense>
             <AuditLogDetailsSheet />

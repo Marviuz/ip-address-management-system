@@ -20,10 +20,5 @@ export const AdminAuditLogsTable: FC = () => {
     columns: adminAuditLogsTableColumns,
   });
 
-  return (
-    <>
-      {/* <pre>{JSON.stringify(logsData, null, 2)}</pre> */}
-      <DataTable table={table} />
-    </>
-  );
+  return <DataTable table={table} />;
 };

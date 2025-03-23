@@ -20,7 +20,7 @@ export const AddNetworkAddressDialog: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { page, pageSize } = useSearch({ from: '/_authenticated/dashboard/' });
   const queryClient = useQueryClient();
-  const { mutate } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: addNetworkAddress,
     onSuccess: async () => {
       await queryClient.refetchQueries(
@@ -47,13 +47,13 @@ export const AddNetworkAddressDialog: FC = () => {
           </DialogDescription>
         </DialogHeader>
         <NetworkAddressForm
-          onSubmit={(values) => {
-            mutate({
+          onSubmit={(values) =>
+            mutateAsync({
               label: values.label,
               networkAddress: values.networkAddress,
               comments: values.comments,
-            });
-          }}
+            })
+          }
         />
       </DialogContent>
     </Dialog>

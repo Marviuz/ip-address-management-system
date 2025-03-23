@@ -1,5 +1,5 @@
 import { type FC } from 'react';
-import { ChevronDown, LogOut } from 'lucide-react';
+import { ChevronDown, Loader2, LogOut } from 'lucide-react';
 import { snakeToNoCase } from '@ip-address-management-system/shared';
 import { Button } from '@/components/common/button';
 import {
@@ -11,7 +11,7 @@ import { useLogout } from '@/hooks/use-logout';
 import { useSuspenseAuthedUser } from '@/hooks/use-user-queries';
 
 export const HeaderUserDetails: FC = () => {
-  const { logout } = useLogout();
+  const { logout, isLoggingOut } = useLogout();
   const { data: userData } = useSuspenseAuthedUser();
 
   return (
@@ -32,13 +32,14 @@ export const HeaderUserDetails: FC = () => {
           </div>
           <div className="text-muted-foreground text-sm">{userData.email}</div>
           <Button
+            disabled={isLoggingOut}
             size="sm"
             type="button"
             variant="outline"
             onClick={() => logout()}
           >
-            Logout
-            <LogOut />
+            {isLoggingOut ? 'Logging out' : 'Log out'}
+            {isLoggingOut ? <Loader2 className="animate-spin" /> : <LogOut />}
           </Button>
         </div>
       </PopoverContent>

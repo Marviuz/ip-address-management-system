@@ -5,6 +5,8 @@ import { z } from 'zod';
 import { NetworkAddressDataTable } from '@/features/network-address-data-table/components';
 import { paginationSchema } from '@/lib/schemas/pagination';
 import { EditNetworkAddressSheet } from '@/features/network-address-data-table/components/edit-network-address-sheet';
+import { DataTableSkeleton } from '@/components/common/data-table-skeleton';
+import { networkAddressTableColumns } from '@/features/network-address-data-table/components/columns';
 
 const dashboardSearchSchema = paginationSchema.extend({
   edit: z.string().optional(),
@@ -24,7 +26,11 @@ function DashboardPage() {
       <div className="container mx-auto px-4">
         <div className="grid gap-8">
           <h1 className="text-2xl font-bold">IP Addresses</h1>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense
+            fallback={
+              <DataTableSkeleton columns={networkAddressTableColumns} />
+            }
+          >
             <NetworkAddressDataTable />
           </Suspense>
         </div>

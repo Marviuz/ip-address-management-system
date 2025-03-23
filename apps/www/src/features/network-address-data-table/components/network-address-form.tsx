@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Edit, Plus } from 'lucide-react';
 import { type ChangeEvent, type FC } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -9,6 +8,7 @@ import {
 import { getNetworkAddressType } from '../utils/get-network-address-type';
 import { type CreateFeatureFlags } from '../utils/create-feature-flags-type';
 import { NetworkAddressInputWrapper } from './network-address-input-wrapper';
+import { NetworkAddressFormSubmitButtonLabel } from './network-address-form-submit-button';
 import { Badge } from '@/components/common/badge';
 import { Button } from '@/components/common/button';
 import {
@@ -53,6 +53,8 @@ export const NetworkAddressForm: FC<NetworkAddressFormProps> = ({
       comments: '',
     },
   });
+
+  const { isSubmitting } = form.formState;
 
   const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const value = evt.target.value;
@@ -125,18 +127,11 @@ export const NetworkAddressForm: FC<NetworkAddressFormProps> = ({
           )}
         />
 
-        <Button className="ml-auto" type="submit">
-          {initialValues ? (
-            <>
-              <Edit />
-              Edit
-            </>
-          ) : (
-            <>
-              <Plus />
-              Add
-            </>
-          )}
+        <Button className="ml-auto" disabled={isSubmitting} type="submit">
+          <NetworkAddressFormSubmitButtonLabel
+            isLoading={isSubmitting}
+            mode={mode}
+          />
         </Button>
       </form>
     </Form>

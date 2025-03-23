@@ -46,6 +46,8 @@ export const SignUpCard: FC = () => {
     },
   });
 
+  const { isSubmitting } = form.formState;
+
   const handleSubmit = form.handleSubmit(async (values) => {
     await registerMutation(values);
     await loginMutation({ email: values.email, password: values.password });
@@ -157,7 +159,9 @@ export const SignUpCard: FC = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Register</Button>
+        <Button disabled={isSubmitting} type="submit">
+          {isSubmitting ? 'Registering...' : 'Register'}
+        </Button>
       </form>
     </Form>
   );
