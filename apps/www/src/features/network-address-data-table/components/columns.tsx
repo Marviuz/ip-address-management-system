@@ -1,5 +1,5 @@
 import { createColumnHelper } from '@tanstack/react-table';
-import { getNetworkAddressType } from '../utils/get-network-address-type';
+import { getNetworkAddressType } from '@ip-address-management-system/shared';
 import { DeleteNetworkAddressButton } from './delete-network-address-button';
 import { EditNetworkAddressButton } from './edit-network-address-button';
 import { DateTimeDetailsHoverCard } from '@/components/datetime-details-hover-card';
@@ -46,7 +46,7 @@ export const networkAddressTableColumns = [
   }),
   columnHelper.display({
     header: 'Type',
-    cell: ({ row }) => getNetworkAddressType(row.original.address),
+    cell: ({ row }) => getNetworkAddressType(row.original.address).readable,
   }),
   columnHelper.accessor('label', {
     header: 'Label',

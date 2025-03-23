@@ -71,6 +71,13 @@
       "when": 1741746651422,
       "tag": "0009_thin_santa_claus",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1742727583342,
+      "tag": "0010_wild_titanium_man",
+      "breakpoints": true
     }
   ]
 }

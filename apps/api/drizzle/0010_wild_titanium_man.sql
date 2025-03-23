@@ -1,0 +1,1 @@
+ALTER TABLE "network_address" ADD COLUMN "type" varchar NOT NULL;

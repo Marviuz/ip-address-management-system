@@ -2,6 +2,7 @@ import {
   auditLogsActions,
   auditLogsEntity,
   type ChangeSchema,
+  networkTypes,
   roles,
 } from '@ip-address-management-system/shared';
 import {
@@ -49,6 +50,7 @@ export const networkAddresses = pgTable('network_address', {
     .$defaultFn(() => nanoid()),
 
   networkAddress: varchar('network_address').notNull(),
+  type: varchar({ enum: networkTypes }).notNull(),
   label: varchar().notNull(),
   comments: varchar(),
 

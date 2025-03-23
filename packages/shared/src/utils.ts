@@ -1,4 +1,6 @@
 import { z, type ZodSchema, type ZodTypeDef } from 'zod';
+import { isIP } from 'validator';
+import { type NetworkType } from './consts';
 
 export function createListSchema<TOut, TDef extends ZodTypeDef, TIn>(
   schema: ZodSchema<TOut, TDef, TIn>,
@@ -16,4 +18,30 @@ export function createListSchema<TOut, TDef extends ZodTypeDef, TIn>(
 
 export function snakeToNoCase(str: string) {
   return str.replace('_', ' ').trim();
+}
+
+type Network = 'IPv4' | 'IPv6';
+type GetNetworkAddressTypeReturn = {
+  readable: Network;
+  value: NetworkType;
+};
+
+export function getNetworkAddressTypeSafe(
+  value: string,
+): GetNetworkAddressTypeReturn | null {
+  if (isIP(value, '4')) {
+    return { readable: 'IPv4', value: 'ipv4' };
+  }
+
+  if (isIP(value, '6')) {
+    return { readable: 'IPv6', value: 'ipv6' };
+  }
+
+  return null;
+}
+
+export function getNetworkAddressType(value: string) {
+  const data = getNetworkAddressTypeSafe(value);
+  if (!data) throw new Error('Invalid Network Address');
+  return data;
 }

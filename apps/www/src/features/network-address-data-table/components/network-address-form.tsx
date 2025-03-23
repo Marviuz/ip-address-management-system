@@ -1,11 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type ChangeEvent, type FC } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
+import { getNetworkAddressTypeSafe } from '@ip-address-management-system/shared';
 import {
   type NetworkAddressFormSchema,
   networkAddressFormSchema,
 } from '../lib/schema';
-import { getNetworkAddressType } from '../utils/get-network-address-type';
 import { type CreateFeatureFlags } from '../utils/create-feature-flags-type';
 import { NetworkAddressInputWrapper } from './network-address-input-wrapper';
 import { NetworkAddressFormSubmitButtonLabel } from './network-address-form-submit-button';
@@ -87,8 +87,10 @@ export const NetworkAddressForm: FC<NetworkAddressFormProps> = ({
                     onChange={handleInputChange}
                   />
                 </FormControl>
-                {getNetworkAddressType(field.value) ? (
-                  <Badge>{getNetworkAddressType(field.value)}</Badge>
+                {getNetworkAddressTypeSafe(field.value)?.readable ? (
+                  <Badge>
+                    {getNetworkAddressTypeSafe(field.value)?.readable}
+                  </Badge>
                 ) : null}
               </NetworkAddressInputWrapper>
 

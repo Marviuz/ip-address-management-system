@@ -6,6 +6,9 @@ export const TOKEN_LABELS = {
 export const roles = ['super_admin', 'regular'] as const;
 export type Role = (typeof roles)[number];
 
+export const networkTypes = ['ipv4', 'ipv6'] as const;
+export type NetworkType = (typeof networkTypes)[number];
+
 export const SESSION_COOKIE = '__x_auth_sess__';
 
 export const auditLogsEntity = ['network_address', 'user'] as const;

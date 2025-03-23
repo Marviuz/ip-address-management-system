@@ -17,6 +17,7 @@ import {
 import { Request } from 'express';
 import {
   CreateNetworkAddressPayload,
+  getNetworkAddressType,
   UpdateNetworkAddressPayload,
 } from '@ip-address-management-system/shared';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -39,6 +40,7 @@ export class NetworkAddressController {
         addedBy: req.user.id,
         label: body.label,
         networkAddress: body.networkAddress,
+        type: getNetworkAddressType(body.networkAddress).value,
         comments: body.comments,
       },
       ip,

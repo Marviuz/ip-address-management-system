@@ -2,6 +2,7 @@ import { z } from 'zod';
 import {
   auditLogsActions,
   auditLogsEntity,
+  networkTypes,
   roles,
   TOKEN_LABELS,
 } from './consts';
@@ -31,6 +32,7 @@ export const networkAddressSchema = z.object({
   publicId: z.string(),
   networkAddress: z.string(),
   label: z.string(),
+  type: z.enum(networkTypes),
   comments: z.string(),
   addedBy: userSchema,
   createdAt: z.coerce.date(),

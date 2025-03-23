@@ -23,10 +23,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "validator": "^13.12.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
     "@total-typescript/ts-reset": "^0.6.1",
+    "@types/validator": "^13.12.2",
     "@vercel/style-guide": "github:appano1/style-guide#canary",
     "eslint": "^9.22.0",
     "eslint-config-turbo": "^2.4.4",
