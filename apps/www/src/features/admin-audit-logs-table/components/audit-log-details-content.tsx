@@ -27,7 +27,7 @@ export const AuditLogDetailsContent: FC<AuditLogDetailsContentProps> = ({
   const changes = Object.entries(data.changes);
 
   return (
-    <div className="px-4">
+    <div className="overflow-auto px-4 pb-4">
       <div className="grid gap-8">
         <Card className="py-4">
           <CardHeader className="px-2">
