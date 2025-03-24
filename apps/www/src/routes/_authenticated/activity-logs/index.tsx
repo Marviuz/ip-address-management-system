@@ -9,9 +9,11 @@ import { AuditLogDetailsSheet } from '@/features/admin-audit-logs-table/componen
 import { queries } from '@/lib/queries';
 import { DataTableSkeleton } from '@/components/common/data-table-skeleton';
 import { adminAuditLogsTableColumns } from '@/features/admin-audit-logs-table/components/columns';
+import { AuditLogsSearchInput } from '@/features/audit-logs-search-input/components';
 
 const routeSchema = paginationSchema.extend({
   preview: z.string().optional(),
+  q: z.string().optional(),
 });
 
 export const Route = createFileRoute('/_authenticated/activity-logs/')({
@@ -33,6 +35,9 @@ function ActivityLogsPage() {
       <div className="container mx-auto px-4">
         <div className="grid gap-8">
           <h1 className="text-2xl font-bold">Activity Logs</h1>
+          <div>
+            <AuditLogsSearchInput />
+          </div>
           <div className="grid gap-4">
             <Suspense
               fallback={

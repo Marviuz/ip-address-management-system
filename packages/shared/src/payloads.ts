@@ -7,6 +7,12 @@ export type GetNetworkAddressesListPayload = Partial<{
   type: NetworkType;
 }>;
 
+export type GetAuditLogsListPayload = Partial<{
+  page: number;
+  pageSize: number;
+  q: string;
+}>;
+
 export type CreateNetworkAddressPayload = {
   networkAddress: string;
   label: string;

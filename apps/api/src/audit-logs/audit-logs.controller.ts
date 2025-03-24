@@ -1,4 +1,5 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { GetAuditLogsListPayload } from '@ip-address-management-system/shared';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuditLogsService } from './audit-logs.service';
 
@@ -9,10 +10,16 @@ export class AuditLogsController {
 
   @Get()
   findAll(
-    @Query('page', ParseIntPipe) page: number,
-    @Query('pageSize', ParseIntPipe) pageSize: number,
+    @Query('page', ParseIntPipe) page: GetAuditLogsListPayload['page'],
+    @Query('pageSize', ParseIntPipe)
+    pageSize: GetAuditLogsListPayload['pageSize'],
+    @Query('q') q: GetAuditLogsListPayload['q'],
   ) {
-    return this.auditLogsService.findAll(page, pageSize);
+    return this.auditLogsService.findAll({
+      page,
+      pageSize,
+      q,
+    });
   }
 
   @Get(':publicId')
