@@ -30,7 +30,7 @@
     "@total-typescript/ts-reset": "^0.6.1",
     "@types/validator": "^13.12.2",
     "@vercel/style-guide": "github:appano1/style-guide#canary",
-    "eslint": "^9.22.0",
+    "eslint": "^9.23.0",
     "eslint-config-turbo": "^2.4.4",
     "globals": "^16.0.0",
     "tsup": "^8.4.0",

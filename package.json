@@ -24,14 +24,14 @@
     "@vercel/style-guide": "github:appano1/style-guide#canary",
     "dotenv-cli": "^8.0.0",
     "husky": "^9.1.7",
-    "lint-staged": "^15.4.3",
+    "lint-staged": "^15.5.0",
     "prettier": "^3.5.3",
     "prettier-plugin-packagejson": "^2.5.10",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "turbo": "^2.4.4",
     "typescript": "^5.7.3"
   },
-  "packageManager": "pnpm@10.6.2",
+  "packageManager": "pnpm@10.6.5",
   "pnpm": {
     "onlyBuiltDependencies": [
       "@nestjs/core",
