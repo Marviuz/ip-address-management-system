@@ -7,13 +7,14 @@ import { auditLogsApiTableAdapter } from '@/lib/adapters/audit-logs-api-table-ad
 import { useAllAuditLogs } from '@/hooks/use-audit-log-queries';
 
 export const AdminAuditLogsTable: FC = () => {
-  const { page, pageSize, q } = useSearch({
+  const { page, pageSize, q, actions } = useSearch({
     from: '/_authenticated/activity-logs/',
   });
   const { data: logsData } = useAllAuditLogs({
     page,
     pageSize,
     q,
+    actions,
   });
 
   const table = useTable({

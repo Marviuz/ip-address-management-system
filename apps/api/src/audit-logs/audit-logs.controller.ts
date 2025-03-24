@@ -14,11 +14,13 @@ export class AuditLogsController {
     @Query('pageSize', ParseIntPipe)
     pageSize: GetAuditLogsListPayload['pageSize'],
     @Query('q') q: GetAuditLogsListPayload['q'],
+    @Query('actions') actions: GetAuditLogsListPayload['actions'],
   ) {
     return this.auditLogsService.findAll({
       page,
       pageSize,
       q,
+      actions,
     });
   }
 

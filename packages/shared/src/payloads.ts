@@ -1,4 +1,4 @@
-import { type NetworkType, type Role } from './consts';
+import { type AuditLogsAction, type NetworkType, type Role } from './consts';
 
 export type GetNetworkAddressesListPayload = Partial<{
   page: number;
@@ -11,6 +11,7 @@ export type GetAuditLogsListPayload = Partial<{
   page: number;
   pageSize: number;
   q: string;
+  actions: AuditLogsAction[];
 }>;
 
 export type CreateNetworkAddressPayload = {

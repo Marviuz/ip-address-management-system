@@ -1,6 +1,6 @@
 import { GetAuditLogsListPayload } from '@ip-address-management-system/shared';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { desc, eq, ilike, or } from 'drizzle-orm';
+import { desc, eq, ilike, inArray, or } from 'drizzle-orm';
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
 import { auditLogs, users } from 'src/drizzle/schema';
 import { DrizzleDatabase } from 'src/drizzle/types/drizzle';
@@ -11,7 +11,12 @@ import { withPagination } from 'src/utils/with-pagination';
 export class AuditLogsService {
   constructor(@Inject(DRIZZLE) private db: DrizzleDatabase) {}
 
-  async findAll({ page = 1, pageSize = 10, q }: GetAuditLogsListPayload) {
+  async findAll({
+    page = 1,
+    pageSize = 10,
+    q,
+    actions,
+  }: GetAuditLogsListPayload) {
     const query = this.db
       .select({ ...auditLogsColumns, user: usersColumns })
       .from(auditLogs)
@@ -29,6 +34,10 @@ export class AuditLogsService {
           ilike(auditLogs.ipAddress, `%${q}%`),
         ),
       );
+    }
+
+    if (actions) {
+      await builder.where(inArray(auditLogs.action, actions));
     }
 
     const totalItems = await this.db.$count(auditLogs);

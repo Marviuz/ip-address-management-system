@@ -13,6 +13,8 @@ export const AuditLogsTablePagination: FC = () => {
   const { data: logsData } = useAllAuditLogs({
     page: search.page,
     pageSize: search.pageSize,
+    actions: search.actions,
+    q: search.q,
   });
 
   return (
