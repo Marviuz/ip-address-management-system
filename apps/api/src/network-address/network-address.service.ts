@@ -59,6 +59,7 @@ export class NetworkAddressService {
     page = 1,
     pageSize = 10,
     q = '',
+    type,
   }: GetNetworkAddressesListPayload) {
     const query = this.db
       .select({ ...networkAddressColumns, addedBy: usersColumns })
@@ -74,6 +75,10 @@ export class NetworkAddressService {
         ilike(networkAddresses.comments, `%${q}%`),
       ),
     );
+
+    if (type) {
+      await builder.where(eq(networkAddresses.type, type));
+    }
 
     const totalItems = await this.db.$count(networkAddresses);
 

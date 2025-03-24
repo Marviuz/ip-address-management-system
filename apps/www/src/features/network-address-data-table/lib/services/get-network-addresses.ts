@@ -12,9 +12,10 @@ export async function getNetworkAddress({
   page,
   pageSize,
   q,
+  type,
 }: NetworkAddressParams) {
   const { data } = await api.get<unknown>(`network-address`, {
-    params: { page, pageSize, q },
+    params: { page, pageSize, q, type },
   });
   return networkAddressListSchema.parse(data);
 }

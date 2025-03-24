@@ -1,9 +1,10 @@
-import { type Role } from './consts';
+import { type NetworkType, type Role } from './consts';
 
 export type GetNetworkAddressesListPayload = Partial<{
   page: number;
   pageSize: number;
   q: string;
+  type: NetworkType;
 }>;
 
 export type CreateNetworkAddressPayload = {

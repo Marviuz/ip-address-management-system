@@ -45,3 +45,12 @@ export function getNetworkAddressType(value: string) {
   if (!data) throw new Error('Invalid Network Address');
   return data;
 }
+
+export function getReadableNetworkAddressType(netAddType: NetworkType) {
+  switch (netAddType) {
+    case 'ipv4':
+      return 'IPv4';
+    case 'ipv6':
+      return 'IPv6';
+  }
+}

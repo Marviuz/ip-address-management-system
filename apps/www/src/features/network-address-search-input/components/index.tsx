@@ -8,18 +8,20 @@ export const NetworkAddressSearchInput: FC = () => {
   const navigate = useNavigate({ from: '/dashboard' });
 
   return (
-    <Input
-      defaultValue={deferredValue}
-      placeholder="Search..."
-      onChange={(e) => setValue(e.currentTarget.value)}
-      onKeyDown={async (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          await navigate({
-            search: (prev) => ({ ...prev, q: deferredValue }),
-          });
-        }
-      }}
-    />
+    <div>
+      <Input
+        defaultValue={deferredValue}
+        placeholder="Search..."
+        onChange={(e) => setValue(e.currentTarget.value)}
+        onKeyDown={async (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            await navigate({
+              search: (prev) => ({ ...prev, q: deferredValue }),
+            });
+          }
+        }}
+      />
+    </div>
   );
 };

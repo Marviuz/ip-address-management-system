@@ -9,7 +9,7 @@ import { useSuspenseAuthedUser } from '@/hooks/use-user-queries';
 import { useSuspenseNetworkAddresses } from '@/hooks/use-network-address-queries';
 
 export const NetworkAddressDataTable: FC = () => {
-  const { page, pageSize, q } = useSearch({
+  const { page, pageSize, q, type } = useSearch({
     from: '/_authenticated/dashboard/',
   });
   const { data: userData } = useSuspenseAuthedUser();
@@ -17,6 +17,7 @@ export const NetworkAddressDataTable: FC = () => {
     page,
     pageSize,
     q,
+    type,
   });
 
   const table = useTable({

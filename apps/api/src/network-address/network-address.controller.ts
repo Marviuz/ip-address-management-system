@@ -57,8 +57,9 @@ export class NetworkAddressController {
     @Query('pageSize', ParseIntPipe)
     pageSize: GetNetworkAddressesListPayload['pageSize'],
     @Query('q') q: GetNetworkAddressesListPayload['q'],
+    @Query('type') type: GetNetworkAddressesListPayload['type'],
   ) {
-    return this.networkAddressService.findAll({ page, pageSize, q });
+    return this.networkAddressService.findAll({ page, pageSize, q, type });
   }
 
   @Get(':publicId')
