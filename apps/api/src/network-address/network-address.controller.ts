@@ -17,6 +17,7 @@ import {
 import { Request } from 'express';
 import {
   CreateNetworkAddressPayload,
+  ensureRoleBasedNetAddrPayload,
   GetNetworkAddressesListPayload,
   getNetworkAddressType,
   UpdateNetworkAddressPayload,
@@ -71,14 +72,16 @@ export class NetworkAddressController {
 
   @Put(':publicId')
   async update(
+    @Req() req: Request,
     @Param('publicId') publicId: string,
     @Body() body: UpdateNetworkAddressPayload,
     @Ip() ip: string | null,
     @UserAgent() userAgent: string | null,
   ) {
+    const filteredBody = ensureRoleBasedNetAddrPayload(req.user.role, body);
     const data = await this.networkAddressService.update(
       publicId,
-      body,
+      filteredBody,
       ip,
       userAgent,
     );

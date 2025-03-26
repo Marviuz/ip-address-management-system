@@ -1,6 +1,7 @@
 import { z, type ZodSchema, type ZodTypeDef } from 'zod';
 import { isIP } from 'validator';
-import { type NetworkType } from './consts';
+import { type Role, type NetworkType } from './consts';
+import { type UpdateNetworkAddressPayload } from './payloads';
 
 export function createListSchema<TOut, TDef extends ZodTypeDef, TIn>(
   schema: ZodSchema<TOut, TDef, TIn>,
@@ -53,4 +54,15 @@ export function getReadableNetworkAddressType(netAddType: NetworkType) {
     case 'ipv6':
       return 'IPv6';
   }
+}
+
+export function ensureRoleBasedNetAddrPayload(
+  role: Role | null,
+  data: UpdateNetworkAddressPayload,
+) {
+  if (!role) throw new Error('Role is required');
+
+  if (role === 'regular' && 'comments' in data) delete data.comments;
+
+  return data;
 }

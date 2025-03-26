@@ -14,8 +14,8 @@ export async function getNetworkAddress({
   q,
   type,
 }: NetworkAddressParams) {
-  const { data } = await api.get<unknown>(`network-address`, {
+  const response = await api.get(`network-address`, {
     params: { page, pageSize, q, type },
   });
-  return networkAddressListSchema.parse(data);
+  return networkAddressListSchema.parse(response.data);
 }

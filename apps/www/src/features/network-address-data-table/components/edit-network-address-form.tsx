@@ -43,6 +43,7 @@ export const EditNetworkAddressForm: FC<EditNetworkAddressFormProps> = ({
 
   return (
     <NetworkAddressForm
+      canEditComments={false}
       canEditNetworkAddress={canEditNetworkAddress}
       initialValues={{
         comments: networkAddressData.comments,
@@ -56,6 +57,7 @@ export const EditNetworkAddressForm: FC<EditNetworkAddressFormProps> = ({
           comments: values.comments,
           label: values.label,
           networkAddress: values.networkAddress,
+          role: userData.role,
         });
         await router.navigate({
           to: '/dashboard',
