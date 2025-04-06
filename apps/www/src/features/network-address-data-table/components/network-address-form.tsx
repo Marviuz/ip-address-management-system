@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type ChangeEvent, type FC } from 'react';
+import { type FC } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { getNetworkAddressTypeSafe } from '@ip-address-management-system/shared';
 import {
@@ -45,8 +45,6 @@ export const NetworkAddressForm: FC<NetworkAddressFormProps> = ({
 }) => {
   const form = useForm<NetworkAddressFormSchema>({
     resolver: zodResolver(networkAddressFormSchema),
-    mode: 'onChange',
-    reValidateMode: 'onChange',
     defaultValues: initialValues ?? {
       networkAddress: '',
       label: '',
@@ -55,13 +53,6 @@ export const NetworkAddressForm: FC<NetworkAddressFormProps> = ({
   });
 
   const { isSubmitting } = form.formState;
-
-  const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const value = evt.target.value;
-    const isValid = NETWORK_ADDRESS_VALID_VALUES_REGEX.test(value);
-
-    if (isValid) form.setValue('networkAddress', value);
-  };
 
   return (
     <Form {...form}>
@@ -84,7 +75,12 @@ export const NetworkAddressForm: FC<NetworkAddressFormProps> = ({
                   <input
                     {...field}
                     className="min-w-0 grow outline-none"
-                    onChange={handleInputChange}
+                    onChange={(evt) => {
+                      const value = evt.target.value;
+                      const isValid =
+                        NETWORK_ADDRESS_VALID_VALUES_REGEX.test(value);
+                      if (isValid) field.onChange(value);
+                    }}
                   />
                 </FormControl>
                 {getNetworkAddressTypeSafe(field.value)?.readable ? (

@@ -7,7 +7,7 @@ import { useRouter } from '@tanstack/react-router';
 import { type SignUpSchema, signUpSchema } from '../lib/schemas/sign-up-schema';
 import { createAccount } from '../lib/services/create-account';
 import { Input } from '@/components/common/input';
-// import { RadioGroup, RadioGroupItem } from '@/components/common/radio-group';
+import { RadioGroup, RadioGroupItem } from '@/components/common/radio-group';
 import { Button } from '@/components/common/button';
 import {
   Form,
@@ -129,36 +129,36 @@ export const SignUpCard: FC = () => {
           )}
         />
 
-        {/* <FormField */}
-        {/*   control={form.control} */}
-        {/*   name="role" */}
-        {/*   render={({ field }) => ( */}
-        {/*     <FormItem className="space-y-2"> */}
-        {/*       <FormLabel>Register as:</FormLabel> */}
-        {/*       <FormControl> */}
-        {/*         <RadioGroup */}
-        {/*           className="flex space-x-1" */}
-        {/*           defaultValue={field.value} */}
-        {/*           onValueChange={field.onChange} */}
-        {/*         > */}
-        {/*           <FormItem className="flex items-center space-x-3 space-y-0"> */}
-        {/*             <FormControl> */}
-        {/*               <RadioGroupItem value="regular" /> */}
-        {/*             </FormControl> */}
-        {/*             <FormLabel className="font-normal">Regular</FormLabel> */}
-        {/*           </FormItem> */}
-        {/*           <FormItem className="flex items-center space-x-3 space-y-0"> */}
-        {/*             <FormControl> */}
-        {/*               <RadioGroupItem value="super_admin" /> */}
-        {/*             </FormControl> */}
-        {/*             <FormLabel className="font-normal">Super Admin</FormLabel> */}
-        {/*           </FormItem> */}
-        {/*         </RadioGroup> */}
-        {/*       </FormControl> */}
-        {/*       <FormMessage /> */}
-        {/*     </FormItem> */}
-        {/*   )} */}
-        {/* /> */}
+        <FormField
+          control={form.control}
+          name="role"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel>Register as:</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  className="flex space-x-1"
+                  defaultValue={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="regular" />
+                    </FormControl>
+                    <FormLabel className="font-normal">Regular</FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="super_admin" />
+                    </FormControl>
+                    <FormLabel className="font-normal">Super Admin</FormLabel>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Button disabled={isSubmitting} type="submit">
           {isSubmitting ? 'Registering...' : 'Register'}

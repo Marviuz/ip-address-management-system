@@ -5,6 +5,7 @@ import { EditNetworkAddressButton } from './edit-network-address-button';
 import { TableSortHeader } from './table-sort-header';
 import { DateTimeDetailsHoverCard } from '@/components/datetime-details-hover-card';
 import { Checkbox } from '@/components/common/checkbox';
+import { Badge } from '@/components/common/badge';
 
 export type NetworkAddressTableColumns = {
   address: string;
@@ -50,7 +51,9 @@ export const networkAddressTableColumns = [
   columnHelper.display({
     id: 'addressType',
     header: () => <TableSortHeader sortKey="type">Type</TableSortHeader>,
-    cell: ({ row }) => getNetworkAddressType(row.original.address).readable,
+    cell: ({ row }) => (
+      <Badge>{getNetworkAddressType(row.original.address).readable}</Badge>
+    ),
   }),
   columnHelper.accessor('label', {
     header: () => <TableSortHeader sortKey="label">Label</TableSortHeader>,
