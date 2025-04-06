@@ -63,6 +63,7 @@ export class AuditLogsService {
       pageSize,
       totalItems,
     );
+
     return data;
   }
 

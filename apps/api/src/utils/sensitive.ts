@@ -5,6 +5,7 @@ export const {
   id: usersId,
   refreshToken,
   providerId,
+  password,
   ...usersColumns
 } = getTableColumns(users);
 
