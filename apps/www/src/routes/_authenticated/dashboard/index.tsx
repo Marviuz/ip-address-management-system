@@ -1,20 +1,17 @@
+import { getNetworkAddressSchema } from '@ip-address-management-system/shared';
 import { createFileRoute, retainSearchParams } from '@tanstack/react-router';
-import { Suspense } from 'react';
 import { zodValidator } from '@tanstack/zod-adapter';
+import { Suspense } from 'react';
 import { z } from 'zod';
-import { networkTypes } from '@ip-address-management-system/shared';
-import { NetworkAddressDataTable } from '@/features/network-address-data-table/components';
-import { paginationSchema } from '@/lib/schemas/pagination';
-import { EditNetworkAddressSheet } from '@/features/network-address-data-table/components/edit-network-address-sheet';
 import { DataTableSkeleton } from '@/components/common/data-table-skeleton';
+import { NetworkAddressDataTable } from '@/features/network-address-data-table/components';
 import { networkAddressTableColumns } from '@/features/network-address-data-table/components/columns';
-import { NetworkAddressSearchInput } from '@/features/network-address-search-input/components';
+import { EditNetworkAddressSheet } from '@/features/network-address-data-table/components/edit-network-address-sheet';
 import { NetworkAddressFilter } from '@/features/network-address-filter/components';
+import { NetworkAddressSearchInput } from '@/features/network-address-search-input/components';
 
-const dashboardSearchSchema = paginationSchema.extend({
+const dashboardSearchSchema = getNetworkAddressSchema.extend({
   edit: z.string().optional(),
-  q: z.string().optional(),
-  type: z.enum(networkTypes).optional(),
 });
 
 export const Route = createFileRoute('/_authenticated/dashboard/')({

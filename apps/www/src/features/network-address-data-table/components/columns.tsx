@@ -2,6 +2,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { getNetworkAddressType } from '@ip-address-management-system/shared';
 import { DeleteNetworkAddressButton } from './delete-network-address-button';
 import { EditNetworkAddressButton } from './edit-network-address-button';
+import { TableSortHeader } from './table-sort-header';
 import { DateTimeDetailsHoverCard } from '@/components/datetime-details-hover-card';
 import { Checkbox } from '@/components/common/checkbox';
 
@@ -41,23 +42,30 @@ export const networkAddressTableColumns = [
     ),
   }),
   columnHelper.accessor('address', {
-    header: 'Address',
+    header: () => (
+      <TableSortHeader sortKey="networkAddress">Address</TableSortHeader>
+    ),
     cell: ({ cell }) => cell.getValue(),
   }),
   columnHelper.display({
-    header: 'Type',
+    id: 'addressType',
+    header: () => <TableSortHeader sortKey="type">Type</TableSortHeader>,
     cell: ({ row }) => getNetworkAddressType(row.original.address).readable,
   }),
   columnHelper.accessor('label', {
-    header: 'Label',
+    header: () => <TableSortHeader sortKey="label">Label</TableSortHeader>,
     cell: (label) => label.getValue(),
   }),
   columnHelper.accessor('comments', {
-    header: 'Comments',
+    header: () => (
+      <TableSortHeader sortKey="comments">Comments</TableSortHeader>
+    ),
     cell: (comment) => comment.getValue(),
   }),
   columnHelper.accessor('addedAt', {
-    header: 'Date Added',
+    header: () => (
+      <TableSortHeader sortKey="createdAt">Date Added</TableSortHeader>
+    ),
     cell: ({ cell, row }) => (
       <DateTimeDetailsHoverCard
         createdAt={cell.getValue()}

@@ -1,11 +1,11 @@
 import {
   DeleteNetworkAddressPayload,
-  GetNetworkAddressesListPayload,
+  GetNetworkAddressSchema,
   networkAddressListSchema,
   UpdateNetworkAddressPayload,
 } from '@ip-address-management-system/shared';
 import { Inject, Injectable } from '@nestjs/common';
-import { desc, eq, ilike, inArray, or } from 'drizzle-orm';
+import { asc, desc, eq, ilike, inArray, or } from 'drizzle-orm';
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
 import { auditLogs, networkAddresses, users } from 'src/drizzle/schema';
 import { DrizzleDatabase } from 'src/drizzle/types/drizzle';
@@ -60,7 +60,9 @@ export class NetworkAddressService {
     pageSize = 10,
     q = '',
     type,
-  }: GetNetworkAddressesListPayload) {
+    sort,
+    order,
+  }: GetNetworkAddressSchema) {
     const query = this.db
       .select({ ...networkAddressColumns, addedBy: usersColumns })
       .from(networkAddresses)
@@ -80,11 +82,21 @@ export class NetworkAddressService {
       await builder.where(eq(networkAddresses.type, type));
     }
 
+    let sortMethod = desc(networkAddresses.id);
+
+    if (sort && order) {
+      if (order === 'desc') {
+        sortMethod = desc(networkAddresses[sort]);
+      } else {
+        sortMethod = asc(networkAddresses[sort]);
+      }
+    }
+
     const totalItems = await this.db.$count(networkAddresses);
 
     const data = await withPagination(
       builder,
-      desc(networkAddresses.id),
+      sortMethod,
       page,
       pageSize,
       totalItems,

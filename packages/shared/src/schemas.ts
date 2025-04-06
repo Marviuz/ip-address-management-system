@@ -75,3 +75,17 @@ export type AuditLogsSchema = z.infer<typeof auditLogsSchema>;
 
 export const auditLogsListSchema = createListSchema(auditLogsSchema);
 export type AuditLogsListSchema = z.infer<typeof auditLogsListSchema>;
+
+export const paginationSchema = z.object({
+  page: z.coerce.number().catch(1),
+  pageSize: z.coerce.number().catch(10),
+});
+export type PaginationSchema = z.infer<typeof paginationSchema>;
+
+export const getNetworkAddressSchema = paginationSchema.extend({
+  q: z.string().optional(),
+  type: z.enum(networkTypes).optional(),
+  sort: networkAddressSchema.keyof().optional(),
+  order: z.enum(['asc', 'desc']).optional(),
+});
+export type GetNetworkAddressSchema = z.infer<typeof getNetworkAddressSchema>;

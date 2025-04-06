@@ -9,16 +9,11 @@ import { useSuspenseAuthedUser } from '@/hooks/use-user-queries';
 import { useSuspenseNetworkAddresses } from '@/hooks/use-network-address-queries';
 
 export const NetworkAddressDataTable: FC = () => {
-  const { page, pageSize, q, type } = useSearch({
+  const search = useSearch({
     from: '/_authenticated/dashboard/',
   });
   const { data: userData } = useSuspenseAuthedUser();
-  const { data: networkAddressesData } = useSuspenseNetworkAddresses({
-    page,
-    pageSize,
-    q,
-    type,
-  });
+  const { data: networkAddressesData } = useSuspenseNetworkAddresses(search);
 
   const table = useTable({
     data: networkAddressApiTableAdapter(networkAddressesData.items),

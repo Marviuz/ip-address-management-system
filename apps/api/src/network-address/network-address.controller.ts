@@ -11,14 +11,13 @@ import {
   HttpStatus,
   HttpCode,
   Query,
-  ParseIntPipe,
   Ip,
 } from '@nestjs/common';
 import { Request } from 'express';
 import {
   CreateNetworkAddressPayload,
   ensureRoleBasedNetAddrPayload,
-  GetNetworkAddressesListPayload,
+  GetNetworkAddressSchema,
   getNetworkAddressType,
   UpdateNetworkAddressPayload,
 } from '@ip-address-management-system/shared';
@@ -53,14 +52,8 @@ export class NetworkAddressController {
   }
 
   @Get()
-  findAll(
-    @Query('page', ParseIntPipe) page: GetNetworkAddressesListPayload['page'],
-    @Query('pageSize', ParseIntPipe)
-    pageSize: GetNetworkAddressesListPayload['pageSize'],
-    @Query('q') q: GetNetworkAddressesListPayload['q'],
-    @Query('type') type: GetNetworkAddressesListPayload['type'],
-  ) {
-    return this.networkAddressService.findAll({ page, pageSize, q, type });
+  findAll(@Query() payload: GetNetworkAddressSchema) {
+    return this.networkAddressService.findAll(payload);
   }
 
   @Get(':publicId')
