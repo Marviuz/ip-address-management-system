@@ -82,10 +82,21 @@ export const paginationSchema = z.object({
 });
 export type PaginationSchema = z.infer<typeof paginationSchema>;
 
+export const orderSchema = z.enum(['asc', 'desc']);
+export type OrderSchema = z.infer<typeof orderSchema>;
+
 export const getNetworkAddressSchema = paginationSchema.extend({
   q: z.string().optional(),
   type: z.enum(networkTypes).optional(),
   sort: networkAddressSchema.keyof().optional(),
-  order: z.enum(['asc', 'desc']).optional(),
+  order: orderSchema.optional(),
 });
 export type GetNetworkAddressSchema = z.infer<typeof getNetworkAddressSchema>;
+
+export const getAuditLogsSchema = paginationSchema.extend({
+  q: z.string().optional(),
+  actions: z.enum(auditLogsActions).array().optional(),
+  sort: auditLogsSchema.keyof().optional(),
+  order: orderSchema.optional(),
+});
+export type GetAuditLogsSchema = z.infer<typeof getAuditLogsSchema>;

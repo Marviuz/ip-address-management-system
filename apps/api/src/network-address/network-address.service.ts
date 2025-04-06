@@ -85,11 +85,8 @@ export class NetworkAddressService {
     let sortMethod = desc(networkAddresses.id);
 
     if (sort && order) {
-      if (order === 'desc') {
-        sortMethod = desc(networkAddresses[sort]);
-      } else {
-        sortMethod = asc(networkAddresses[sort]);
-      }
+      if (order === 'desc') sortMethod = desc(networkAddresses[sort]);
+      else sortMethod = asc(networkAddresses[sort]);
     }
 
     const totalItems = await this.db.$count(networkAddresses);

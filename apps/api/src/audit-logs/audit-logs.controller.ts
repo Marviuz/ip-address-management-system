@@ -1,5 +1,5 @@
-import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
-import { GetAuditLogsListPayload } from '@ip-address-management-system/shared';
+import { Controller, Get, Param, Query } from '@nestjs/common';
+import { GetAuditLogsSchema } from '@ip-address-management-system/shared';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuditLogsService } from './audit-logs.service';
 
@@ -9,19 +9,8 @@ export class AuditLogsController {
   constructor(private readonly auditLogsService: AuditLogsService) {}
 
   @Get()
-  findAll(
-    @Query('page', ParseIntPipe) page: GetAuditLogsListPayload['page'],
-    @Query('pageSize', ParseIntPipe)
-    pageSize: GetAuditLogsListPayload['pageSize'],
-    @Query('q') q: GetAuditLogsListPayload['q'],
-    @Query('actions') actions: GetAuditLogsListPayload['actions'],
-  ) {
-    return this.auditLogsService.findAll({
-      page,
-      pageSize,
-      q,
-      actions,
-    });
+  findAll(@Query() payload: GetAuditLogsSchema) {
+    return this.auditLogsService.findAll(payload);
   }
 
   @Get(':publicId')

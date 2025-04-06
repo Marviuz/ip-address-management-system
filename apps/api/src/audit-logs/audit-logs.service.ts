@@ -1,6 +1,6 @@
-import { GetAuditLogsListPayload } from '@ip-address-management-system/shared';
+import { GetAuditLogsSchema } from '@ip-address-management-system/shared';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { desc, eq, ilike, inArray, or } from 'drizzle-orm';
+import { asc, desc, eq, ilike, inArray, or } from 'drizzle-orm';
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
 import { auditLogs, users } from 'src/drizzle/schema';
 import { DrizzleDatabase } from 'src/drizzle/types/drizzle';
@@ -16,7 +16,9 @@ export class AuditLogsService {
     pageSize = 10,
     q,
     actions,
-  }: GetAuditLogsListPayload) {
+    sort,
+    order,
+  }: GetAuditLogsSchema) {
     const query = this.db
       .select({ ...auditLogsColumns, user: usersColumns })
       .from(auditLogs)
@@ -40,10 +42,23 @@ export class AuditLogsService {
       await builder.where(inArray(auditLogs.action, actions));
     }
 
+    let sortMethod = desc(auditLogs.id);
+
+    if (sort && order) {
+      if (sort === 'user') {
+        if (order === 'desc') sortMethod = desc(users.givenName);
+        if (order === 'asc') sortMethod = asc(users.givenName);
+      } else {
+        if (order === 'desc') sortMethod = desc(auditLogs[sort]);
+        if (order === 'asc') sortMethod = asc(auditLogs[sort]);
+      }
+    }
+
     const totalItems = await this.db.$count(auditLogs);
+
     const data = await withPagination(
       builder,
-      desc(auditLogs.id),
+      sortMethod,
       page,
       pageSize,
       totalItems,
