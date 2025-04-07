@@ -1,5 +1,8 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import { GetAuditLogsSchema } from '@ip-address-management-system/shared';
+import {
+  getAuditLogsSchema,
+  GetAuditLogsSchema,
+} from '@ip-address-management-system/shared';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuditLogsService } from './audit-logs.service';
 
@@ -10,7 +13,7 @@ export class AuditLogsController {
 
   @Get()
   findAll(@Query() payload: GetAuditLogsSchema) {
-    return this.auditLogsService.findAll(payload);
+    return this.auditLogsService.findAll(getAuditLogsSchema.parse(payload));
   }
 
   @Get(':publicId')

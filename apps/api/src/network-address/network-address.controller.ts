@@ -17,6 +17,7 @@ import { Request } from 'express';
 import {
   CreateNetworkAddressPayload,
   ensureRoleBasedNetAddrPayload,
+  getNetworkAddressSchema,
   GetNetworkAddressSchema,
   getNetworkAddressType,
   UpdateNetworkAddressPayload,
@@ -53,7 +54,9 @@ export class NetworkAddressController {
 
   @Get()
   findAll(@Query() payload: GetNetworkAddressSchema) {
-    return this.networkAddressService.findAll(payload);
+    return this.networkAddressService.findAll(
+      getNetworkAddressSchema.parse(payload),
+    );
   }
 
   @Get(':publicId')
